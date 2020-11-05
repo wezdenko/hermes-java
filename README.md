@@ -1,4 +1,4 @@
-# PAP Project Java
+# PAP Project
 
 ## Desktop app pomysły:
 
