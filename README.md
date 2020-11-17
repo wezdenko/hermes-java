@@ -1,8 +1,8 @@
-# PAP Project
+# **PAP Desktop Project**
 
 # Etap 1
 
-* Koncepcja projektu
+## Koncepcja projektu
   * Logowanie do aplikacji
   * Różne stopnie uprawnień użytkowników
   * Dodawanie pracowników
@@ -14,16 +14,19 @@
     * zamówieniu
   * Zapisywanie/Odrzucanie zmian
   * Filtracja/sortowanie zamówień
-* Środowisko pracy
+
+## Środowisko pracy
   * JavaFx (okienko aplikacji)
   * Spring (łączenie się z bazą danych)
   * Baza danych(jeszcze nie wiemy, sqlDeveloper, mySQL?)
   * GitLab -> prosta możliwość wspólnej edycji kodu
-* Narzędzia pracy:
+
+## Narzędzia pracy:
   * Visual Studio Code, Windows 10
   * Intellij, Windows 10
   * GitLab
-* Research
+
+## Research
   * JavaFX
     * [JavaFX commands](https://www.youtube.com/playlist?list=PL6gx4Cwl9DGBzfXLWLSYVy8EbTdpGbUIG)
     * [JavaFX Instalation](https://www.youtube.com/watch?v=H67COH9F718)
@@ -33,27 +36,36 @@
     * [SQL Tutorial](https://www.youtube.com/watch?v=7S_tz1z_5bA&t=1863s&ab_channel=ProgrammingwithMosh)
   * Git 
     * [Git commands](https://git-scm.com/book/en/v2)
-* Instalacja aplikacji
+
+## Instalacja aplikacji
   * .
-## Cele na kolejne etapy
-### Etap 2
+
+## **Cele na kolejne etapy**
+
+### *Etap 2*
 * utworzenie okienkowej aplikacji(wyświetlanie, rozmieszczenie przycisków
 * utworzenie bazy danych(testowej bazy)
 * utworzenie modelu logicznego bazy danych(właściwej bazy)
 * połączenie bazy danych z aplikacją dekstopową(bez zapewnienia funkcjonalności, na razie komunikacja między aplikacją a bazą)
-### Etap 3
+
+### *Etap 3*
 * ukończenie aplikacji desktopowej
 * ukończenie bazy danych i dodanie funkcjonalności do aplikacji
-### Etap 4
+
+### *Etap 4*
 * stworzenie strony internetowej
 * umieszczenie bazy danych na serwerze
 * połączenie strony z bazą danych
 * postawienie strony na serwerze
 
+---
 
-## Desktop app pomysły:
+### **Został wybrany pomysł firmy kurierskiej, połaczony z bazą danych i wystawiony na webie.**
 
-### Został wybrany pomysł firmy kurierskiej, połaczony z bazą danych i wystawiony na webie.
+#### *Reszta pomysłów zostaje w celach dokumentacyjnych.*
+---
+
+### Desktop app pomysły:
 
 * Firma pracowników:
     * Lista pracowników
