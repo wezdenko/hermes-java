@@ -72,7 +72,7 @@
     * Dodawać/usuwać stanowisko
     * Wyszukiwać/sortować pracowników
 
-* >Firma kurierska/przewozowa:
+* Firma kurierska/przewozowa:
     * Paczki do dostarczenia
     * Statusy paczek
     * Historia paczek
