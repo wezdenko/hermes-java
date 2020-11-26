@@ -40,6 +40,7 @@
 ## Instalacja aplikacji
   * Desktop
     * Instalacja JavaFX zgodnie z instrukcją z researchu([JavaFX Instalation](https://www.youtube.com/watch?v=H67COH9F718)). Film ten jednak zawiera jedno niedopowiedzenie, gdyż javafx-sdk powinno być pod jakimś łatwiejszym w dostępie miejscu, np bezpośrednio na dysku C 
+    * Dodatkowo do działania bazy danych potrzebny jest sterownik oracle - [OJDBC](https://download.oracle.com/otn-pub/otn_software/jdbc/198/ojdbc10.jar). Należy ten sterownik pobrać i dołączyć do projektu javy w taki sam sposób jak pliki z javafx
     
 
 ## **Cele na kolejne etapy**
