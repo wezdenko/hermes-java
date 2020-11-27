@@ -7,9 +7,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.layout.HBox;
 import javafx.geometry.Insets;
-import javafx.scene.layout.Priority;
-
-
 
 
 public class ExitBox {
