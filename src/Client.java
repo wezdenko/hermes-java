@@ -5,7 +5,7 @@ public class Client {
     private String email;
     private String phoneNumber;
     private int clientAddressID;
-
+aaaaaaaaaaaaaaaaaa
     public Client(){}
 
     public Client(int clientID, String name, String surname, String email,
