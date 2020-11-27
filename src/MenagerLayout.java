@@ -144,9 +144,8 @@ public class MenagerLayout {
         giveOutButton.setMinWidth(width);
         giveOutButton.setMaxWidth(Double.MAX_VALUE);
         giveOutButton.setOnAction(e -> {
-            String carID = GivedOutBox.display();
-            System.out.println(carID);
-            givedOutButtonClicked(carID);
+            Integer carID = GivedOutBox.display();
+            if(carID != 0) givedOutButtonClicked(carID);
         });
 
             //Delete
@@ -157,10 +156,11 @@ public class MenagerLayout {
         deletButton.setOnAction(e -> deleteButtonClicked());
 
             //Add
-        Button btn4 = new Button("Add");
-        HBox.setHgrow(btn4, Priority.ALWAYS);
-        btn4.setMinWidth(width);
-        btn4.setMaxWidth(Double.MAX_VALUE);
+        Button addButton = new Button("Add");
+        HBox.setHgrow(addButton, Priority.ALWAYS);
+        addButton.setMinWidth(width);
+        addButton.setMaxWidth(Double.MAX_VALUE);
+        addButton.setOnAction(e -> addButtonClicked());
 
             //Give Car
         Button btn5 = new Button("Give Car");
@@ -174,7 +174,7 @@ public class MenagerLayout {
         btn6.setMinWidth(width);
         btn6.setMaxWidth(Double.MAX_VALUE);
 
-        buttonLayout.getChildren().addAll(giveOutButton,deletButton,btn4,btn5, btn6);
+        buttonLayout.getChildren().addAll(giveOutButton,deletButton,addButton,btn5, btn6);
 
 
         //Scene/layout
@@ -207,15 +207,21 @@ public class MenagerLayout {
         rows.forEach(row -> parcelTable.getItems().remove(row));
     }
 
+    //Add button clicked
+    public static void addButtonClicked(){
+        Parcel parcel = AddBox.display();
+        parcelTable.getItems().add(parcel);
+    }
+
     //Gived Out button clicked
-    public static void givedOutButtonClicked(String carID){
+    public static void givedOutButtonClicked(Integer carID){
         ObservableList<Parcel> pracelsSelected, allParcels;
         allParcels = parcelTable.getItems();
         pracelsSelected = parcelTable.getSelectionModel().getSelectedItems();
         ArrayList<Parcel> rows = new ArrayList<>(pracelsSelected);
         for (Parcel r : rows) {
             allParcels.remove(r);
-            r.setCarID(Converter.StringToInt(carID));
+            r.setCarID(carID);
             allParcels.add(r);
             parcelTable.refresh();
         }

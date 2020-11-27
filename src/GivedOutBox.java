@@ -11,9 +11,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 
 public class GivedOutBox {
-    static String carID;
+    static Integer carID;
 
-    public static String display(){
+    public static Integer display(){
         Stage window = new Stage();
         window.setMinWidth(250);
         window.setMinHeight(150);
@@ -32,7 +32,7 @@ public class GivedOutBox {
         btnOK.setText("OK");
         btnOK.setMinWidth(25);
         btnOK.setOnAction(e -> { 
-            carID = carIdField.getText();
+            carID = Converter.StringToInt(carIdField.getText());
             window.close(); 
         });
 
