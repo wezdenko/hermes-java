@@ -9,16 +9,20 @@ public class Parcel {
     private int code;
     private int carID;
     private int departmentID;
-    private String sName;  //temporary solution
-    private String rName;  //temporary solution
+    private Client sender;
+    private Client receiver;
+    private String receiverAddress;
+    private String senderAddress;
 
     public Parcel(){}
 
-    public Parcel(int ID, String status, double cost, double weight,
-    double length, double width, double height, int code, int carID, 
-    int departmentID, String sName, String rName ){
+    public Parcel(int ID, String status, double cost, Client sender, Client receiver,
+    double weight,double length, double width, double height, int code, int carID, 
+    int departmentID){
         this.ID = ID;
         this.status = status;
+        this.sender = sender;
+        this.receiver = receiver;
         this.cost = cost;
         this.weight = weight;
         this.length = length;
@@ -27,9 +31,10 @@ public class Parcel {
         this.code = code;
         this.carID = carID;
         this.departmentID = departmentID;
-        this.sName = sName;
-        this.rName = rName;
+        this.receiverAddress = receiver.getClientAddress().getAddress();
+        this.senderAddress = sender.getClientAddress().getAddress();
     }
+
 
 	public int getID() {
         return ID;
@@ -119,21 +124,31 @@ public class Parcel {
         this.departmentID = departmentID;
     }
 
-    public String getRName() {
-        return this.rName;
+    public String getReceiver() {
+        return this.receiver.getName();
     }
 
-    public void setRName(String rName) {
-        this.rName = rName;
+    public void setReceiver(Client receiver) {
+        this.receiver = receiver;
     }
 
-    public String getSName() {
-        return this.sName;
+    public String getSender() {
+        return this.sender.getName();
     }
 
-    public void setSName(String sName) {
-        this.sName = sName;
+    public void setSender(Client sender) {
+        this.sender = sender;
     }
+
+    public String getReceiverAddress() {
+        return receiverAddress;
+    }
+
+    public String getSenderAddress() {
+        return senderAddress;
+    }
+
+
 
 }
 

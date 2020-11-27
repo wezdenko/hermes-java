@@ -25,6 +25,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.layout.Priority;
+import javafx.scene.control.SelectionMode;
+
 
 
 public class CourierLayout {
@@ -46,7 +48,7 @@ public class CourierLayout {
 
         // Status column
         TableColumn<Parcel, String> statusColumn = new TableColumn<>("Status");
-        statusColumn.setMinWidth(50);
+        statusColumn.setMinWidth(80);
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         // Cost column
@@ -54,57 +56,73 @@ public class CourierLayout {
         costColumn.setMinWidth(50);
         costColumn.setCellValueFactory(new PropertyValueFactory<>("cost"));
 
-        // Weight column
-        TableColumn<Parcel, Double> weightColumn = new TableColumn<>("Weight");
-        weightColumn.setMinWidth(50);
-        weightColumn.setCellValueFactory(new PropertyValueFactory<>("weight"));
+        // // Weight column
+        // TableColumn<Parcel, Double> weightColumn = new TableColumn<>("Weight");
+        // weightColumn.setMinWidth(50);
+        // weightColumn.setCellValueFactory(new PropertyValueFactory<>("weight"));
 
-        // Length column
-        TableColumn<Parcel, Double> lengthColumn = new TableColumn<>("Length");
-        lengthColumn.setMinWidth(50);
-        lengthColumn.setCellValueFactory(new PropertyValueFactory<>("length"));
+        // // Length column
+        // TableColumn<Parcel, Double> lengthColumn = new TableColumn<>("Length");
+        // lengthColumn.setMinWidth(50);
+        // lengthColumn.setCellValueFactory(new PropertyValueFactory<>("length"));
 
-        // Width column
-        TableColumn<Parcel, Double> widthColumn = new TableColumn<>("Width");
-        widthColumn.setMinWidth(50);
-        widthColumn.setCellValueFactory(new PropertyValueFactory<>("width"));
+        // // Width column
+        // TableColumn<Parcel, Double> widthColumn = new TableColumn<>("Width");
+        // widthColumn.setMinWidth(50);
+        // widthColumn.setCellValueFactory(new PropertyValueFactory<>("width"));
 
-        // Height column
-        TableColumn<Parcel, Double> heightColumn = new TableColumn<>("Height");
-        heightColumn.setMinWidth(50);
-        heightColumn.setCellValueFactory(new PropertyValueFactory<>("height"));
+        // // Height column
+        // TableColumn<Parcel, Double> heightColumn = new TableColumn<>("Height");
+        // heightColumn.setMinWidth(50);
+        // heightColumn.setCellValueFactory(new PropertyValueFactory<>("height"));
 
-        // Code column
-        TableColumn<Parcel, Integer> codeColumn = new TableColumn<>("Code");
-        codeColumn.setMinWidth(50);
-        codeColumn.setCellValueFactory(new PropertyValueFactory<>("code"));
+        // // Code column
+        // TableColumn<Parcel, Integer> codeColumn = new TableColumn<>("Code");
+        // codeColumn.setMinWidth(50);
+        // codeColumn.setCellValueFactory(new PropertyValueFactory<>("code"));
 
-        // carID column
-        TableColumn<Parcel, Integer> carColumn = new TableColumn<>("Car ID");
-        carColumn.setMinWidth(50);
-        carColumn.setCellValueFactory(new PropertyValueFactory<>("carID"));
+        // // carID column
+        // TableColumn<Parcel, Integer> carColumn = new TableColumn<>("Car ID");
+        // carColumn.setMinWidth(50);
+        // carColumn.setCellValueFactory(new PropertyValueFactory<>("carID"));
 
-        // departmentID column
-        TableColumn<Parcel, Integer> departmentColumn = new TableColumn<>("Department ID");
-        departmentColumn.setMinWidth(50);
-        departmentColumn.setCellValueFactory(new PropertyValueFactory<>("departmentID"));
+        // // departmentID column
+        // TableColumn<Parcel, Integer> departmentColumn = new TableColumn<>("Department ID");
+        // departmentColumn.setMinWidth(50);
+        // departmentColumn.setCellValueFactory(new PropertyValueFactory<>("departmentID"));
 
         // senderID column
-        TableColumn<Parcel, String> sNameColumn = new TableColumn<>("Sender");
-        sNameColumn.setMinWidth(100);
-        sNameColumn.setCellValueFactory(new PropertyValueFactory<>("sName"));
+        TableColumn<Parcel, String> senderColumn = new TableColumn<>("Sender");
+        senderColumn.setMinWidth(80);
+        senderColumn.setCellValueFactory(new PropertyValueFactory<>("sender"));
 
         // receiverID column
-        TableColumn<Parcel, String> rNameColumn = new TableColumn<>("Receiver");
-        rNameColumn.setMinWidth(100);
-        rNameColumn.setCellValueFactory(new PropertyValueFactory<>("rName"));
+        TableColumn<Parcel, String> receiverColumn = new TableColumn<>("Receiver");
+        receiverColumn.setMinWidth(80);
+        receiverColumn.setCellValueFactory(new PropertyValueFactory<>("receiver"));
+
+        // receiver address column
+        TableColumn<Parcel, String> receiverAddressColumn = new TableColumn<>("Receiver Address");
+        receiverAddressColumn.setMinWidth(200);
+        receiverAddressColumn.setCellValueFactory(new PropertyValueFactory<>("receiverAddress"));
+
+        // sender address column
+        TableColumn<Parcel, String> senderAddressColumn = new TableColumn<>("Sender Address");
+        senderAddressColumn.setMinWidth(200);
+        senderAddressColumn.setCellValueFactory(new PropertyValueFactory<>("senderAddress"));
         
 
         parcelsTable = new TableView<>();
         parcelsTable.setItems(getParcelList());
-        parcelsTable.getColumns().addAll(idColumn, statusColumn, sNameColumn, 
-        rNameColumn, costColumn, weightColumn, lengthColumn, widthColumn, 
-        heightColumn, codeColumn, carColumn, departmentColumn);
+        // All columns
+        // parcelsTable.getColumns().addAll(idColumn, statusColumn, sNameColumn, 
+        // rNameColumn, costColumn, weightColumn, lengthColumn, widthColumn, 
+        // heightColumn, codeColumn, carColumn, departmentColumn);
+
+        parcelsTable.getColumns().addAll(idColumn, statusColumn, senderColumn, 
+        receiverColumn, costColumn, receiverAddressColumn, senderAddressColumn);
+        parcelsTable.autosize();
+        parcelsTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         VBox courierV = new VBox();
         courierScene = new Scene(courierV, 600, 500);
@@ -125,11 +143,19 @@ public class CourierLayout {
 
     public static ObservableList<Parcel> getParcelList() {
         ObservableList<Parcel> parcels = FXCollections.observableArrayList();
-        parcels.add(new Parcel(123, "Car" , 0, 1, 2, 2, 2, 11, 2, 2, "barzo bardzo dlugie nazwy", "tomek"));
-        parcels.add(new Parcel(124, "Collection Point" , 0, 1, 2, 2, 2, 11, 5, 2, "adam", "imion i nazwisks asadsaasd"));
-        parcels.add(new Parcel(125, "Warehouse" , 0, 1, 2, 2, 2, 11, 11, 2, "rajmund", "jankos"));
-        parcels.add(new Parcel(126, "Car" , 0, 1, 2, 2, 2, 11, 2, 2, "hitler", "stalin"));
-        parcels.add(new Parcel(133, "Car" , 0, 1, 2, 2, 2, 11, 3, 2, "kot", "pies"));
+        ClientAddress senderAddress = new ClientAddress(2137, "Akademicka", 5, 317, "Warszawa", "00-238", 1);
+        ClientAddress receiverAddress = new ClientAddress(2115, "Lubartowska", 21, 37, "Lublin", "00-238", 1);
+        Client sender = new Client(222, "Wiktor", "Jozwik", "asd@asd.com", "1231312312", senderAddress);
+        Client receiver = new Client(223, "mati", "wezdenko", "aaaasd@asd.com", "1231asdas312", receiverAddress);
+        Parcel parcel = new Parcel(1, "Car",5.99, sender, receiver, 1, 1, 1, 1, 123, 5, 12);
+        Parcel parcel2 = new Parcel(1, "Road",129.22, sender, receiver, 1, 1, 1, 1, 128, 5, 12);
+        parcels.add(parcel);
+        parcels.add(parcel2);
+
+        // parcels.add(new Parcel(124, "Collection Point" , 11.5, 1, 2, 2, 2, 11, 5, 2, "adam", "imion i nazwisks asadsaasd"));
+        // parcels.add(new Parcel(125, "Warehouse" , 55.99, 1, 2, 2, 2, 11, 11, 2, "rajmund", "jankos"));
+        // parcels.add(new Parcel(126, "Car" , 122.55, 1, 2, 2, 2, 11, 2, 2, "hitler", "stalin"));
+        // parcels.add(new Parcel(133, "Car" , 113.4, 1, 2, 2, 2, 11, 3, 2, "kot", "pies"));
         
         return parcels;
     }

@@ -88,7 +88,7 @@ public class App extends Application{
         loginScene = new Scene(loginLayout, 400, 250);
         
         //Scene 2 - Menager Layout
-        storeKeeperScene = MenagerLayout.mg();
+        //storeKeeperScene = MenagerLayout.mg();
 
         //Scene 3 - Courier Layout
         courierScene = CourierLayout.setCourierScene();
@@ -99,8 +99,8 @@ public class App extends Application{
         //Window Setting
         primaryStage.setTitle("PAP_Prototype");
         primaryStage.setMinHeight(300);
-        primaryStage.setMinWidth(500);;
-        primaryStage.setScene(loginScene);
+        primaryStage.setMinWidth(800);;
+        primaryStage.setScene(courierScene);
         primaryStage.setOnCloseRequest(e->{
             e.consume();
             closeProgram(primaryStage);

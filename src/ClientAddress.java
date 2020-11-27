@@ -6,6 +6,7 @@ public class ClientAddress {
     private String city;
     private String postalCode;
     private int countryID;
+    private String address;
 
     public ClientAddress(){}
 
@@ -18,6 +19,14 @@ public class ClientAddress {
         this.city = city;
         this.postalCode = postalCode;
         this.countryID = countryID;
+        this.address = createAddress();
+    }
+    public String createAddress(){
+        if(getApartmentNumber() != -1){
+            return getStreet() + " " + Integer.toString(getHouseNumber()) + "/" + Integer.toString(getApartmentNumber()) + ", " + getCity() + " " + getPostalCode();
+        }else{
+            return getStreet() + " " + Integer.toString(getHouseNumber()) + ", " + getCity() + " " + getPostalCode();
+        }
     }
     
     public int getClientAddressID() {
@@ -74,5 +83,9 @@ public class ClientAddress {
 
     public void setCountryID(int countryID) {
         this.countryID = countryID;
+    }
+
+    public String getAddress() {
+        return address;
     }
 }
