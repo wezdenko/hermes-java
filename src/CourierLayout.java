@@ -112,6 +112,7 @@ public class CourierLayout {
         Button changeBtn = new Button("Change Status");
         changeBtn.setMinWidth(100);
         changeBtn.setMaxWidth(Double.MAX_VALUE);
+        changeBtn.setOnAction(e->changeStatus());
 
 
         VBox.setVgrow(parcelsTable, Priority.ALWAYS);
@@ -125,12 +126,32 @@ public class CourierLayout {
     public static ObservableList<Parcel> getParcelList() {
         ObservableList<Parcel> parcels = FXCollections.observableArrayList();
         parcels.add(new Parcel(123, "Car" , 0, 1, 2, 2, 2, 11, 2, 2, "barzo bardzo dlugie nazwy", "tomek"));
-        parcels.add(new Parcel(124, "Car" , 0, 1, 2, 2, 2, 11, 5, 2, "adam", "imion i nazwisks asadsaasd"));
-        parcels.add(new Parcel(125, "Car" , 0, 1, 2, 2, 2, 11, 11, 2, "rajmund", "jankos"));
+        parcels.add(new Parcel(124, "Collection Point" , 0, 1, 2, 2, 2, 11, 5, 2, "adam", "imion i nazwisks asadsaasd"));
+        parcels.add(new Parcel(125, "Warehouse" , 0, 1, 2, 2, 2, 11, 11, 2, "rajmund", "jankos"));
         parcels.add(new Parcel(126, "Car" , 0, 1, 2, 2, 2, 11, 2, 2, "hitler", "stalin"));
         parcels.add(new Parcel(133, "Car" , 0, 1, 2, 2, 2, 11, 3, 2, "kot", "pies"));
         
         return parcels;
+    }
+
+    public static void changeStatus(){
+        String action;
+        ObservableList<Parcel> parcelSelected, allParcels;
+        allParcels = parcelsTable.getItems();
+        parcelSelected = parcelsTable.getSelectionModel().getSelectedItems();
+        ArrayList<Parcel> parcelsArray = new ArrayList<>(parcelSelected);
+
+        action = ChoiceWindow.display();
+
+        for (Parcel parcel: parcelsArray){
+            allParcels.remove(parcel);
+            parcel.setStatus(action);
+            allParcels.add(parcel);
+            parcelsTable.refresh();
+        }
+
+        
+    
     }
 
 }
