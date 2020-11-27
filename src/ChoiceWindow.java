@@ -7,6 +7,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.layout.GridPane;
 import javafx.geometry.Insets;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+
+
 
 public class ChoiceWindow {
 
@@ -19,20 +23,20 @@ public class ChoiceWindow {
         Scene scene;
 
         window.initModality(Modality.APPLICATION_MODAL);
-        window.setTitle("Choice Box");
+        window.setTitle("Change Status");
 
         ChoiceBox<String> choiceBox = new ChoiceBox<>();
 
         //getItems
-        choiceBox.getItems().addAll("Gived Out", "Edit", "Delete");
+        choiceBox.getItems().addAll("Delivered", "Road", "Car", "Collection Point", "Warehouse");
 
         //Set a default value
-        choiceBox.setValue("Gived Out");
+        choiceBox.setValue("Delivered");
 
         //No Button
         Button btnOK = new Button();
         btnOK.setText("OK");
-        btnOK.setMinWidth(25);
+        btnOK.setMinWidth(40);
         btnOK.setOnAction(e -> { 
             action = getChoice(choiceBox);
             window.close(); 
@@ -41,16 +45,26 @@ public class ChoiceWindow {
         //Label
         Label label = new Label("What you want to do?");
 
-        //Layout
-        GridPane layout = new GridPane();
+        HBox hbox = new HBox(10);
+        hbox.getChildren().addAll(choiceBox, btnOK);
+        hbox.setAlignment(Pos.CENTER);
+
+        VBox layout = new VBox();
         layout.setPadding(new Insets(10, 10, 10, 10));
-        layout.setVgap(6);
-        layout.setHgap(2);
-        layout.setConstraints(label, 0, 1);
-        layout.setConstraints(choiceBox, 0, 4);
-        layout.setConstraints(btnOK, 1, 4);
-        layout.getChildren().addAll(label, choiceBox, btnOK);
-        layout.setAlignment(Pos.BASELINE_CENTER);
+        layout.getChildren().addAll(label, hbox);
+        layout.setAlignment(Pos.CENTER);
+        layout.setSpacing(10);
+
+        //Layout
+        // GridPane layout = new GridPane();
+        // layout.setPadding(new Insets(10, 10, 10, 10));
+        // layout.setVgap(6);
+        // layout.setHgap(2);
+        // layout.setConstraints(label, 0, 1);
+        // layout.setConstraints(choiceBox, 0, 4);
+        // layout.setConstraints(btnOK, 1, 4);
+        // layout.getChildren().addAll(label, choiceBox, btnOK);
+        // layout.setAlignment(Pos.BASELINE_CENTER);
 
         scene = new Scene(layout);
 

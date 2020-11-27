@@ -35,7 +35,7 @@ public class App extends Application{
         launch(args);
     }
 
-    Scene scene1, scene2;
+    Scene loginScene, storeKeeperScene, courierScene, managerScene;
     TableView<Parcel> parcelTable;
     String action;
 
@@ -44,56 +44,63 @@ public class App extends Application{
 
         
         //Welcom Message - Label
-        Label welcom_msg = new Label("You have to enter your login and password");
+        Label welcomeMsg = new Label("You have to enter your login and password");
 
         //Login - Label&TextField
-        Label login_msg = new Label("Login:");
-        TextField login_field = new TextField();
-        login_field.setPromptText("...");
+        Label loginMsg = new Label("Login:");
+        TextField loginField = new TextField();
+        loginField.setPromptText("...");
 
         //Password - Label&TextField
-        Label password_msg = new Label("Password:");
-        TextField password_field = new TextField();
-        password_field.setPromptText("...");
+        Label passwordMsg = new Label("Password:");
+        TextField passwordField = new TextField();
+        passwordField.setPromptText("...");
 
 
         //Button 1
-        Button log_btn = new Button();
-        log_btn.setText("Log In");
-        log_btn.setOnAction(e->{
-            if(login_field.getText().equals("login") && password_field.getText().equals("password")){
+        Button loginBtn = new Button();
+        loginBtn.setText("Log In");
+        loginBtn.setOnAction(e->{
+            if(loginField.getText().equals("login") && passwordField.getText().equals("password")){
                  System.out.println("logged in");
-                 primaryStage.setScene(scene2);
+                 primaryStage.setScene(courierScene);
             }
             else{
                 AlertBox.display("ERROR", "WRONG PASSWORD OR LOGIN");
-                System.out.println(login_field.getText());
+                System.out.println(loginField.getText());
             }     
                 });
 
         //Scene 1 - Logging layout
-        GridPane log_layout = new GridPane();
-        log_layout.setPadding(new Insets(10, 10, 10, 10));
-        log_layout.setVgap(8);
-        log_layout.setHgap(10);
-        log_layout.setConstraints(welcom_msg, 1, 1);
-        log_layout.setConstraints(login_msg, 0, 3);
-        log_layout.setConstraints(login_field, 1, 3);
-        log_layout.setConstraints(password_msg, 0, 4);
-        log_layout.setConstraints(password_field, 1, 4);
-        log_layout.setConstraints(log_btn, 1, 5);
-        log_layout.getChildren().addAll(welcom_msg,login_msg,password_msg,log_btn, password_field, login_field);
-        log_layout.setAlignment(Pos.BASELINE_CENTER);
-        scene1 = new Scene(log_layout, 400, 250);
+        //Grid
+        GridPane loginLayout = new GridPane();
+        loginLayout.setPadding(new Insets(10, 10, 10, 10));
+        loginLayout.setVgap(8);
+        loginLayout.setHgap(10);
+        loginLayout.setConstraints(welcomeMsg, 1, 1);
+        loginLayout.setConstraints(loginMsg, 0, 3);
+        loginLayout.setConstraints(loginField, 1, 3);
+        loginLayout.setConstraints(passwordMsg, 0, 4);
+        loginLayout.setConstraints(passwordField, 1, 4);
+        loginLayout.setConstraints(loginBtn, 1, 5);
+        loginLayout.getChildren().addAll(welcomeMsg,loginMsg,passwordMsg, loginBtn, passwordField, loginField);
+        loginLayout.setAlignment(Pos.BASELINE_CENTER);
+        loginScene = new Scene(loginLayout, 400, 250);
         
         //Scene 2 - Menager Layout
-        scene2 = MenagerLayout.mg();
+        //storeKeeperScene = MenagerLayout.mg();
+
+        //Scene 3 - Courier Layout
+        courierScene = CourierLayout.setCourierScene();
+
+        //Scene 4 - Manager Layout
+        // to be built
         
         //Window Setting
         primaryStage.setTitle("PAP_Prototype");
         primaryStage.setMinHeight(300);
-        primaryStage.setMinWidth(500);;
-        primaryStage.setScene(scene2);
+        primaryStage.setMinWidth(800);;
+        primaryStage.setScene(courierScene);
         primaryStage.setOnCloseRequest(e->{
             e.consume();
             closeProgram(primaryStage);

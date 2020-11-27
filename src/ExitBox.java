@@ -5,6 +5,9 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.scene.layout.HBox;
+import javafx.geometry.Insets;
+
 
 public class ExitBox {
 
@@ -21,6 +24,7 @@ public class ExitBox {
 
         //Yes Button
         Button btnY = new Button();
+        btnY.setMinWidth(60);
         btnY.setText("Yes");
         btnY.setOnAction(e -> {
             window.close(); 
@@ -29,6 +33,7 @@ public class ExitBox {
 
         //No Button
         Button btnN = new Button();
+        btnN.setMinWidth(60);
         btnN.setText("No");
         btnN.setOnAction(e -> {
             window.close(); 
@@ -39,10 +44,17 @@ public class ExitBox {
         Label label = new Label("Are you sure you want to exit?");
 
         //Layout
+        HBox buttons = new HBox(10);
+        buttons.getChildren().addAll(btnY, btnN);
+        buttons.setAlignment(Pos.CENTER);
+
+
         VBox layout = new VBox();
-        layout.getChildren().addAll(label, btnY, btnN);
+        layout.setPadding(new Insets(10, 10, 10, 10));
+        layout.getChildren().addAll(label, buttons);
         layout.setAlignment(Pos.CENTER);
-        layout.setSpacing(5);
+        layout.setSpacing(10);
+
         scene = new Scene(layout);
 
         window.setScene(scene);

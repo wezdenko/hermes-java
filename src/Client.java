@@ -4,18 +4,18 @@ public class Client {
     private String surname;
     private String email;
     private String phoneNumber;
-    private int clientAddressID;
+    private ClientAddress clientAddress;
 
     public Client(){}
 
     public Client(int clientID, String name, String surname, String email,
-    String phoneNumber, int clientAddressID){
+    String phoneNumber, ClientAddress clientAddress){
         this.clientID = clientID;
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.clientAddressID = clientAddressID;
+        this.clientAddress = clientAddress;
     }
 
     public int getClientID() {
@@ -58,11 +58,11 @@ public class Client {
         this.phoneNumber = phoneNumber;
     }
 
-    public int getClientAddressID() {
-        return clientAddressID;
+    public ClientAddress getClientAddress() {
+        return clientAddress;
     }
 
-    public void setClientAddressID(int clientAddressID) {
-        this.clientAddressID = clientAddressID;
+    public void setClientAddress(ClientAddress clientAddress) {
+        this.clientAddress = clientAddress;
     }
 }
