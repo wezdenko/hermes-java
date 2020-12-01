@@ -1,5 +1,8 @@
+package gui.layouts;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List ;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -27,6 +30,12 @@ import javafx.stage.Stage;
 import javafx.scene.layout.Priority;
 import javafx.scene.control.SelectionMode;
 
+import java.sql.Connection;
+
+import database.classes.Parcel;
+import gui.boxes.ChoiceWindow;
+import database.accessors.ParcelDataAccessor;
+import database.Database;
 
 
 public class CourierLayout {
@@ -94,12 +103,12 @@ public class CourierLayout {
         // senderID column
         TableColumn<Parcel, String> senderColumn = new TableColumn<>("Sender");
         senderColumn.setMinWidth(80);
-        senderColumn.setCellValueFactory(new PropertyValueFactory<>("sender"));
+        senderColumn.setCellValueFactory(new PropertyValueFactory<>("senderName"));
 
         // receiverID column
         TableColumn<Parcel, String> receiverColumn = new TableColumn<>("Receiver");
         receiverColumn.setMinWidth(80);
-        receiverColumn.setCellValueFactory(new PropertyValueFactory<>("receiver"));
+        receiverColumn.setCellValueFactory(new PropertyValueFactory<>("receiverName"));
 
         // receiver address column
         TableColumn<Parcel, String> receiverAddressColumn = new TableColumn<>("Receiver Address");
@@ -142,15 +151,18 @@ public class CourierLayout {
     }
 
     public static ObservableList<Parcel> getParcelList() {
-        ObservableList<Parcel> parcels = FXCollections.observableArrayList();
-        ClientAddress senderAddress = new ClientAddress(2137, "Akademicka", 5, 317, "Warszawa", "00-238", 1);
-        ClientAddress receiverAddress = new ClientAddress(2115, "Lubartowska", 21, 37, "Lublin", "00-238", 1);
-        Client sender = new Client(222, "Wiktor", "Jozwik", "asd@asd.com", "1231312312", senderAddress);
-        Client receiver = new Client(223, "mati", "wezdenko", "aaaasd@asd.com", "1231asdas312", receiverAddress);
-        Parcel parcel = new Parcel(1, "Car",5.99, sender, receiver, 1, 1, 1, 1, 123, 5, 12);
-        Parcel parcel2 = new Parcel(1, "Road",129.22, sender, receiver, 1, 1, 1, 1, 128, 5, 12);
-        parcels.add(parcel);
-        parcels.add(parcel2);
+        List<Parcel> parcelList = new ArrayList<>();
+        try {
+            Connection connection = Database.getConnection("BD1_Z15", "twheas");
+            ParcelDataAccessor parcelAccessor = new ParcelDataAccessor(connection);
+            parcelList = parcelAccessor.getParcelsList("select * from parcels where car_id = (select car_id from employees where employees_id = 5)");
+            Database.closeConnection(connection);
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        ObservableList<Parcel> parcels = FXCollections.observableArrayList(parcelList);
 
         // parcels.add(new Parcel(124, "Collection Point" , 11.5, 1, 2, 2, 2, 11, 5, 2, "adam", "imion i nazwisks asadsaasd"));
         // parcels.add(new Parcel(125, "Warehouse" , 55.99, 1, 2, 2, 2, 11, 11, 2, "rajmund", "jankos"));

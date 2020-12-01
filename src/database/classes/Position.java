@@ -1,3 +1,4 @@
+package database.classes;
 
 public class Position {
 

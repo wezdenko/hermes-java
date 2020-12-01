@@ -1,3 +1,5 @@
+package database.classes;
+
 public class Converter {
     
     public static String IntToString(int i){

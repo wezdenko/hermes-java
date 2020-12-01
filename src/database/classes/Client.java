@@ -1,3 +1,5 @@
+package database.classes;
+
 public class Client {
     private int clientID;
     private String name;

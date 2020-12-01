@@ -1,3 +1,5 @@
+package database.classes;
+
 public class Parcel {
     private int ID;
     private String status;
@@ -8,17 +10,16 @@ public class Parcel {
     private double height;
     private int code;
     private int carID;
+    private int collectionPointID;
     private int departmentID;
     private Client sender;
     private Client receiver;
-    private String receiverAddress;
-    private String senderAddress;
 
     public Parcel(){}
 
     public Parcel(int ID, String status, double cost, Client sender, Client receiver,
     double weight,double length, double width, double height, int code, int carID, 
-    int departmentID){
+    int collectionPointID, int departmentID){
         this.ID = ID;
         this.status = status;
         this.sender = sender;
@@ -30,9 +31,8 @@ public class Parcel {
         this.height = height;
         this.code = code;
         this.carID = carID;
+        this.collectionPointID = collectionPointID;
         this.departmentID = departmentID;
-        this.receiverAddress = receiver.getClientAddress().getAddress();
-        this.senderAddress = sender.getClientAddress().getAddress();
     }
 
 
@@ -116,6 +116,14 @@ public class Parcel {
         this.carID = carID;
     }
 
+    public int getCollectionPointID() {
+        return collectionPointID;
+    }
+
+    public void setCollectionPointID(int collectionPointID) {
+        this.collectionPointID = collectionPointID;
+    }
+
     public int getDepartmentID() {
         return departmentID;
     }
@@ -124,16 +132,16 @@ public class Parcel {
         this.departmentID = departmentID;
     }
 
-    public String getReceiver() {
-        return this.receiver.getName();
+    public Client getReceiver() {
+        return this.receiver;
     }
 
     public void setReceiver(Client receiver) {
         this.receiver = receiver;
     }
 
-    public String getSender() {
-        return this.sender.getName();
+    public Client getSender() {
+        return this.sender;
     }
 
     public void setSender(Client sender) {
@@ -141,14 +149,19 @@ public class Parcel {
     }
 
     public String getReceiverAddress() {
-        return receiverAddress;
+        return this.receiver.getClientAddress().getFullAddress();
     }
 
     public String getSenderAddress() {
-        return senderAddress;
+        return this.sender.getClientAddress().getFullAddress();
     }
 
+    public String getSenderName() {
+        return this.sender.getName() + " " + this.sender.getSurname();
+    }
 
-
+    public String getReceiverName() {
+        return this.receiver.getName() + " " + this.receiver.getSurname();
+    }
 }
 
