@@ -1,7 +1,11 @@
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+
+import java.util.List ;
+import java.util.ArrayList ;
 
 
 public class ParcelDataAccessor {
@@ -13,34 +17,45 @@ public class ParcelDataAccessor {
     }
 
     public Parcel getParcel(String query) throws SQLException {
-        Parcel parcel = new Parcel();
+        return this.getParcelsList(query).get(0);
+    }
+
+    public List<Parcel> getParcelsList(String query) throws SQLException {
         ClientDataAccessor clientAccessor = new ClientDataAccessor(connection);
 
-        PreparedStatement statement = connection.prepareStatement(query);
+        Statement statement = connection.createStatement();
         ResultSet result = statement.executeQuery(query);
 
-        String senderQuery = "select c.* from clients c, parcels p" +
-            "where p.sender_id = c.clients_id" +
-            String.format("and p.parcels_id = %d", result.getInt("sender_id"));
+        List<Parcel> parcelList = new ArrayList<>();
 
-        String receiverQuery = "select c.* from clients c, parcels p" +
-            "where p.receiver_id = c.clients_id" +
-            String.format("and p.parcels_id = %d", result.getInt("receiver_id"));
+        while (result.next()) {
+            Parcel parcel = new Parcel();
 
-        parcel.setID(result.getInt("parcels_id"));
-        parcel.setStatus(result.getString("status"));
-        parcel.setWeight(result.getInt("weight"));
-        parcel.setLength(result.getInt("length"));
-        parcel.setWidth(result.getInt("width"));
-        parcel.setHeight(result.getInt("height"));
-        parcel.setCode(result.getInt("code"));
-        parcel.setCarID(result.getInt("car_id"));
-        parcel.setDepartmentID(result.getInt("department_id"));
-        parcel.setSender(clientAccessor.getClient(senderQuery));
-        parcel.setReceiver(clientAccessor.getClient(receiverQuery));
+            String senderQuery = "select c.* from clients c, parcels p " +
+                "where p.sender_id = c.clients_id " +
+                String.format("and p.parcels_id = %d", result.getInt("sender_id"));
 
+            String receiverQuery = "select c.* from clients c, parcels p " +
+                "where p.receiver_id = c.clients_id " +
+                String.format("and p.parcels_id = %d", result.getInt("receiver_id"));
+
+            parcel.setID(result.getInt("parcels_id"));
+            parcel.setStatus(result.getString("status"));
+            parcel.setWeight(result.getInt("weight"));
+            parcel.setLength(result.getInt("length"));
+            parcel.setWidth(result.getInt("width"));
+            parcel.setHeight(result.getInt("height"));
+            parcel.setCode(result.getInt("code"));
+            parcel.setCarID(result.getInt("car_id"));
+            parcel.setDepartmentID(result.getInt("department_id"));
+            parcel.setSender(clientAccessor.getClient(senderQuery));
+            parcel.setReceiver(clientAccessor.getClient(receiverQuery));
+
+            parcelList.add(parcel);
+        }
+        
         statement.close();
-        return parcel;
+        return parcelList;
     }
 
     public void setParcel(Parcel parcel) throws SQLException {

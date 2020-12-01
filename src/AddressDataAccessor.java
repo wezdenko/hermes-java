@@ -3,6 +3,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 
+import java.util.List ;
+import java.util.ArrayList ;
+
 
 public class AddressDataAccessor {
     
@@ -13,21 +16,31 @@ public class AddressDataAccessor {
     }
 
     public ClientAddress getAddress(String query) throws SQLException {
-        ClientAddress addr = new ClientAddress();
+        return this.getAddressesList(query).get(0);
+    }
 
+    public List<ClientAddress> getAddressesList(String query) throws SQLException {
         PreparedStatement statement = connection.prepareStatement(query);
         ResultSet result = statement.executeQuery(query);
 
-        addr.setClientAddressID(result.getInt("client_addresses_id"));
-        addr.setStreet(result.getString("street"));
-        addr.setHouseNumber(result.getInt("house_number"));
-        addr.setApartmentNumber(result.getInt("apartment_number"));
-        addr.setCity(result.getString("city"));
-        addr.setPostalCode(result.getString("postal_code"));
-        addr.setCountryID(result.getInt("country_id"));
+        List<ClientAddress> addrList = new ArrayList<>();
+
+        while (result.next()) {
+            ClientAddress addr = new ClientAddress();
+
+            addr.setClientAddressID(result.getInt("client_addresses_id"));
+            addr.setStreet(result.getString("street"));
+            addr.setHouseNumber(result.getInt("house_number"));
+            addr.setApartmentNumber(result.getInt("apartment_number"));
+            addr.setCity(result.getString("city"));
+            addr.setPostalCode(result.getString("postal_code"));
+            addr.setCountryID(result.getInt("country_id"));
+
+            addrList.add(addr);
+        }
 
         statement.close();
-        return addr;
+        return addrList;
     }
 
     public void setAddress(ClientAddress addr) throws SQLException {

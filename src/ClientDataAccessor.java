@@ -1,7 +1,11 @@
 import java.sql.Connection;
+import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+
+import java.util.List ;
+import java.util.ArrayList ;
 
 
 public class ClientDataAccessor {
@@ -13,26 +17,37 @@ public class ClientDataAccessor {
     }
 
     public Client getClient(String query) throws SQLException {
-        Client client = new Client();
+        return this.getClientsList(query).get(0);
+    }
+
+    public List<Client> getClientsList(String query) throws SQLException {
         AddressDataAccessor addrAccessor = new AddressDataAccessor(connection);
 
-        PreparedStatement statement = connection.prepareStatement(query);
+        Statement statement = connection.createStatement();
         ResultSet result = statement.executeQuery(query);
 
-        String addrQuery = "select * from client_addresses" +
-            "where client_addresses_id =" +
-            "(select address_id from clients" +
-            String.format("where clients_id = %d)", client.getClientID());
+        List<Client> clientsList = new ArrayList<>();
 
-        client.setClientID(result.getInt("clients_id"));
-        client.setName(result.getString("name"));
-        client.setSurname(result.getString("surname"));
-        client.setEmail(result.getString("email"));
-        client.setPhoneNumber(result.getString("phone_number"));
-        client.setClientAddress(addrAccessor.getAddress(addrQuery));
+        while (result.next()) {
+            Client client = new Client();
+
+            String addrQuery = "select * from client_addresses " +
+                "where client_addresses_id = " +
+                "(select address_id from clients " +
+                String.format("where clients_id = %d)", result.getInt("clients_id"));
+
+            client.setClientID(result.getInt("clients_id"));
+            client.setName(result.getString("name"));
+            client.setSurname(result.getString("surname"));
+            client.setEmail(result.getString("email"));
+            client.setPhoneNumber(result.getString("phone_number"));
+            client.setClientAddress(addrAccessor.getAddress(addrQuery));
+
+            clientsList.add(client);
+        }
 
         statement.close();
-        return client;
+        return clientsList;
     }
 
     public void setClient(Client client) throws SQLException {
