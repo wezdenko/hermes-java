@@ -57,6 +57,27 @@ Postawione cele i ich realizacja:
 
 ---
 
+## **Cele na kolejne etapy**
+
+### *Etap 2*
+- [x] utworzenie okienkowej aplikacji(wyświetlanie, rozmieszczenie przycisków
+- [x] utworzenie bazy danych(testowej bazy)
+- [x] utworzenie modelu logicznego bazy danych(właściwej bazy)
+- [x] połączenie bazy danych z aplikacją dekstopową(bez zapewnienia funkcjonalności, na razie komunikacja między aplikacją a bazą)
+
+### *Etap 3*
+- [ ] ukończenie aplikacji desktopowej
+- [ ] ukończenie bazy danych i dodanie funkcjonalności do aplikacji
+
+### *Etap 4*
+- [ ] stworzenie strony internetowej
+- [ ] umieszczenie bazy danych na serwerze
+- [ ] połączenie strony z bazą danych
+- [ ] postawienie strony na serwerze
+
+---
+# Ogólne informacje
+
 ## Środowisko pracy
   * JavaFx (okienko aplikacji)
   * Spring (łączenie się z bazą danych)
@@ -84,26 +105,6 @@ Postawione cele i ich realizacja:
     * Instalacja JavaFX zgodnie z instrukcją z researchu([JavaFX Instalation](https://www.youtube.com/watch?v=H67COH9F718)). Film ten jednak zawiera jedno niedopowiedzenie, gdyż javafx-sdk powinno być pod jakimś łatwiejszym w dostępie miejscu, np bezpośrednio na dysku C 
     * Dodatkowo do działania bazy danych potrzebny jest sterownik oracle - [OJDBC](https://download.oracle.com/otn-pub/otn_software/jdbc/198/ojdbc10.jar). Należy ten sterownik pobrać i dołączyć do projektu javy w taki sam sposób jak pliki z javafx
     
----
-
-## **Cele na kolejne etapy**
-
-### *Etap 2*
-* utworzenie okienkowej aplikacji(wyświetlanie, rozmieszczenie przycisków
-* utworzenie bazy danych(testowej bazy)
-* utworzenie modelu logicznego bazy danych(właściwej bazy)
-* połączenie bazy danych z aplikacją dekstopową(bez zapewnienia funkcjonalności, na razie komunikacja między aplikacją a bazą)
-
-### *Etap 3*
-* ukończenie aplikacji desktopowej
-* ukończenie bazy danych i dodanie funkcjonalności do aplikacji
-
-### *Etap 4*
-* stworzenie strony internetowej
-* umieszczenie bazy danych na serwerze
-* połączenie strony z bazą danych
-* postawienie strony na serwerze
-
 ---
 
 ### **Został wybrany pomysł firmy kurierskiej, połaczony z bazą danych i wystawiony na webie.**
