@@ -1,43 +1,26 @@
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.TitlePaneLayout;
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Border;
+import javafx.scene.control.PasswordField;
+
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+
 import javafx.stage.Stage;
-import javafx.scene.control.TableColumn.CellEditEvent;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.beans.property.SimpleStringProperty;
 
 import database.classes.Parcel;
 import database.classes.AlertBox;
 
 import gui.boxes.ExitBox;
 import gui.layouts.CourierLayout;
- 
+import gui.layouts.StoreKeeperLayout;
 
-public class App extends Application{
-    
+public class App extends Application {
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -47,39 +30,44 @@ public class App extends Application{
     String action;
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
 
-        
-        //Welcom Message - Label
+        // Welcome Message - Label
         Label welcomeMsg = new Label("You have to enter your login and password");
 
-        //Login - Label&TextField
+        // Login - Label&TextField
         Label loginMsg = new Label("Login:");
         TextField loginField = new TextField();
-        loginField.setPromptText("...");
 
-        //Password - Label&TextField
+        // Password - Label&TextField
         Label passwordMsg = new Label("Password:");
-        TextField passwordField = new TextField();
-        passwordField.setPromptText("...");
+        PasswordField passwordField = new PasswordField();
 
-
-        //Button 1
+        // Login button
         Button loginBtn = new Button();
         loginBtn.setText("Log In");
-        loginBtn.setOnAction(e->{
-            if(loginField.getText().equals("login") && passwordField.getText().equals("password")){
-                 System.out.println("logged in");
-                 primaryStage.setScene(courierScene);
-            }
-            else{
+        loginBtn.setOnAction(e -> {
+            String courierLogin, courierPassword;
+            String storeKeeperLogin, storeKeeperPassword;
+            courierLogin = "courier";
+            courierPassword = "courier";
+            storeKeeperLogin = "storekeeper";
+            storeKeeperPassword = "storekeeper";
+
+            if (loginField.getText().equals(courierLogin) && passwordField.getText().equals(courierPassword)) {
+                // System.out.println("logged in");
+                primaryStage.setScene(courierScene);
+            } else if (loginField.getText().equals(storeKeeperLogin)
+                    && passwordField.getText().equals(storeKeeperPassword)) {
+                primaryStage.setScene(storeKeeperScene);
+            } else {
                 AlertBox.display("ERROR", "WRONG PASSWORD OR LOGIN");
                 System.out.println(loginField.getText());
-            }     
-                });
+            }
+        });
 
-        //Scene 1 - Logging layout
-        //Grid
+        // Scene 1 - Logging layout
+        // Grid
         GridPane loginLayout = new GridPane();
         loginLayout.setPadding(new Insets(10, 10, 10, 10));
         loginLayout.setVgap(8);
@@ -90,41 +78,38 @@ public class App extends Application{
         loginLayout.setConstraints(passwordMsg, 0, 4);
         loginLayout.setConstraints(passwordField, 1, 4);
         loginLayout.setConstraints(loginBtn, 1, 5);
-        loginLayout.getChildren().addAll(welcomeMsg,loginMsg,passwordMsg, loginBtn, passwordField, loginField);
+        loginLayout.getChildren().addAll(welcomeMsg, loginMsg, loginField, passwordMsg, passwordField, loginBtn);
         loginLayout.setAlignment(Pos.BASELINE_CENTER);
         loginScene = new Scene(loginLayout, 400, 250);
-        
-        //Scene 2 - Menager Layout
-        //storeKeeperScene = MenagerLayout.mg();
 
-        //Scene 3 - Courier Layout
+        // Scene 2 - StoreKeeper Layout
+        storeKeeperScene = StoreKeeperLayout.setStoreKeeperScene();
+
+        // Scene 3 - Courier Layout
         courierScene = CourierLayout.setCourierScene();
 
-        //Scene 4 - Manager Layout
+        // Scene 4 - Manager Layout
         // to be built
-        
-        //Window Setting
-        primaryStage.setTitle("PAP_Prototype");
+
+        // Window Setting
+        primaryStage.setTitle("Hermes - delivery company");
         primaryStage.setMinHeight(300);
-        primaryStage.setMinWidth(800);;
-        primaryStage.setScene(courierScene);
-        primaryStage.setOnCloseRequest(e->{
+        primaryStage.setMinWidth(500);
+        primaryStage.setScene(loginScene);
+        primaryStage.setOnCloseRequest(e -> {
             e.consume();
             closeProgram(primaryStage);
         });
 
-
-        //Last Command
+        // Last Command
         primaryStage.show();
     }
 
-    //Function Closing Window 
+    // Function Closing Window
     private void closeProgram(Stage window) {
         Boolean answer = ExitBox.display();
-        if(answer){
+        if (answer) {
             window.close();
         }
-
     }
-
 }
