@@ -4,42 +4,44 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ChoiceBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.layout.GridPane;
 import javafx.geometry.Insets;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Label;
+
+import database.classes.Converter;
 
 public class GivedOutBox {
-    static String carID;
+    static Integer carID;
+    static boolean clicked;
 
-    public static String display(){
+    public static Integer display() {
         Stage window = new Stage();
         window.setMinWidth(250);
         window.setMinHeight(150);
         Scene scene;
+        clicked = false;
 
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Gived Out Box");
 
-        //Car ID - Label&TextField
+        // Car ID - Label&TextField
         Label msg = new Label("Enter car ID:");
         TextField carIdField = new TextField();
         carIdField.setPromptText("...");
 
-        //OK Button
+        // OK Button
         Button btnOK = new Button();
         btnOK.setText("OK");
         btnOK.setMinWidth(25);
-        btnOK.setOnAction(e -> { 
-            carID = carIdField.getText();
-            window.close(); 
+        btnOK.setOnAction(e -> {
+            carID = Converter.StringToInt(carIdField.getText());
+            clicked = true;
+            window.close();
         });
 
-
-        //Layout
+        // Layout
         GridPane layout = new GridPane();
         layout.setPadding(new Insets(10, 10, 10, 10));
         layout.setVgap(6);
@@ -55,6 +57,9 @@ public class GivedOutBox {
         window.setScene(scene);
         window.showAndWait();
 
-        return carID;
-    }
-}
+        if(clicked){
+            return carID;
+        }
+
+        return 0;
+}}

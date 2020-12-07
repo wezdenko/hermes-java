@@ -7,18 +7,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ChoiceBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.scene.layout.GridPane;
 import javafx.geometry.Insets;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
-
 
 public class ChoiceWindow {
 
     static String action;
 
-    public static String display(){
+    public static String display() {
         Stage window = new Stage();
         window.setMinWidth(250);
         window.setMinHeight(150);
@@ -29,22 +26,22 @@ public class ChoiceWindow {
 
         ChoiceBox<String> choiceBox = new ChoiceBox<>();
 
-        //getItems
+        // getItems
         choiceBox.getItems().addAll("Delivered", "Road", "Car", "Collection Point", "Warehouse");
 
-        //Set a default value
+        // Set a default value
         choiceBox.setValue("Delivered");
 
-        //No Button
+        // No Button
         Button btnOK = new Button();
         btnOK.setText("OK");
         btnOK.setMinWidth(40);
-        btnOK.setOnAction(e -> { 
+        btnOK.setOnAction(e -> {
             action = getChoice(choiceBox);
-            window.close(); 
+            window.close();
         });
 
-        //Label
+        // Label
         Label label = new Label("What you want to do?");
 
         HBox hbox = new HBox(10);
@@ -57,7 +54,7 @@ public class ChoiceWindow {
         layout.setAlignment(Pos.CENTER);
         layout.setSpacing(10);
 
-        //Layout
+        // Layout
         // GridPane layout = new GridPane();
         // layout.setPadding(new Insets(10, 10, 10, 10));
         // layout.setVgap(6);
@@ -76,7 +73,7 @@ public class ChoiceWindow {
         return action;
     }
 
-    private static String getChoice(ChoiceBox<String> choiceBox){
+    private static String getChoice(ChoiceBox<String> choiceBox) {
         String action = choiceBox.getValue();
         return action;
     }
