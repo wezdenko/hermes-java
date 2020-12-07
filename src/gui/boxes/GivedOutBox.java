@@ -46,9 +46,9 @@ public class GivedOutBox {
         layout.setPadding(new Insets(10, 10, 10, 10));
         layout.setVgap(6);
         layout.setHgap(2);
-        layout.setConstraints(msg, 0, 1);
-        layout.setConstraints(carIdField, 0, 4);
-        layout.setConstraints(btnOK, 1, 4);
+        GridPane.setConstraints(msg, 0, 1);
+        GridPane.setConstraints(carIdField, 0, 4);
+        GridPane.setConstraints(btnOK, 1, 4);
         layout.getChildren().addAll(msg, carIdField, btnOK);
         layout.setAlignment(Pos.BASELINE_CENTER);
 

@@ -1,18 +1,13 @@
 package gui.boxes;
 
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ChoiceBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.geometry.Insets;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Label;
 
 import database.classes.Parcel;
 import database.classes.Client;
@@ -37,7 +32,7 @@ public class AddBox {
         window.setTitle("Gived Out Box");
 
         //Parcel Informations TextFields
-        Label msg = new Label("Enter new parcel");
+        //Label msg = new Label("Enter new parcel");
         TextField carID = new TextField();
         carID.setPromptText("Car ID");
         TextField rName = new TextField();

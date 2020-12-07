@@ -72,12 +72,12 @@ public class App extends Application {
         loginLayout.setPadding(new Insets(10, 10, 10, 10));
         loginLayout.setVgap(8);
         loginLayout.setHgap(10);
-        loginLayout.setConstraints(welcomeMsg, 1, 1);
-        loginLayout.setConstraints(loginMsg, 0, 3);
-        loginLayout.setConstraints(loginField, 1, 3);
-        loginLayout.setConstraints(passwordMsg, 0, 4);
-        loginLayout.setConstraints(passwordField, 1, 4);
-        loginLayout.setConstraints(loginBtn, 1, 5);
+        GridPane.setConstraints(welcomeMsg, 1, 1);
+        GridPane.setConstraints(loginMsg, 0, 3);
+        GridPane.setConstraints(loginField, 1, 3);
+        GridPane.setConstraints(passwordMsg, 0, 4);
+        GridPane.setConstraints(passwordField, 1, 4);
+        GridPane.setConstraints(loginBtn, 1, 5);
         loginLayout.getChildren().addAll(welcomeMsg, loginMsg, loginField, passwordMsg, passwordField, loginBtn);
         loginLayout.setAlignment(Pos.BASELINE_CENTER);
         loginScene = new Scene(loginLayout, 400, 250);
