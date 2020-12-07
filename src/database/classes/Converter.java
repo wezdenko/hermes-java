@@ -22,4 +22,15 @@ public class Converter {
             return 0;
         }
     }
+    
+    public static Double StringToDouble (String s){
+        try{
+        Double decode = Double.parseDouble(s);
+        return decode;
+        }
+        catch(NumberFormatException e){
+            AlertBox.display("Exception", "Wrong data type");
+            return 0.0;
+        }
+    }
 }
