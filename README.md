@@ -15,6 +15,48 @@
   * Zapisywanie/Odrzucanie zmian
   * Filtracja/sortowanie zamówień
 
+---
+
+# Etap 2
+Postawione cele i ich realizacja:
+* utworzenie okienkowej aplikacji(wyświetlanie, rozmieszczenie przycisków
+  * utworzone zostały okienka na:
+    * logowanie
+      * logowanie następuje po wpisaniu loginu i hasła, pozwoli to na uruchomienie się odpowiednich paneli w zależności od uprawnień użytkownika, które będą pobierane z bazy danych(aktualnie loginy i hasła są zahardcodowane)
+    * panel kuriera(login: courier, hasło: courier)
+      * wyświetlanie listy przesyłek, ich nadawców, odbiorców, adresów itp.
+      * możliwość zmiany statusu zamówienia(w magazynie, w drodze, dostarczona, w punkcie odbioru)
+      * wyszukiwarka(sama implementacja, funkcjonalność zostanie dorobiona na następny etap)
+      * przycisk logout i commit --> implementacja w przyszłym etapie
+    * panel magazyniera(login: storekeeper, hasło: storekeeper)
+      * wyświetlanie listy paczek z możliwością modyfikacji każdej komórki
+      * dodawanie nowych przesyłek
+      * usuwanie paczek
+      * wydanie wielu paczek jednocześnie
+      * przydzielenie samochodu do kuriera(sama implementacja, funkcjonalność zostanie dorobiona na następny etap)
+      * wyszukiwarka(tak jak u kuriera)
+      * przycisk commit, który połączy się z bazą danych i zaktualizuje wartości zmienione(implementacja przycisku w kolejnym etapie)
+      * przycisk logout --> implementacja w przyszłym etapie
+    * alerty
+      * wprowadzono niepoprawne login/hasło
+      * wyjście z aplikacji
+      * wprowadzono niepoprawny typ danych
+* utworzenie bazy danych(testowej bazy)
+  * wygenerowanie losowych danych do bazy
+  * utworzenie odpowiednich zależności pomiędzy tabelami (wstawienie kluczy obcych)
+* utworzenie modelu logicznego bazy danych(właściwej bazy)
+  * model logiczny:
+![Model logiczny bazy danych](./ML.png)
+  * model relacyjny:
+![Model relacyjny bazy danych](./MR.png)
+* połączenie bazy danych z aplikacją dekstopową(bez zapewnienia funkcjonalności, na razie komunikacja między aplikacją a bazą)
+  * utworzenie kilku klas które pobierają dane z bazy (Data Accessors)
+  * łączenie się z bazą danych:
+    * łączenie się z bazą za pomocą sterownika OJDBC
+    * wysyłanie zapytań do bazy danych za pomocą “prepared statements”
+
+---
+
 ## Środowisko pracy
   * JavaFx (okienko aplikacji)
   * Spring (łączenie się z bazą danych)
@@ -42,6 +84,7 @@
     * Instalacja JavaFX zgodnie z instrukcją z researchu([JavaFX Instalation](https://www.youtube.com/watch?v=H67COH9F718)). Film ten jednak zawiera jedno niedopowiedzenie, gdyż javafx-sdk powinno być pod jakimś łatwiejszym w dostępie miejscu, np bezpośrednio na dysku C 
     * Dodatkowo do działania bazy danych potrzebny jest sterownik oracle - [OJDBC](https://download.oracle.com/otn-pub/otn_software/jdbc/198/ojdbc10.jar). Należy ten sterownik pobrać i dołączyć do projektu javy w taki sam sposób jak pliki z javafx
     
+---
 
 ## **Cele na kolejne etapy**
 
