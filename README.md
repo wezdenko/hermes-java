@@ -46,9 +46,9 @@ Postawione cele i ich realizacja:
   * utworzenie odpowiednich zależności pomiędzy tabelami (wstawienie kluczy obcych)
 * utworzenie modelu logicznego bazy danych(właściwej bazy)
   * model logiczny:
-![Model logiczny bazy danych](./ML.png)
+![ML](/uploads/687d0ef4d9fff8173850b4891c89ab0c/ML.png)
   * model relacyjny:
-![Model relacyjny bazy danych](./MR.png)
+![MR](/uploads/3f8a56ff7a0def5a52ad6de35c16aca4/MR.png)
 * połączenie bazy danych z aplikacją dekstopową(bez zapewnienia funkcjonalności, na razie komunikacja między aplikacją a bazą)
   * utworzenie kilku klas które pobierają dane z bazy (Data Accessors)
   * łączenie się z bazą danych:
