@@ -148,6 +148,21 @@ public class Parcel {
         this.sender = sender;
     }
 
+    public String getSenderName() {
+        return this.sender.getName();
+    }
+    public String getReceiverName() {
+        return this.receiver.getName();
+    }
+
+    public void setSenderName(String name) {
+        this.sender.setName(name);
+    }
+
+    public void setReceiverName(String name) {
+        this.receiver.setName(name);
+    }
+
     public String getReceiverAddress() {
         return this.receiver.getClientAddress().getFullAddress();
     }
@@ -156,11 +171,11 @@ public class Parcel {
         return this.sender.getClientAddress().getFullAddress();
     }
 
-    public String getSenderName() {
+    public String getSenderFullName() {
         return this.sender.getName() + " " + this.sender.getSurname();
     }
 
-    public String getReceiverName() {
+    public String getReceiverFullName() {
         return this.receiver.getName() + " " + this.receiver.getSurname();
     }
 }
