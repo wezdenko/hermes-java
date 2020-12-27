@@ -21,9 +21,11 @@ public class Database {
         return DriverManager.getConnection(url, login, password);
     }
 
-    public static void closeConnection(Connection connection) throws SQLException {
-        if (!connection.isClosed()) {
-            connection.close();
-        }
+    public static void closeConnection(Connection connection) {
+        try {
+            if (!connection.isClosed()) {
+                connection.close();
+            }
+        } catch (Exception e) {}
     }
 }
