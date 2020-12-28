@@ -33,8 +33,9 @@ public class EmployeeDataAccessor {
             emp.setID(result.getInt("employees_id"));
             emp.setName(result.getString("name"));
             emp.setSurname(result.getString("surname"));
-            emp.setPesel(result.getInt("pesel"));
-            emp.setEmploymentDate("employment_date");
+            emp.setPesel(result.getString("pesel"));
+            emp.setSalary(result.getFloat("salary"));
+            emp.setEmploymentDate(result.getString("employment_date"));
             emp.setLogin(result.getString("login"));
             emp.setPassword(result.getString("password"));
             emp.setCarID(result.getInt("car_id"));
