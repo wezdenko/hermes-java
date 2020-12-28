@@ -4,7 +4,7 @@ public class Employee {
     private int ID;
     private String name;
     private String surname;
-    private int pesel;
+    private String pesel;
     private float salary;
     private String employmentDate; // do zmiany na obiekt Date
     private String login;
@@ -17,7 +17,7 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(int iD, String name, String surname, int pesel, float salary, String employmentDate, String login,
+    public Employee(int iD, String name, String surname, String pesel, float salary, String employmentDate, String login,
             String password, int carID, int positionID, int managerID, int departmentID) {
         this.ID = iD;
         this.name = name;
@@ -104,14 +104,11 @@ public class Employee {
         this.salary = salary;
     }
 
-    public int getPesel() {
+    public String getPesel() {
         return pesel;
     }
 
-    public void setPesel(int pesel) {
-        if (pesel <= 0) {
-            throw new IllegalArgumentException(String.format("pesel cannot be negative, given pesel = %f", pesel));
-        }
+    public void setPesel(String pesel) {
         this.pesel = pesel;
     }
 
