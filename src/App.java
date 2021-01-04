@@ -59,7 +59,7 @@ public class App extends Application {
             int employeeID = -1;
 
             try {
-                Connection con = Database.getConnection("BD1_Z15", "twheas");
+                Connection con = Database.getConnection();
                 LoginAccessor loginAccessor = new LoginAccessor(con);
 
                 try {
