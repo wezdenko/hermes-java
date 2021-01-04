@@ -146,7 +146,7 @@ public class PositionLayout {
         try {
             Connection connection = Database.getConnection();
             PositionDataAccessor positionAccessor = new PositionDataAccessor(connection);
-            positionList = positionAccessor.getPositionsList();
+            positionList = positionAccessor.getPositionsList("select * from positions");
             Database.closeConnection(connection);
 
         } catch (Exception e) {
