@@ -221,7 +221,7 @@ public class DepartmentLayout {
     public static ObservableList<Department> getDepartment() {
         List<Department> departmentList = new ArrayList<>();
         try {
-            Connection connection = Database.getConnection("BD1_Z15", "twheas");
+            Connection connection = Database.getConnection();
             DepartmentsDataAccessor departmentAccessor = new DepartmentsDataAccessor(connection);
             departmentList = departmentAccessor.getDepartmentList(
                     "select * from departments");

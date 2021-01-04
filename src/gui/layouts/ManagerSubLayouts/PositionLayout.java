@@ -144,7 +144,7 @@ public class PositionLayout {
     public static ObservableList<Position> getPosition() {
         List<Position> positionList = new ArrayList<>();
         try {
-            Connection connection = Database.getConnection("BD1_Z15", "twheas");
+            Connection connection = Database.getConnection();
             PositionDataAccessor positionAccessor = new PositionDataAccessor(connection);
             positionList = positionAccessor.getPositionsList();
             Database.closeConnection(connection);

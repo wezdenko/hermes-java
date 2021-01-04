@@ -120,7 +120,7 @@ public class CollectionPointLayout {
     public static ObservableList<CollectionPoint> getCollectionPoint() {
         List<CollectionPoint> collectionPointList = new ArrayList<>();
         try {
-            Connection connection = Database.getConnection("BD1_Z15", "twheas");
+            Connection connection = Database.getConnection();
             CollectionPointDataAccessor collectionPointAccessor = new CollectionPointDataAccessor(connection);
             collectionPointList = collectionPointAccessor.getCollectionPointList(
                     "select * from COLLECTION_POINTS");

@@ -269,7 +269,7 @@ public class EmployeeLayout {
     public static ObservableList<Employee> getEmployee() {
         List<Employee> employeeList = new ArrayList<>();
         try {
-            Connection connection = Database.getConnection("BD1_Z15", "twheas");
+            Connection connection = Database.getConnection();
             EmployeeDataAccessor employeeAccessor = new EmployeeDataAccessor(connection);
             employeeList = employeeAccessor.getEmployeeList(
                     "select * from EMPLOYEES");

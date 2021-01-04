@@ -158,7 +158,7 @@ public class CarLayout {
     public static ObservableList<Car> getCar() {
         List<Car> carList = new ArrayList<>();
         try {
-            Connection connection = Database.getConnection("BD1_Z15", "twheas");
+            Connection connection = Database.getConnection();
             CarDataAccessor carAccessor = new CarDataAccessor(connection);
             carList = carAccessor.getCarList(
                     "select * from cars");
