@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.control.PasswordField;
 
 import javafx.scene.layout.GridPane;
@@ -57,68 +58,8 @@ public class App extends Application {
         Button loginBtn = new Button();
         loginBtn.setText("Log In");
         loginBtn.setOnAction(e -> {
-            int employeeID = -1;
-
-            try {
-                Connection con = Database.getConnection();
-                LoginAccessor loginAccessor = new LoginAccessor(con);
-
-                try {
-                    employeeID = loginAccessor.login(loginField.getText(), passwordField.getText());
-                } catch (SQLException exception) {
-                    if (exception.getErrorCode() == LoginAccessor.LoginError) {
-                        AlertBox.display("ERROR", "Wrong login!");
-                    } 
-                    else if (exception.getErrorCode() == LoginAccessor.PasswordError) {
-                        AlertBox.display("ERROR", "Wrong password!");
-                    }
-                    else {
-                        AlertBox.display("ERROR", "Connection error!");
-                    }
-                } catch (Exception exception) {
-                    AlertBox.display("ERROR", "Unknown error!");
-                }
-
-                try {
-                    if (employeeID >= 0) {
-                        EmployeeDataAccessor employeeAccessor = new EmployeeDataAccessor(con);
-                        employee = employeeAccessor.getEmployee(
-                            String.format("select * from employees where employees_id = %d", employeeID));
-                    }
-                } catch (Exception exception) {
-                    employeeID = -1;
-                    AlertBox.display("ERROR", "Cannot download data, it might be corrupted!");
-                }
-
-                Database.closeConnection(con);
-
-            } catch (SQLException exception) {
-                AlertBox.display("ERROR", "Cannot connect to database!");
-            } finally {
-                if (employeeID >= 0) {
-                    switch (employee.getPositionID()) {
-                        case 0:
-                            // Scene 4 - Menager Layout
-                            managerScene = ManagerLayout.setManagerScene();
-                            primaryStage.setScene(managerScene);
-                            break;
-                        case 1:
-                            // Scene 3 - Courier Layout
-                            courierScene = CourierLayout.setCourierScene();
-                            primaryStage.setScene(courierScene);
-                            break;
-                        case 2:
-                            // Scene 2 - StoreKeeper Layout
-                            storeKeeperScene = StoreKeeperLayout.setStoreKeeperScene();
-                            primaryStage.setScene(storeKeeperScene);
-                            break;
-                        default:
-                            AlertBox.display("ERROR", "This employee has no assigned position!");
-                            break;
-                    }
-                }
-            }
-        });
+            this.login(primaryStage, loginField, passwordField);
+        });   
 
         // Scene 1 - Logging layout
         // Grid
@@ -136,6 +77,13 @@ public class App extends Application {
         loginLayout.setAlignment(Pos.BASELINE_CENTER);
         loginScene = new Scene(loginLayout, 400, 250);
 
+        // Login on enter key pressed
+        loginScene.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ENTER) {
+                this.login(primaryStage, loginField, passwordField);
+            }
+        });
+
         // Window Setting
         primaryStage.setTitle("Hermes - delivery company");
         primaryStage.setMinHeight(300);
@@ -148,6 +96,70 @@ public class App extends Application {
 
         // Last Command
         primaryStage.show();
+    }
+
+    private void login(Stage window, TextField loginField, TextField passwordField) {
+        int employeeID = -1;
+        System.out.println("!!!!!!!!!!!!");
+        try {
+            Connection con = Database.getConnection();
+            LoginAccessor loginAccessor = new LoginAccessor(con);
+
+            try {
+                employeeID = loginAccessor.login(loginField.getText(), passwordField.getText());
+            } catch (SQLException exception) {
+                if (exception.getErrorCode() == LoginAccessor.LoginError) {
+                    AlertBox.display("ERROR", "Wrong login!");
+                } 
+                else if (exception.getErrorCode() == LoginAccessor.PasswordError) {
+                    AlertBox.display("ERROR", "Wrong password!");
+                }
+                else {
+                    AlertBox.display("ERROR", "Connection error!");
+                }
+            } catch (Exception exception) {
+                AlertBox.display("ERROR", "Unknown error!");
+            }
+
+            try {
+                if (employeeID >= 0) {
+                    EmployeeDataAccessor employeeAccessor = new EmployeeDataAccessor(con);
+                    employee = employeeAccessor.getEmployee(
+                        String.format("select * from employees where employees_id = %d", employeeID));
+                }
+            } catch (Exception exception) {
+                employeeID = -1;
+                AlertBox.display("ERROR", "Cannot download data, it might be corrupted!");
+            }
+
+            Database.closeConnection(con);
+
+        } catch (SQLException exception) {
+            AlertBox.display("ERROR", "Cannot connect to database!");
+        } finally {
+            if (employeeID >= 0) {
+                switch (employee.getPositionID()) {
+                    case 0:
+                        // Scene 4 - Menager Layout
+                        managerScene = ManagerLayout.setManagerScene();
+                        window.setScene(managerScene);
+                        break;
+                    case 1:
+                        // Scene 3 - Courier Layout
+                        courierScene = CourierLayout.setCourierScene();
+                        window.setScene(courierScene);
+                        break;
+                    case 2:
+                        // Scene 2 - StoreKeeper Layout
+                        storeKeeperScene = StoreKeeperLayout.setStoreKeeperScene();
+                        window.setScene(storeKeeperScene);
+                     break;
+                    default:
+                        AlertBox.display("ERROR", "This employee has no assigned position!");
+                        break;
+                }
+            }
+        }
     }
 
     // Function Closing Window
