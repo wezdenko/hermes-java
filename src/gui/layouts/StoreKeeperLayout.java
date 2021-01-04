@@ -558,7 +558,7 @@ public class StoreKeeperLayout {
     public static ObservableList<Parcel> getParcel() {
         List<Parcel> parcelList = new ArrayList<>();
         try {
-            Connection connection = Database.getConnection("BD1_Z15", "twheas");
+            Connection connection = Database.getConnection();
             ParcelDataAccessor parcelAccessor = new ParcelDataAccessor(connection);
             parcelList = parcelAccessor.getParcelsList(
                     "select * from parcels where car_id = (select car_id from employees where employees_id = 5)");
