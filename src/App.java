@@ -98,12 +98,18 @@ public class App extends Application {
                 if (employeeID >= 0) {
                     switch (employee.getPositionID()) {
                         case 0:
+                            // Scene 4 - Menager Layout
+                            managerScene = ManagerLayout.setManagerScene();
                             primaryStage.setScene(managerScene);
                             break;
                         case 1:
+                            // Scene 3 - Courier Layout
+                            courierScene = CourierLayout.setCourierScene();
                             primaryStage.setScene(courierScene);
                             break;
                         case 2:
+                            // Scene 2 - StoreKeeper Layout
+                            storeKeeperScene = StoreKeeperLayout.setStoreKeeperScene();
                             primaryStage.setScene(storeKeeperScene);
                             break;
                         default:
@@ -130,20 +136,11 @@ public class App extends Application {
         loginLayout.setAlignment(Pos.BASELINE_CENTER);
         loginScene = new Scene(loginLayout, 400, 250);
 
-        // Scene 2 - StoreKeeper Layout
-        storeKeeperScene = StoreKeeperLayout.setStoreKeeperScene();
-
-        // Scene 3 - Courier Layout
-        courierScene = CourierLayout.setCourierScene();
-
-        // Scene 4 - Menager Layout
-        managerScene = ManagerLayout.setManagerScene();
-
         // Window Setting
         primaryStage.setTitle("Hermes - delivery company");
         primaryStage.setMinHeight(300);
         primaryStage.setMinWidth(700);
-        primaryStage.setScene(managerScene);
+        primaryStage.setScene(loginScene);
         primaryStage.setOnCloseRequest(e -> {
             e.consume();
             closeProgram(primaryStage);
