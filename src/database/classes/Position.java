@@ -35,13 +35,22 @@ public class Position {
     public int getId() {
         return this.id;
     }
+    public String getId_S() {
+        return Converter.IntToString(this.id);
+    }
     public String getName() {
         return this.name;
     }
     public float getMaxSalary() {
         return this.maxSalary;
     }
+    public String getMaxSalary_S() {
+        return Converter.DoubleToString(this.maxSalary);
+    }
     public float getMinSalary() {
         return this.minSalary;
+    }
+    public String getMinSalary_S() {
+        return Converter.DoubleToString(this.minSalary);
     }
 }

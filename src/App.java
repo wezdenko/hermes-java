@@ -18,6 +18,7 @@ import database.classes.AlertBox;
 import gui.boxes.ExitBox;
 import gui.layouts.CourierLayout;
 import gui.layouts.StoreKeeperLayout;
+import gui.layouts.ManagerLayout;
 
 public class App extends Application {
 
@@ -88,14 +89,14 @@ public class App extends Application {
         // Scene 3 - Courier Layout
         courierScene = CourierLayout.setCourierScene();
 
-        // Scene 4 - Manager Layout
-        // to be built
+        // Scene 4 - Menager Layout
+        managerScene = ManagerLayout.setManagerScene();
 
         // Window Setting
         primaryStage.setTitle("Hermes - delivery company");
         primaryStage.setMinHeight(300);
-        primaryStage.setMinWidth(500);
-        primaryStage.setScene(loginScene);
+        primaryStage.setMinWidth(700);
+        primaryStage.setScene(managerScene);
         primaryStage.setOnCloseRequest(e -> {
             e.consume();
             closeProgram(primaryStage);
