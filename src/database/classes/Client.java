@@ -6,12 +6,12 @@ public class Client {
     private String surname;
     private String email;
     private String phoneNumber;
-    private ClientAddress clientAddress;
+    private Address clientAddress;
 
     public Client(){}
 
     public Client(int clientID, String name, String surname, String email,
-    String phoneNumber, ClientAddress clientAddress){
+    String phoneNumber, Address clientAddress){
         this.clientID = clientID;
         this.name = name;
         this.surname = surname;
@@ -60,11 +60,11 @@ public class Client {
         this.phoneNumber = phoneNumber;
     }
 
-    public ClientAddress getClientAddress() {
+    public Address getClientAddress() {
         return clientAddress;
     }
 
-    public void setClientAddress(ClientAddress clientAddress) {
+    public void setClientAddress(Address clientAddress) {
         this.clientAddress = clientAddress;
     }
 }

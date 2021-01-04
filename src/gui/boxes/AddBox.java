@@ -11,14 +11,14 @@ import javafx.scene.control.TextField;
 
 import database.classes.Parcel;
 import database.classes.Client;
-import database.classes.ClientAddress;
+import database.classes.Address;
 import database.classes.Converter;
 
 public class AddBox {
 
     static Parcel parcel;
-    static ClientAddress sAddress;
-    static ClientAddress rAddress;
+    static Address sAddress;
+    static Address rAddress;
     static Client sClient;
     static Client rClient;
 
@@ -29,7 +29,7 @@ public class AddBox {
         Scene scene;
 
         window.initModality(Modality.APPLICATION_MODAL);
-        window.setTitle("Gived Out Box");
+        window.setTitle("Add Box");
 
         //Parcel Informations TextFields
         //Label msg = new Label("Enter new parcel");
@@ -99,8 +99,8 @@ public class AddBox {
         btnOK.setText("OK");
         btnOK.setMinWidth(25);
         btnOK.setOnAction(e -> {
-            sAddress = new ClientAddress(0, sStreet.getText(), Converter.StringToInt(sHouseNumber.getText()), Converter.StringToInt(sApartmentNumber.getText()), sCity.getText(), sPostalCode.getText(), Converter.StringToInt(sCountryID.getText()));
-            rAddress = new ClientAddress(0, rStreet.getText(), Converter.StringToInt(rHouseNumber.getText()), Converter.StringToInt(rApartmentNumber.getText()), rCity.getText(), rPostalCode.getText(), Converter.StringToInt(rCountryID.getText()));
+            sAddress = new Address(0, sStreet.getText(), Converter.StringToInt(sHouseNumber.getText()), Converter.StringToInt(sApartmentNumber.getText()), sCity.getText(), sPostalCode.getText(), Converter.StringToInt(sCountryID.getText()));
+            rAddress = new Address(0, rStreet.getText(), Converter.StringToInt(rHouseNumber.getText()), Converter.StringToInt(rApartmentNumber.getText()), rCity.getText(), rPostalCode.getText(), Converter.StringToInt(rCountryID.getText()));
             sClient = new Client(0, sName.getText(), sSurname.getText(), sEmail.getText(), sPhone.getText(), sAddress);
             rClient = new Client(0, rName.getText(), rSurname.getText(), rEmail.getText(), rPhone.getText(), rAddress);
             parcel = new Parcel(1, status.getText(), Converter.StringToDouble(cost.getText()), sClient, rClient ,Converter.StringToDouble(weight.getText()), Converter.StringToDouble(length.getText()), Converter.StringToDouble(width.getText()), Converter.StringToDouble(height.getText()), Converter.StringToInt(code.getText()), Converter.StringToInt(carID.getText()),Converter.StringToInt(collectionPointID.getText()), Converter.StringToInt(departmentID.getText()));

@@ -38,7 +38,7 @@ public class PositionDataAccessor {
 
     public List<Position> getPositionsList() throws SQLException {
         Statement statement = connection.createStatement();
-        ResultSet result = statement.executeQuery("select * from positions");
+        ResultSet result = statement.executeQuery("select * from position");
         
         List<Position> positionList = new ArrayList<>();
         while (result.next()) {

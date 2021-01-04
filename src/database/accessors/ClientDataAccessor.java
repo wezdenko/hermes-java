@@ -25,7 +25,7 @@ public class ClientDataAccessor {
     }
 
     public List<Client> getClientsList(String query) throws SQLException {
-        AddressDataAccessor addrAccessor = new AddressDataAccessor(connection);
+        ClientAddressDataAccessor addrAccessor = new ClientAddressDataAccessor(connection);
 
         Statement statement = connection.createStatement();
         ResultSet result = statement.executeQuery(query);
@@ -63,7 +63,7 @@ public class ClientDataAccessor {
         prepStatement.setString(3, client.getSurname());
         prepStatement.setString(4, client.getEmail());
         prepStatement.setString(5, client.getPhoneNumber());
-        prepStatement.setInt(6, client.getClientAddress().getClientAddressID());
+        prepStatement.setInt(6, client.getClientAddress().getAddressID());
 
         prepStatement.execute();
         prepStatement.close();
