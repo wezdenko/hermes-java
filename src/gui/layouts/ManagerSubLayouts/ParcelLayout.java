@@ -1,4 +1,4 @@
-package gui.layouts;
+package gui.layouts.ManagerSubLayouts;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
@@ -23,7 +22,6 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import java.sql.Connection;
 
 import database.classes.Parcel;
-import gui.boxes.GivedOutBox;
 import gui.boxes.AddBox;
 
 import database.accessors.ParcelDataAccessor;
@@ -31,13 +29,11 @@ import database.Database;
 
 import database.classes.Converter;
 
-public class StoreKeeperLayout {
+public class ParcelLayout {
 
-    static Scene storeKeeperScene;
     static TableView<Parcel> parcelTable;
-    static String action;
 
-    public static Scene setStoreKeeperScene() {
+    public static VBox setParcelLayout(Double sceneWidth) {
         // Search Field
         TextField searchField = new TextField();
         searchField.setPromptText("Search...");
@@ -503,24 +499,13 @@ public class StoreKeeperLayout {
 
         // Init scene and layout
         VBox layout2 = new VBox();
-        storeKeeperScene = new Scene(layout2, 700, 500);
 
         // Buttons under table
-        Double width = storeKeeperScene.getWidth() / 6;
+        Double width = sceneWidth / 6;
 
         HBox buttonLayout = new HBox();
         buttonLayout.setPadding(new Insets(10, 0, 10, 0));
-        buttonLayout.setSpacing(width / 4);
-
-        // Gived Out
-        Button giveOutButton = new Button("Gived Out");
-        HBox.setHgrow(giveOutButton, Priority.ALWAYS);
-        giveOutButton.setMinWidth(width);
-        giveOutButton.setMaxWidth(Double.MAX_VALUE);
-        giveOutButton.setOnAction(e -> {
-            Integer carID = GivedOutBox.display();
-            if(carID != 0) givedOutButtonClicked(carID);
-        });
+        buttonLayout.setSpacing(width / 3);
 
         // Delete
         Button deletButton = new Button("Delete");
@@ -542,7 +527,7 @@ public class StoreKeeperLayout {
         btn6.setMinWidth(width);
         btn6.setMaxWidth(Double.MAX_VALUE);
 
-        buttonLayout.getChildren().addAll(giveOutButton, deletButton, addButton, btn6);
+        buttonLayout.getChildren().addAll(deletButton, addButton, btn6);
 
         // Scene/layout
         VBox.setVgrow(parcelTable, Priority.ALWAYS);
@@ -551,7 +536,7 @@ public class StoreKeeperLayout {
         layout2.getChildren().addAll(searchField, parcelTable, buttonLayout);
 
         // Final Commands
-        return storeKeeperScene;
+        return layout2;
     }
 
     // Get all of the
@@ -561,7 +546,7 @@ public class StoreKeeperLayout {
             Connection connection = Database.getConnection();
             ParcelDataAccessor parcelAccessor = new ParcelDataAccessor(connection);
             parcelList = parcelAccessor.getParcelsList(
-                    "select * from parcels where car_id = (select car_id from employees where employees_id = 5)");
+                    "select * from parcels");
             Database.closeConnection(connection);
 
         } catch (Exception e) {
@@ -587,17 +572,4 @@ public class StoreKeeperLayout {
         parcelTable.getItems().add(parcel);
     }
 
-    // Gived Out button clicked
-    public static void givedOutButtonClicked(Integer carID) {
-        ObservableList<Parcel> pracelsSelected, allParcels;
-        allParcels = parcelTable.getItems();
-        pracelsSelected = parcelTable.getSelectionModel().getSelectedItems();
-        ArrayList<Parcel> rows = new ArrayList<>(pracelsSelected);
-        for (Parcel r : rows) {
-            allParcels.remove(r);
-            r.setCarID(carID);
-            allParcels.add(r);
-            parcelTable.refresh();
-        }
-    }
 }

@@ -1,12 +1,14 @@
 package database.classes;
 
+import java.sql.Date;
+
 public class Employee {
-    private int ID;
+    private int employeeID;
     private String name;
     private String surname;
-    private int pesel;
-    private float salary;
-    private String employmentDate; // do zmiany na obiekt Date
+    private long pesel;
+    private int salary;
+    private Date employmentDate;
     private String login;
     private String password;
     private int carID;
@@ -17,9 +19,8 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(int iD, String name, String surname, int pesel, float salary, String employmentDate, String login,
-            String password, int carID, int positionID, int managerID, int departmentID) {
-        this.ID = iD;
+    public Employee(int employeeID, String name, String surname, long pesel, int salary, Date employmentDate, String login, String password, int carID, int positionID, int managerID, int departmentID) {
+        this.employeeID = employeeID;
         this.name = name;
         this.surname = surname;
         this.pesel = pesel;
@@ -33,105 +34,131 @@ public class Employee {
         this.departmentID = departmentID;
     }
 
-    public int getID() {
-        return ID;
-    }
-
-    public int getDepartmentID() {
-        return departmentID;
-    }
-
-    public void setDepartmentID(int departmentID) {
-        this.departmentID = departmentID;
-    }
-
-    public int getManagerID() {
-        return managerID;
-    }
-
-    public void setManagerID(int managerID) {
-        this.managerID = managerID;
-    }
-
-    public int getPositionID() {
-        return positionID;
-    }
-
-    public void setPositionID(int positionID) {
-        this.positionID = positionID;
-    }
-
     public int getCarID() {
-        return carID;
+        return this.carID;
+    }
+
+    public String getCarID_S() {
+        return Converter.IntToString(this.carID);
     }
 
     public void setCarID(int carID) {
         this.carID = carID;
     }
 
-    public String getPassword() {
-        return password;
+    public int getPositionID() {
+        return this.positionID;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public String getPositionID_S() {
+        return Converter.IntToString(this.positionID);
     }
 
-    public String getLogin() {
-        return login;
+    public void setPositionID(int positionID) {
+        this.positionID = positionID;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public int getManagerID() {
+        return this.managerID;
     }
 
-    public String getEmploymentDate() {
-        return employmentDate;
+    public String getManagerID_S() {
+        return Converter.IntToString(this.managerID);
     }
 
-    public void setEmploymentDate(String employmentDate) {
-        this.employmentDate = employmentDate;
+    public void setManagerID(int managerID) {
+        this.managerID = managerID;
     }
 
-    public float getSalary() {
-        return salary;
+    public int getDepartmentID() {
+        return this.departmentID;
     }
 
-    public void setSalary(float salary) {
-        if (salary < 0) {
-            throw new IllegalArgumentException(String.format("salary cannot be negative, given salary = %f", salary));
-        }
-        this.salary = salary;
+    public String getDepartmentID_S() {
+        return Converter.IntToString(this.departmentID);
     }
 
-    public int getPesel() {
-        return pesel;
+    public void setDepartmentID(int departmentID) {
+        this.departmentID = departmentID;
     }
 
-    public void setPesel(int pesel) {
-        if (pesel <= 0) {
-            throw new IllegalArgumentException(String.format("pesel cannot be negative, given pesel = %f", pesel));
-        }
-        this.pesel = pesel;
+    public int getEmployeeID() {
+        return this.employeeID;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getEmployeeID_S() {
+        return Converter.IntToString(this.employeeID);
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setEmployeeID(int employeeID) {
+        this.employeeID = employeeID;
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setID(int iD) {
-        this.ID = iD;
+    public String getSurname() {
+        return this.surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public long getPesel() {
+        return this.pesel;
+    }
+
+    public String getPesel_S() {
+        return Converter.LongToString(this.pesel);
+    }
+
+    public void setPesel(long pesel) {
+        this.pesel = pesel;
+    }
+
+    public int getSalary() {
+        return this.salary;
+    }
+
+    public String getSalary_S() {
+        return Converter.IntToString(this.salary);
+    }
+
+    public void setSalary(int salary) {
+        this.salary = salary;
+    }
+
+    public Date getEmploymentDate() {
+        return this.employmentDate;
+    }
+
+    public String getEmploymentDate_S() {
+        return Converter.DateToString(this.employmentDate);
+    }
+
+    public void setEmploymentDate(Date employmentDate) {
+        this.employmentDate = employmentDate;
+    }
+
+    public String getLogin() {
+        return this.login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPassword() {
+        return this.password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

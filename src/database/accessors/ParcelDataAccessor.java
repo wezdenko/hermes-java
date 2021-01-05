@@ -35,13 +35,11 @@ public class ParcelDataAccessor {
         while (result.next()) {
             Parcel parcel = new Parcel();
 
-            String senderQuery = "select c.* from clients c, parcels p " +
-                "where p.sender_id = c.clients_id " +
-                String.format("and p.parcels_id = %d", result.getInt("sender_id"));
+            String senderQuery = "select * from clients " +
+                String.format("where clients_id = %d", result.getInt("sender_id"));
 
-            String receiverQuery = "select c.* from clients c, parcels p " +
-                "where p.receiver_id = c.clients_id " +
-                String.format("and p.parcels_id = %d", result.getInt("receiver_id"));
+            String receiverQuery = "select * from clients " +
+                String.format("where clients_id = %d", result.getInt("receiver_id"));
 
             parcel.setID(result.getInt("parcels_id"));
             parcel.setStatus(result.getString("status"));

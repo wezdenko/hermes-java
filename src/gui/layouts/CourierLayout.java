@@ -15,6 +15,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.control.SelectionMode;
+import java.lang.ClassLoader;
 
 import java.sql.Connection;
 
@@ -96,7 +97,7 @@ public class CourierLayout {
     public static ObservableList<Parcel> getParcelList() {
         List<Parcel> parcelList = new ArrayList<>();
         try {
-            Connection connection = Database.getConnection("BD1_Z15", "twheas");
+            Connection connection = Database.getConnection();
             ParcelDataAccessor parcelAccessor = new ParcelDataAccessor(connection);
             parcelList = parcelAccessor.getParcelsList(
                     "select * from parcels where car_id = (select car_id from employees where employees_id = 5)");

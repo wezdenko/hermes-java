@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.control.PasswordField;
 
 import javafx.scene.layout.GridPane;
@@ -18,6 +19,15 @@ import database.classes.AlertBox;
 import gui.boxes.ExitBox;
 import gui.layouts.CourierLayout;
 import gui.layouts.StoreKeeperLayout;
+import gui.layouts.ManagerLayout;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+
+import database.Database;
+import database.accessors.LoginAccessor;
+import database.accessors.EmployeeDataAccessor;
+import database.classes.Employee;
 
 public class App extends Application {
 
@@ -28,6 +38,7 @@ public class App extends Application {
     Scene loginScene, storeKeeperScene, courierScene, managerScene;
     TableView<Parcel> parcelTable;
     String action;
+    Employee employee;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -47,24 +58,8 @@ public class App extends Application {
         Button loginBtn = new Button();
         loginBtn.setText("Log In");
         loginBtn.setOnAction(e -> {
-            String courierLogin, courierPassword;
-            String storeKeeperLogin, storeKeeperPassword;
-            courierLogin = "courier";
-            courierPassword = "courier";
-            storeKeeperLogin = "storekeeper";
-            storeKeeperPassword = "storekeeper";
-
-            if (loginField.getText().equals(courierLogin) && passwordField.getText().equals(courierPassword)) {
-                // System.out.println("logged in");
-                primaryStage.setScene(courierScene);
-            } else if (loginField.getText().equals(storeKeeperLogin)
-                    && passwordField.getText().equals(storeKeeperPassword)) {
-                primaryStage.setScene(storeKeeperScene);
-            } else {
-                AlertBox.display("ERROR", "WRONG PASSWORD OR LOGIN");
-                System.out.println(loginField.getText());
-            }
-        });
+            this.login(primaryStage, loginField, passwordField);
+        });   
 
         // Scene 1 - Logging layout
         // Grid
@@ -82,19 +77,17 @@ public class App extends Application {
         loginLayout.setAlignment(Pos.BASELINE_CENTER);
         loginScene = new Scene(loginLayout, 400, 250);
 
-        // Scene 2 - StoreKeeper Layout
-        storeKeeperScene = StoreKeeperLayout.setStoreKeeperScene();
-
-        // Scene 3 - Courier Layout
-        courierScene = CourierLayout.setCourierScene();
-
-        // Scene 4 - Manager Layout
-        // to be built
+        // Login on enter key pressed
+        loginScene.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ENTER) {
+                this.login(primaryStage, loginField, passwordField);
+            }
+        });
 
         // Window Setting
         primaryStage.setTitle("Hermes - delivery company");
         primaryStage.setMinHeight(300);
-        primaryStage.setMinWidth(500);
+        primaryStage.setMinWidth(700);
         primaryStage.setScene(loginScene);
         primaryStage.setOnCloseRequest(e -> {
             e.consume();
@@ -103,6 +96,70 @@ public class App extends Application {
 
         // Last Command
         primaryStage.show();
+    }
+
+    private void login(Stage window, TextField loginField, TextField passwordField) {
+        int employeeID = -1;
+        System.out.println("!!!!!!!!!!!!");
+        try {
+            Connection con = Database.getConnection();
+            LoginAccessor loginAccessor = new LoginAccessor(con);
+
+            try {
+                employeeID = loginAccessor.login(loginField.getText(), passwordField.getText());
+            } catch (SQLException exception) {
+                if (exception.getErrorCode() == LoginAccessor.LoginError) {
+                    AlertBox.display("ERROR", "Wrong login!");
+                } 
+                else if (exception.getErrorCode() == LoginAccessor.PasswordError) {
+                    AlertBox.display("ERROR", "Wrong password!");
+                }
+                else {
+                    AlertBox.display("ERROR", "Connection error!");
+                }
+            } catch (Exception exception) {
+                AlertBox.display("ERROR", "Unknown error!");
+            }
+
+            try {
+                if (employeeID >= 0) {
+                    EmployeeDataAccessor employeeAccessor = new EmployeeDataAccessor(con);
+                    employee = employeeAccessor.getEmployee(
+                        String.format("select * from employees where employees_id = %d", employeeID));
+                }
+            } catch (Exception exception) {
+                employeeID = -1;
+                AlertBox.display("ERROR", "Cannot download data, it might be corrupted!");
+            }
+
+            Database.closeConnection(con);
+
+        } catch (SQLException exception) {
+            AlertBox.display("ERROR", "Cannot connect to database!");
+        } finally {
+            if (employeeID >= 0) {
+                switch (employee.getPositionID()) {
+                    case 0:
+                        // Scene 4 - Menager Layout
+                        managerScene = ManagerLayout.setManagerScene();
+                        window.setScene(managerScene);
+                        break;
+                    case 1:
+                        // Scene 3 - Courier Layout
+                        courierScene = CourierLayout.setCourierScene();
+                        window.setScene(courierScene);
+                        break;
+                    case 2:
+                        // Scene 2 - StoreKeeper Layout
+                        storeKeeperScene = StoreKeeperLayout.setStoreKeeperScene();
+                        window.setScene(storeKeeperScene);
+                     break;
+                    default:
+                        AlertBox.display("ERROR", "This employee has no assigned position!");
+                        break;
+                }
+            }
+        }
     }
 
     // Function Closing Window

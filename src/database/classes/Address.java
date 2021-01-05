@@ -1,7 +1,7 @@
 package database.classes;
 
-public class ClientAddress {
-    private int clientAddressID;
+public class Address {
+    private int addressID;
     private String street;
     private int houseNumber;
     private int apartmentNumber;
@@ -9,11 +9,11 @@ public class ClientAddress {
     private String postalCode;
     private int countryID;
 
-    public ClientAddress(){}
+    public Address(){}
 
-    public ClientAddress(int clientAddressID, String street, int houseNumber, int apartmentNumber,
+    public Address(int addressID, String street, int houseNumber, int apartmentNumber,
     String city, String postalCode, int countryID){
-        this.clientAddressID = clientAddressID;
+        this.addressID = addressID;
         this.street = street;
         this.houseNumber = houseNumber;
         this.apartmentNumber = apartmentNumber;
@@ -29,12 +29,12 @@ public class ClientAddress {
         }
     }
     
-    public int getClientAddressID() {
-        return clientAddressID;
+    public int getAddressID() {
+        return addressID;
     }
 
-    public void setClientAddressID(int clientAddressID) {
-        this.clientAddressID = clientAddressID;
+    public void setAddressID(int addressID) {
+        this.addressID = addressID;
     }
 
     public String getStreet() {

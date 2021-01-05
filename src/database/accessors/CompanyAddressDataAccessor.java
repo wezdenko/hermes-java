@@ -8,37 +8,37 @@ import java.sql.ResultSet;
 import java.util.List ;
 import java.util.ArrayList ;
 
-import database.classes.ClientAddress;
+import database.classes.Address;
 
 
-public class AddressDataAccessor {
+public class CompanyAddressDataAccessor {
     
     private Connection connection ;
 
-    public AddressDataAccessor(Connection connection) throws SQLException {
+    public CompanyAddressDataAccessor(Connection connection) throws SQLException {
         this.connection = connection;
     }
 
-    public ClientAddress getAddress(String query) throws SQLException {
+    public Address getAddress(String query) throws SQLException {
         return this.getAddressesList(query).get(0);
     }
 
-    public List<ClientAddress> getAddressesList(String query) throws SQLException {
+    public List<Address> getAddressesList(String query) throws SQLException {
         PreparedStatement statement = connection.prepareStatement(query);
         ResultSet result = statement.executeQuery(query);
 
-        List<ClientAddress> addrList = new ArrayList<>();
+        List<Address> addrList = new ArrayList<>();
 
         while (result.next()) {
-            ClientAddress addr = new ClientAddress();
+            Address addr = new Address();
 
-            addr.setClientAddressID(result.getInt("client_addresses_id"));
+            addr.setAddressID(result.getInt("comp_addr_id"));
             addr.setStreet(result.getString("street"));
             addr.setHouseNumber(result.getInt("house_number"));
             addr.setApartmentNumber(result.getInt("apartment_number"));
             addr.setCity(result.getString("city"));
             addr.setPostalCode(result.getString("postal_code"));
-            addr.setCountryID(result.getInt("country_id"));
+            addr.setCountryID(result.getInt("countries_id"));
 
             addrList.add(addr);
         }
@@ -47,11 +47,11 @@ public class AddressDataAccessor {
         return addrList;
     }
 
-    public void setAddress(ClientAddress addr) throws SQLException {
+    public void setAddress(Address addr) throws SQLException {
         String query = "INSERT INTO positions VALUES(?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement prepStatement = connection.prepareStatement(query);
 
-        prepStatement.setInt(1, addr.getClientAddressID());
+        prepStatement.setInt(1, addr.getAddressID());
         prepStatement.setString(2, addr.getStreet());
         prepStatement.setInt(3, addr.getHouseNumber());
         prepStatement.setInt(4, addr.getApartmentNumber());
@@ -63,3 +63,4 @@ public class AddressDataAccessor {
         prepStatement.close();
     }
 }
+

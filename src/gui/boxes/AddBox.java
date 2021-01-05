@@ -11,14 +11,14 @@ import javafx.scene.control.TextField;
 
 import database.classes.Parcel;
 import database.classes.Client;
-import database.classes.ClientAddress;
+import database.classes.Address;
 import database.classes.Converter;
 
 public class AddBox {
 
     static Parcel parcel;
-    static ClientAddress sAddress;
-    static ClientAddress rAddress;
+    static Address sAddress;
+    static Address rAddress;
     static Client sClient;
     static Client rClient;
 
@@ -29,7 +29,7 @@ public class AddBox {
         Scene scene;
 
         window.initModality(Modality.APPLICATION_MODAL);
-        window.setTitle("Gived Out Box");
+        window.setTitle("Add Box");
 
         //Parcel Informations TextFields
         //Label msg = new Label("Enter new parcel");
@@ -99,8 +99,8 @@ public class AddBox {
         btnOK.setText("OK");
         btnOK.setMinWidth(25);
         btnOK.setOnAction(e -> {
-            sAddress = new ClientAddress(0, sStreet.getText(), Converter.StringToInt(sHouseNumber.getText()), Converter.StringToInt(sApartmentNumber.getText()), sCity.getText(), sPostalCode.getText(), Converter.StringToInt(sCountryID.getText()));
-            rAddress = new ClientAddress(0, rStreet.getText(), Converter.StringToInt(rHouseNumber.getText()), Converter.StringToInt(rApartmentNumber.getText()), rCity.getText(), rPostalCode.getText(), Converter.StringToInt(rCountryID.getText()));
+            sAddress = new Address(0, sStreet.getText(), Converter.StringToInt(sHouseNumber.getText()), Converter.StringToInt(sApartmentNumber.getText()), sCity.getText(), sPostalCode.getText(), Converter.StringToInt(sCountryID.getText()));
+            rAddress = new Address(0, rStreet.getText(), Converter.StringToInt(rHouseNumber.getText()), Converter.StringToInt(rApartmentNumber.getText()), rCity.getText(), rPostalCode.getText(), Converter.StringToInt(rCountryID.getText()));
             sClient = new Client(0, sName.getText(), sSurname.getText(), sEmail.getText(), sPhone.getText(), sAddress);
             rClient = new Client(0, rName.getText(), rSurname.getText(), rEmail.getText(), rPhone.getText(), rAddress);
             parcel = new Parcel(1, status.getText(), Converter.StringToDouble(cost.getText()), sClient, rClient ,Converter.StringToDouble(weight.getText()), Converter.StringToDouble(length.getText()), Converter.StringToDouble(width.getText()), Converter.StringToDouble(height.getText()), Converter.StringToInt(code.getText()), Converter.StringToInt(carID.getText()),Converter.StringToInt(collectionPointID.getText()), Converter.StringToInt(departmentID.getText()));
@@ -116,6 +116,9 @@ public class AddBox {
         HBox senderLay2 = new HBox();
         senderLay2.getChildren().addAll(sStreet, sHouseNumber, sApartmentNumber, sPhone, sEmail);
         senderLay2.setSpacing(5);
+        
+        HBox spacing1 = new HBox();
+        spacing1.setMinHeight(10);
 
         HBox receiverLay1 = new HBox();
         receiverLay1.getChildren().addAll(rName, rSurname, rCountryID, rPostalCode,rCity);
@@ -126,6 +129,9 @@ public class AddBox {
         receiverLay2.getChildren().addAll(rStreet, rHouseNumber, rApartmentNumber, rPhone, rEmail);
         receiverLay2.setSpacing(5);
 
+        HBox spacing2 = new HBox();
+        spacing2.setMinHeight(10);
+
         HBox othersLay1 = new HBox();
         othersLay1.getChildren().addAll(code, collectionPointID, departmentID, status, cost);
         othersLay1.setSpacing(5);
@@ -135,7 +141,7 @@ public class AddBox {
         othersLay2.setSpacing(5);
 
         VBox finalLay = new VBox();
-        finalLay.getChildren().addAll(senderLay1, senderLay2, receiverLay1, receiverLay2, othersLay1, othersLay2 ,btnOK);
+        finalLay.getChildren().addAll(senderLay1, senderLay2, spacing1, receiverLay1, receiverLay2, spacing2, othersLay1, othersLay2 ,btnOK);
         finalLay.setSpacing(10);
         finalLay.setPadding(new Insets(10, 10, 10, 10));
 
