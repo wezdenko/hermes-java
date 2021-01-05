@@ -100,7 +100,7 @@ public class App extends Application {
 
     private void login(Stage window, TextField loginField, TextField passwordField) {
         int employeeID = -1;
-        System.out.println("!!!!!!!!!!!!");
+        
         try {
             Connection con = Database.getConnection();
             LoginAccessor loginAccessor = new LoginAccessor(con);
