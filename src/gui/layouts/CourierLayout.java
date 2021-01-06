@@ -24,13 +24,14 @@ import gui.boxes.ChoiceWindow;
 import gui.layouts.SubLayouts.MenuBar_own;
 import database.accessors.ParcelDataAccessor;
 import database.Database;
+import database.classes.Employee;
 
 public class CourierLayout {
 
     static Scene courierScene;
     static TableView<Parcel> parcelsTable;
 
-    public static Scene setCourierScene() {
+    public static Scene setCourierScene(Employee employee) {
 
         MenuBar menuBar = MenuBar_own.setMenuBar();
 
@@ -74,7 +75,7 @@ public class CourierLayout {
         senderAddressColumn.setCellValueFactory(new PropertyValueFactory<>("senderAddress"));
 
         parcelsTable = new TableView<>();
-        parcelsTable.setItems(getParcelList());
+        parcelsTable.setItems(getParcelList(employee.getCarID()));
         // All columns
 
         parcelsTable.getColumns().addAll(idColumn, statusColumn, senderColumn, receiverColumn, costColumn,
@@ -98,13 +99,13 @@ public class CourierLayout {
         return courierScene;
     }
 
-    public static ObservableList<Parcel> getParcelList() {
+    public static ObservableList<Parcel> getParcelList(int carID) {
         List<Parcel> parcelList = new ArrayList<>();
         try {
             Connection connection = Database.getConnection();
             ParcelDataAccessor parcelAccessor = new ParcelDataAccessor(connection);
             parcelList = parcelAccessor.getParcelsList(
-                    "select * from parcels where car_id = (select car_id from employees where employees_id = 5)");
+                String.format("select * from parcels where car_id = %d", carID));
             Database.closeConnection(connection);
 
         } catch (Exception e) {

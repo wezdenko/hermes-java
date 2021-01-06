@@ -77,7 +77,8 @@ public class LoginLayout {
         });
 
         return loginScene;
-}
+    }
+
     private static void login(Stage window, TextField loginField, TextField passwordField) {
         int employeeID = -1;
         
@@ -126,12 +127,12 @@ public class LoginLayout {
                         break;
                     case 1:
                         // Scene 3 - Courier Layout
-                        courierScene = CourierLayout.setCourierScene();
+                        courierScene = CourierLayout.setCourierScene(employee);
                         window.setScene(courierScene);
                         break;
                     case 2:
                         // Scene 2 - StoreKeeper Layout
-                        storeKeeperScene = StoreKeeperLayout.setStoreKeeperScene();
+                        storeKeeperScene = StoreKeeperLayout.setStoreKeeperScene(employee);
                         window.setScene(storeKeeperScene);
                     break;
                     default:

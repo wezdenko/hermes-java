@@ -30,8 +30,8 @@ import gui.boxes.AddBox;
 
 import database.accessors.ParcelDataAccessor;
 import database.Database;
-
 import database.classes.Converter;
+import database.classes.Employee;
 
 public class StoreKeeperLayout {
 
@@ -39,7 +39,7 @@ public class StoreKeeperLayout {
     static TableView<Parcel> parcelTable;
     static String action;
 
-    public static Scene setStoreKeeperScene() {
+    public static Scene setStoreKeeperScene(Employee employee) {
         // Search Field
         TextField searchField = new TextField();
         searchField.setPromptText("Search...");
@@ -498,7 +498,7 @@ public class StoreKeeperLayout {
 
         // Final Table
         parcelTable = new TableView<>();
-        parcelTable.setItems(getParcel());
+        parcelTable.setItems(getParcel(employee.getDepartmentID()));
         parcelTable.getColumns().addAll(idColumn, sNameColumn, sSurnameColumn, sStreetColumn, sHouseNumberColumn, sApartmentNumberColumn, sCityColumn, sPostalCodeColumn, sCountryIDColumn, sEmailColumn, sPhoneNumberColumn, rNameColumn, rSurnameColumn, rStreetColumn, rHouseNumberColumn, rApartmentNumberColumn, rCityColumn, rPostalCodeColumn, rCountryIDColumn, rEmailColumn, rPhoneNumberColumn, carIdColumn, statusColumn, costColumn, weightColumn, lengthColumn, widthColumn, heightColumn, codeColumn, collectionPointIDColumn, departmentIDColumn);
         parcelTable.setEditable(true);
         parcelTable.autosize();
@@ -559,13 +559,13 @@ public class StoreKeeperLayout {
     }
 
     // Get all of the
-    public static ObservableList<Parcel> getParcel() {
+    public static ObservableList<Parcel> getParcel(int departmentID) {
         List<Parcel> parcelList = new ArrayList<>();
         try {
             Connection connection = Database.getConnection();
             ParcelDataAccessor parcelAccessor = new ParcelDataAccessor(connection);
             parcelList = parcelAccessor.getParcelsList(
-                    "select * from parcels where car_id = (select car_id from employees where employees_id = 5)"); //zmienic
+                    String.format("select * from parcels where department_id = %d", departmentID));
             Database.closeConnection(connection);
 
         } catch (Exception e) {
