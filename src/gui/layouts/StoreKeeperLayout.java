@@ -40,6 +40,7 @@ public class StoreKeeperLayout {
     static Scene storeKeeperScene;
     static TableView<Parcel> parcelTable;
     static List<Parcel> modifiedParcelsList;
+    static List<Parcel> addedParcelsList;
     static String action;
 
     public static Scene setStoreKeeperScene(Employee employee) {
@@ -625,6 +626,7 @@ public class StoreKeeperLayout {
     public static void addButtonClicked(){
         Parcel parcel = AddBox.display();
         parcelTable.getItems().add(parcel);
+        addedParcelsList.add(parcel);
     }
 
     // Gived Out button clicked
@@ -653,6 +655,13 @@ public class StoreKeeperLayout {
             for (Parcel parcel : modifiedParcelsList) {
                 parcelAccessor.updateParcel(parcel);
             }
+
+            for (Parcel parcel : addedParcelsList) {
+                parcelAccessor.setParcel(parcel);
+            }
+
+            modifiedParcelsList.clear();
+            addedParcelsList.clear();
 
             Database.closeConnection(con);
         } catch (SQLException e) {
