@@ -29,6 +29,13 @@ import database.accessors.LoginAccessor;
 import database.accessors.EmployeeDataAccessor;
 import database.classes.Employee;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 public class App extends Application {
 
     public static void main(String[] args) {
@@ -39,9 +46,28 @@ public class App extends Application {
     TableView<Parcel> parcelTable;
     String action;
     Employee employee;
+    JSONParser jsonParser;
+    JSONObject jsonObject;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+        jsonParser = new JSONParser();
+        try{
+          jsonObject = (JSONObject) jsonParser.parse(new FileReader("src/configurations/mainApp.json"));
+          Long width = (Long) jsonObject.get("PRIMARY_WIDTH");
+          System.out.println(width);
+        
+        }catch (FileNotFoundException fe) {
+          fe.printStackTrace();
+        } catch (IOException io) {
+          io.printStackTrace();
+        } catch (ParseException pe) {
+          pe.printStackTrace();
+        } catch(Exception e){
+          System.out.println(e);
+        }
+
 
         // Welcome Message - Label
         Label welcomeMsg = new Label("You have to enter your login and password");
