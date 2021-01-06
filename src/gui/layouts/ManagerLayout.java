@@ -1,32 +1,10 @@
 package gui.layouts;
 
-import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.PasswordField;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import javafx.application.Application;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-
-import database.classes.Parcel;
-import database.classes.AlertBox;
-
-import gui.boxes.ExitBox;
 import gui.layouts.ManagerSubLayouts.*;
 
 public class ManagerLayout {
