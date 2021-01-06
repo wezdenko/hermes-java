@@ -80,4 +80,30 @@ public class ParcelDataAccessor {
         prepStatement.close();
     }
 
+    public void updateParcel(Parcel parcel) throws SQLException {
+        String query = "UPDATE parcels SET status = ?, weight = ?, length = ?, width = ?, height = ?, " + 
+            "code = ?, car_id = ?, collection_point_id = ?, department_id = ?, sender_id = ?, receiver_id = ? " + 
+            "WHERE parcels_id = ?";
+        PreparedStatement prepStatement = connection.prepareStatement(query);
+
+        prepStatement.setString(1, parcel.getStatus());
+        prepStatement.setDouble(2, parcel.getWeight());
+        prepStatement.setDouble(3, parcel.getLength());
+        prepStatement.setDouble(4, parcel.getWidth());
+        prepStatement.setDouble(5, parcel.getHeight());
+        prepStatement.setInt(6, parcel.getCode());
+        prepStatement.setInt(7, parcel.getCarID());
+        prepStatement.setInt(8, parcel.getCollectionPointID());
+        prepStatement.setInt(9, parcel.getDepartmentID());
+        prepStatement.setInt(10, parcel.getSender().getClientID());
+        prepStatement.setInt(11, parcel.getReceiver().getClientID());
+        prepStatement.setInt(12, parcel.getID());
+
+        ClientDataAccessor clientAccessor = new ClientDataAccessor(connection);
+        clientAccessor.updateClient(parcel.getReceiver());
+        clientAccessor.updateClient(parcel.getSender());
+
+        prepStatement.execute();
+        prepStatement.close();
+    }
 }
