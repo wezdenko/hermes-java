@@ -54,18 +54,8 @@ public class ChoiceWindow {
         layout.setAlignment(Pos.CENTER);
         layout.setSpacing(10);
 
-        // Layout
-        // GridPane layout = new GridPane();
-        // layout.setPadding(new Insets(10, 10, 10, 10));
-        // layout.setVgap(6);
-        // layout.setHgap(2);
-        // layout.setConstraints(label, 0, 1);
-        // layout.setConstraints(choiceBox, 0, 4);
-        // layout.setConstraints(btnOK, 1, 4);
-        // layout.getChildren().addAll(label, choiceBox, btnOK);
-        // layout.setAlignment(Pos.BASELINE_CENTER);
-
         scene = new Scene(layout);
+        scene.getStylesheets().add("./resources/styles/styles.css");
 
         window.setScene(scene);
         window.showAndWait();

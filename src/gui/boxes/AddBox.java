@@ -146,6 +146,7 @@ public class AddBox {
         finalLay.setPadding(new Insets(10, 10, 10, 10));
 
         scene = new Scene(finalLay);
+        scene.getStylesheets().add("./resources/styles/styles.css");
 
         window.setScene(scene);
         window.showAndWait();

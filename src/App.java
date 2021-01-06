@@ -75,7 +75,9 @@ public class App extends Application {
         GridPane.setConstraints(loginBtn, 1, 5);
         loginLayout.getChildren().addAll(welcomeMsg, loginMsg, loginField, passwordMsg, passwordField, loginBtn);
         loginLayout.setAlignment(Pos.BASELINE_CENTER);
-        loginScene = new Scene(loginLayout, 400, 250);
+        loginScene = new Scene(loginLayout, 600, 300);
+        loginScene.getStylesheets().add("./resources/styles/styles.css");
+
 
         // Login on enter key pressed
         loginScene.setOnKeyPressed(e -> {
@@ -142,16 +144,20 @@ public class App extends Application {
                     case 0:
                         // Scene 4 - Menager Layout
                         managerScene = ManagerLayout.setManagerScene();
+                        managerScene.getStylesheets().add("./resources/styles/styles.css");
                         window.setScene(managerScene);
                         break;
                     case 1:
                         // Scene 3 - Courier Layout
                         courierScene = CourierLayout.setCourierScene();
+                        courierScene.getStylesheets().add("./resources/styles/styles.css");
+
                         window.setScene(courierScene);
                         break;
                     case 2:
                         // Scene 2 - StoreKeeper Layout
                         storeKeeperScene = StoreKeeperLayout.setStoreKeeperScene();
+                        storeKeeperScene.getStylesheets().add("./resources/styles/styles.css");
                         window.setScene(storeKeeperScene);
                      break;
                     default:

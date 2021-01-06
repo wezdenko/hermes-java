@@ -58,6 +58,7 @@ public class ExitBox {
         layout.setSpacing(10);
 
         scene = new Scene(layout);
+        scene.getStylesheets().add("./resources/styles/styles.css");
 
         window.setScene(scene);
         window.showAndWait();

@@ -93,7 +93,7 @@ public class ManagerLayout {
         AnchorPane.setLeftAnchor(tabPane, 15.0);
         pane.getChildren().addAll(tabPane);
         //Setting the stage
-        Scene menagerScene = new Scene(pane, 595, 300);
+        Scene menagerScene = new Scene(pane, 950, 500);
         return menagerScene;
     }
 }

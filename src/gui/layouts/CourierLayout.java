@@ -120,12 +120,14 @@ public class CourierLayout {
         ArrayList<Parcel> parcelsArray = new ArrayList<>(parcelSelected);
 
         action = ChoiceWindow.display();
-
-        for (Parcel parcel : parcelsArray) {
-            allParcels.remove(parcel);
-            parcel.setStatus(action);
-            allParcels.add(parcel);
-            parcelsTable.refresh();
+        
+        if (action != null && !action.isEmpty()) {
+            for (Parcel parcel : parcelsArray) {
+                allParcels.remove(parcel);
+                parcel.setStatus(action);
+                allParcels.add(parcel);
+                parcelsTable.refresh();
+            }
         }
     }
 }

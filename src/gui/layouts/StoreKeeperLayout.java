@@ -503,7 +503,7 @@ public class StoreKeeperLayout {
 
         // Init scene and layout
         VBox layout2 = new VBox();
-        storeKeeperScene = new Scene(layout2, 700, 500);
+        storeKeeperScene = new Scene(layout2, 900, 500);
 
         // Buttons under table
         Double width = storeKeeperScene.getWidth() / 6;

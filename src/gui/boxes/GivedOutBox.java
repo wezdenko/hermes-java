@@ -53,6 +53,7 @@ public class GivedOutBox {
         layout.setAlignment(Pos.BASELINE_CENTER);
 
         scene = new Scene(layout);
+        scene.getStylesheets().add("./resources/styles/styles.css");
 
         window.setScene(scene);
         window.showAndWait();
