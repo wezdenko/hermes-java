@@ -5,7 +5,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import gui.layouts.ManagerSubLayouts.*;
+import gui.layouts.SubLayouts.ManagerSubLayouts.*;
 
 public class ManagerLayout {
 
@@ -27,6 +27,7 @@ public class ManagerLayout {
         positionLayout = PositionLayout.setPositionLayout(width);
         employeeLayout = EmployeeLayout.setEmployeeLayout(width);
         menagerScene = new Scene(employeeLayout, width, height);
+
         //Creating a TabPane
         TabPane tabPane = new TabPane();
 

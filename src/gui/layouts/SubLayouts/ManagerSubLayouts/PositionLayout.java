@@ -1,4 +1,4 @@
-package gui.layouts.ManagerSubLayouts;
+package gui.layouts.SubLayouts.ManagerSubLayouts;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -146,7 +146,7 @@ public class PositionLayout {
         try {
             Connection connection = Database.getConnection();
             PositionDataAccessor positionAccessor = new PositionDataAccessor(connection);
-            positionList = positionAccessor.getPositionsList("select * from positions");
+            positionList = positionAccessor.getPositionsList("select * from position");
             Database.closeConnection(connection);
 
         } catch (Exception e) {

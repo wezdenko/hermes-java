@@ -60,7 +60,7 @@ public class PositionDataAccessor {
     }
 
     public void setPosition(Position position) throws SQLException {
-        String insertSQL = "INSERT INTO positions VALUES(?, ?, ?, ?)";
+        String insertSQL = "INSERT INTO position VALUES(?, ?, ?, ?)";
         PreparedStatement prepStatement = connection.prepareStatement(insertSQL);
 
         prepStatement.setInt(1, position.getId());

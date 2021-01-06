@@ -1,4 +1,4 @@
-package gui.layouts.ManagerSubLayouts;
+package gui.layouts.SubLayouts.ManagerSubLayouts;
 
 import java.util.ArrayList;
 import java.util.List;

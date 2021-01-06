@@ -9,6 +9,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -24,6 +25,7 @@ import java.sql.Connection;
 
 import database.classes.Parcel;
 import gui.boxes.GivedOutBox;
+import gui.layouts.SubLayouts.MenuBar_own;
 import gui.boxes.AddBox;
 
 import database.accessors.ParcelDataAccessor;
@@ -41,6 +43,8 @@ public class StoreKeeperLayout {
         // Search Field
         TextField searchField = new TextField();
         searchField.setPromptText("Search...");
+
+        MenuBar menuBar = MenuBar_own.setMenuBar();
 
         // Setting ParcelTable
 
@@ -548,7 +552,7 @@ public class StoreKeeperLayout {
         VBox.setVgrow(parcelTable, Priority.ALWAYS);
         layout2.setSpacing(5);
         layout2.setPadding(new Insets(10, 10, 10, 10));
-        layout2.getChildren().addAll(searchField, parcelTable, buttonLayout);
+        layout2.getChildren().addAll(menuBar, searchField, parcelTable, buttonLayout);
 
         // Final Commands
         return storeKeeperScene;

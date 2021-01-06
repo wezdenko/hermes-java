@@ -14,7 +14,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
+        
         // Window Setting
         loginScene = LoginLayout.setLoginScene(primaryStage);
         primaryStage.setTitle("Hermes - delivery company");
