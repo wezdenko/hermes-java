@@ -561,7 +561,7 @@ public class StoreKeeperLayout {
             Connection connection = Database.getConnection();
             ParcelDataAccessor parcelAccessor = new ParcelDataAccessor(connection);
             parcelList = parcelAccessor.getParcelsList(
-                    "select * from parcels where car_id = (select car_id from employees where employees_id = 5)");
+                    "select * from parcels where car_id = (select car_id from employees where employees_id = 5)"); //zmienic
             Database.closeConnection(connection);
 
         } catch (Exception e) {
