@@ -12,17 +12,49 @@ import javafx.scene.control.TextField;
 import database.classes.Converter;
 import database.classes.Employee;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import java.sql.Date;
 
 public class AddBox_Emp {
 
     static Employee employee;
     static Date date;
+    static JSONParser jsonParser;
+    static JSONObject jsonObj;
 
     public static Employee display(){
+      int width=0, height=0, buttonSize=0, padding=0, spacing=0; 
+      String cssPath="";
+
+      jsonParser = new JSONParser();
+      try{
+        jsonObj = (JSONObject) jsonParser.parse(new FileReader("src/configurations/sharedConfiguration.json"));
+        
+        padding = (int) (long) jsonObj.get("PADDING");
+        spacing = (int) (long) jsonObj.get("SPACING");
+        cssPath = (String) jsonObj.get("CSS_PATH");
+        
+        jsonObj = (JSONObject) jsonParser.parse(new FileReader("src/configurations/boxes.json"));
+        width = (int) (long) jsonObj.get("BOX_WIDTH");
+        height = (int) (long) jsonObj.get("BOX_HEIGHT");
+        buttonSize = (int) (long) jsonObj.get("BUTTON_SIZE");
+
+      }catch (FileNotFoundException fe) {
+        fe.printStackTrace();
+      } catch (IOException io) {
+        io.printStackTrace();
+      } catch (ParseException pe) {
+        pe.printStackTrace();
+      }
         Stage window = new Stage();
-        window.setMinWidth(250);
-        window.setMinHeight(150);
+        window.setMinWidth(width);
+        window.setMinHeight(height);
         Scene scene;
 
         window.initModality(Modality.APPLICATION_MODAL);
@@ -49,7 +81,7 @@ public class AddBox_Emp {
         //OK Button
         Button btnOK = new Button();
         btnOK.setText("OK");
-        btnOK.setMinWidth(25);
+        btnOK.setMinWidth(buttonSize);
         btnOK.setOnAction(e -> {
             date = Converter.StringToDate(date_S.getText());
             employee = new Employee(0, name.getText(), surname.getText(), Converter.StringToInt(pesel.getText()), Converter.StringToInt(salary.getText()), date, "", "", 0, Converter.StringToInt(position.getText()), Converter.StringToInt(manager.getText()), Converter.StringToInt(department.getText()));
@@ -60,22 +92,22 @@ public class AddBox_Emp {
         //Layouts
         HBox lay1 = new HBox();
         lay1.getChildren().addAll(name, surname, pesel, salary, date_S);
-        lay1.setSpacing(5);
+        lay1.setSpacing(spacing);
         
         HBox spacing1 = new HBox();
-        spacing1.setMinHeight(10);
+        spacing1.setMinHeight(padding);
 
         HBox lay2 = new HBox();
         lay2.getChildren().addAll(position, manager, department);
-        lay2.setSpacing(5);
+        lay2.setSpacing(spacing);
 
         VBox finalLay = new VBox();
         finalLay.getChildren().addAll(lay1, spacing1, lay2, btnOK);
-        finalLay.setSpacing(10);
-        finalLay.setPadding(new Insets(10, 10, 10, 10));
+        finalLay.setSpacing(padding);
+        finalLay.setPadding(new Insets(padding, padding, padding, padding));
 
         scene = new Scene(finalLay);
-        scene.getStylesheets().add("./resources/styles/styles.css");
+        scene.getStylesheets().add(cssPath);
 
         window.setScene(scene);
         window.showAndWait();

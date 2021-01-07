@@ -19,19 +19,19 @@ public class App extends Application {
 
     Scene loginScene;
     JSONParser jsonParser;
-    JSONObject jsonObject;
+    JSONObject jsonObj;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        long width=0, height=0;
+        int width=0, height=0;
         String title="";
 
         jsonParser = new JSONParser();
         try{
-          jsonObject = (JSONObject) jsonParser.parse(new FileReader("src/configurations/mainApp.json"));
-          width = (Long) jsonObject.get("PRIMARY_WIDTH");
-          height = (Long) jsonObject.get("PRIMARY_HEIGHT");
-          title = (String) jsonObject.get("TITLE");
+          jsonObj = (JSONObject) jsonParser.parse(new FileReader("src/configurations/mainApp.json"));
+          width = (int) (long) jsonObj.get("PRIMARY_WIDTH");
+          height = (int) (long) jsonObj.get("PRIMARY_HEIGHT");
+          title = (String) jsonObj.get("TITLE");
         }catch (FileNotFoundException fe) {
           fe.printStackTrace();
         } catch (IOException io) {
