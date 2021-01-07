@@ -20,18 +20,19 @@ import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.TextFieldTableCell;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 import gui.boxes.AddBox_CPoint;
 
 import database.accessors.CollectionPointDataAccessor;
 import database.Database;
-
-
+import database.classes.AlertBox;
 import database.classes.CollectionPoint;
 
 public class CollectionPointLayout {
 
     static TableView<CollectionPoint> collectionPointTable;
+    static List<CollectionPoint> modifiedPoints;
 
     public static VBox setCollectionPointLayout(Double sceneWidth) {
         // Search Field
@@ -56,6 +57,7 @@ public class CollectionPointLayout {
                 ((CollectionPoint)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setName(t.getNewValue());
                 collectionPointTable.refresh();
+                modifiedPoints.add(((CollectionPoint)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -64,6 +66,8 @@ public class CollectionPointLayout {
         addressColumn.setMinWidth(300);
         addressColumn.setCellValueFactory(new PropertyValueFactory<>("address_S"));
 
+        // List of modified collection points
+        modifiedPoints = new ArrayList<>();
 
         // Final Table
         collectionPointTable = new TableView<>();
@@ -103,6 +107,7 @@ public class CollectionPointLayout {
         HBox.setHgrow(btn6, Priority.ALWAYS);
         btn6.setMinWidth(width);
         btn6.setMaxWidth(Double.MAX_VALUE);
+        btn6.setOnAction(e -> commit());
 
         buttonLayout.getChildren().addAll(deletButton, addButton, btn6);
 
@@ -147,5 +152,23 @@ public class CollectionPointLayout {
     public static void addButtonClicked(){
         CollectionPoint collectionPoint = AddBox_CPoint.display();
         collectionPointTable.getItems().add(collectionPoint);
+    }
+
+    // Commit button clicked
+    public static void commit() {
+        try {
+            Connection con = Database.getConnection();
+            CollectionPointDataAccessor pointAccessor = new CollectionPointDataAccessor(con);
+
+            for (CollectionPoint point : modifiedPoints) {
+                pointAccessor.updateCollectionPoint(point);
+            }
+
+            modifiedPoints.clear();
+
+            Database.closeConnection(con);
+        } catch (SQLException e) {
+            AlertBox.display("Error", "Cannot connect to database!");
+        }
     }
 }
