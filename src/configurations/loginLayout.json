@@ -1,0 +1,8 @@
+{
+  "LOGIN_WIDTH": 500,
+  "LOGIN_HEIGHT": 300,
+  "WELCOME_LABEL": "You have to enter your login and password",
+  "LOGIN_LABEL": "Login:",
+  "PASSWORD_LABEL": "Password:",
+  "LOGIN_TEXT": "Log in"
+}

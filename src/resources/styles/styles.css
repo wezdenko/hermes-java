@@ -1,0 +1,227 @@
+.root {
+    -fx-background-color: #383838;
+    background-color: #383838;
+    -fx-font-size: 11pt;
+    font-size: 11pt;
+}
+
+/* BUTTONS */
+
+.button {
+    -fx-background-color: orange;
+    background-color: orange;
+    -fx-background-insets: 0 0 -1 0, 0, 1;
+    -fx-background-radius: 5, 5, 4;
+    -fx-padding: 3 30 3 30;
+    padding: 3 30 3 30;
+    -fx-font-size: 14px;
+    font-size: 14px;
+    -fx-text-inner-color: black;
+}
+
+.button:hover {
+    -fx-background-color: #ff4a02;
+    background-color: #ff4a02;
+    -fx-text-fill: #242d35;
+    -fx-text-inner-color: #222;
+    -fx-cursor: pointer;
+    cursor: pointer;
+}
+
+/* LABELS */
+
+.label {
+    -fx-text-fill: #efefef;
+    -fx-color: black;
+    color: black;
+}
+
+.text-field {
+    -fx-background-radius: 4pt;
+    -fx-background-color: #aaa;
+    background-color: #aaa;
+    -fx-prompt-text-fill: #222;
+}
+
+/* TABLE VIEW */
+.table-view {
+    -fx-background-color: transparent;
+    background-color: transparent;
+}
+
+.table-view:focused {
+    -fx-background-color: transparent;
+    background-color: transparent;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: linear-gradient(#101010 0%, #424141 100%);
+    background-color: linear-gradient(#101010 0%, #424141 100%);
+}
+.table-view .column-header-background .filler {
+    -fx-background-color: linear-gradient(#101010 0%, #424141 100%);
+    background-color: linear-gradient(#101010 0%, #424141 100%);
+}
+
+.table-view .column-header-background .label {
+    -fx-background-color: transparent;
+    background-color: transparent;
+    -fx-text-fill: white;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+    background-color: transparent;
+}
+
+.table-view .table-cell {
+    -fx-text-fill: white;
+}
+
+.table-row-cell {
+    -fx-background-color: -fx-table-cell-border-color, #616161;
+    background-color: -fx-table-cell-border-color, #616161;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0em;
+    padding: 0em;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: -fx-table-cell-border-color, #424242;
+    background-color: -fx-table-cell-border-color, #424242;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0em;
+    padding: 0em;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #ff4a02;
+    background-color: #ff4a02;
+    -fx-background-insets: 0;
+    -fx-background-radius: 1;
+}
+
+.table-view .virtual-flow .scroll-bar:vertical,
+.table-view .virtual-flow .scroll-bar:vertical .track,
+.table-view .virtual-flow .scroll-bar:vertical .track-background,
+.table-view .virtual-flow .scroll-bar:horizontal,
+.table-view .virtual-flow .scroll-bar:horizontal .track,
+.table-view .virtual-flow .scroll-bar:horizontal .track-background {
+    -fx-background-color: transparent;
+    background-color: transparent;
+}
+
+.table-view .virtual-flow .scroll-bar .increment-button,
+.table-view .virtual-flow .scroll-bar .decrement-button {
+    -fx-opacity: 0;
+    opacity: 0;
+    -fx-padding: 2;
+    padding: 2;
+    -fs-scrollbar-color: dark;
+    scrollbar-color: dark;
+}
+
+/* SCROLL BAR */
+.scroll-bar:vertical .increment-button,
+.scroll-bar:vertical .decrement-button {
+    -fx-background-color: transparent;
+    background-color: transparent;
+    -fx-background-radius: 0em;
+    -fx-padding: 0 10 0 0;
+    padding: 0 10 0 0;
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+    -fx-shape: ' ';
+    -fx-padding: 0.15em 0;
+    padding: 0.15em 0;
+}
+
+.scroll-bar:horizontal .thumb,
+.scroll-bar:vertical .thumb {
+    -fx-background-color: derive(black, 90%);
+    background-color: derive(black, 90%);
+    -fx-background-insets: 2, 0, 0;
+    -fx-background-radius: 2em;
+}
+
+.scroll-bar:horizontal .thumb:hover,
+.scroll-bar:vertical .thumb:hover {
+    -fx-background-color: derive(#4d4c4f, 10%);
+    background-color: derive(#4d4c4f, 10%);
+    -fx-background-insets: 2, 0, 0;
+    -fx-background-radius: 2em;
+}
+
+.scroll-bar:horizontal > .corner {
+    -fx-background-color: black;
+    background-color: black;
+}
+
+.scroll-bar:vertical > .corner {
+    -fx-background-color: black;
+    background-color: black;
+}
+
+/* TAB PANE STYLES*/
+.tab-pane {
+    -fx-tab-min-width: 125px;
+}
+
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-opacity: 0;
+    opacity: 0;
+}
+
+.tab {
+    -fx-background-color: transparent;
+    background-color: transparent;
+    -fx-border-color: white;
+    border-color: white;
+    -fx-border-width: 2;
+    border-width: 2;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+
+    -fx-padding: 4px;
+    padding: 4px;
+    -fx-border-insets: 4px;
+    -fx-background-insets: 4px;
+}
+
+.tab .tab-label {
+    -fx-alignment: CENTER;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    font-size: 14px;
+    -fx-font-weight: bold;
+    font-weight: bold;
+}
+
+/* CHOICE BOX */
+
+.choice-box .context-menu {
+    -fx-background-color: black;
+    background-color: black;
+}
+.choice-box .menu-item:focused {
+    -fx-background-color: #ff4a02;
+    background-color: #ff4a02;
+}
+.choice-box .menu-item > .label {
+    -fx-text-fill: white;
+}
+.choice-box .menu-item:focused > .label {
+    -fx-text-fill: black;
+}
+
+.choice-box {
+    -fx-background-color: black;
+    background-color: black;
+    -fx-mark-color: #ff4a02;
+}
+
+.choice-box > .label {
+    -fx-text-fill: white;
+}

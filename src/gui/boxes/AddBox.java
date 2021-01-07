@@ -14,6 +14,13 @@ import database.classes.Client;
 import database.classes.Address;
 import database.classes.Converter;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 public class AddBox {
 
     static Parcel parcel;
@@ -21,11 +28,37 @@ public class AddBox {
     static Address rAddress;
     static Client sClient;
     static Client rClient;
+    static JSONParser jsonParser;
+    static JSONObject jsonObj;
 
     public static Parcel display(){
+      int width=0, height=0, buttonSize=0, padding=0, spacing=0; 
+      String cssPath="";
+
+      jsonParser = new JSONParser();
+      try{
+        jsonObj = (JSONObject) jsonParser.parse(new FileReader("src/configurations/sharedConfiguration.json"));
+        
+        padding = (int) (long) jsonObj.get("PADDING");
+        spacing = (int) (long) jsonObj.get("SPACING");
+        cssPath = (String) jsonObj.get("CSS_PATH");
+        
+        jsonObj = (JSONObject) jsonParser.parse(new FileReader("src/configurations/boxes.json"));
+        width = (int) (long) jsonObj.get("BOX_WIDTH");
+        height = (int) (long) jsonObj.get("BOX_HEIGHT");
+        buttonSize = (int) (long) jsonObj.get("BUTTON_SIZE");
+
+      }catch (FileNotFoundException fe) {
+        fe.printStackTrace();
+      } catch (IOException io) {
+        io.printStackTrace();
+      } catch (ParseException pe) {
+        pe.printStackTrace();
+      }
+
         Stage window = new Stage();
-        window.setMinWidth(250);
-        window.setMinHeight(150);
+        window.setMinWidth(width);
+        window.setMinHeight(height);
         Scene scene;
 
         window.initModality(Modality.APPLICATION_MODAL);
@@ -79,10 +112,10 @@ public class AddBox {
         status.setPromptText("Status");
         TextField length = new TextField();
         length.setPromptText("Length");
-        TextField width = new TextField();
-        width.setPromptText("Width");
-        TextField height = new TextField();
-        height.setPromptText("Height");
+        TextField swidth = new TextField();
+        swidth.setPromptText("Width");
+        TextField sheight = new TextField();
+        sheight.setPromptText("Height");
         TextField code = new TextField();
         code.setPromptText("Code");
         TextField collectionPointID = new TextField();
@@ -97,13 +130,13 @@ public class AddBox {
         //OK Button
         Button btnOK = new Button();
         btnOK.setText("OK");
-        btnOK.setMinWidth(25);
+        btnOK.setMinWidth(buttonSize);
         btnOK.setOnAction(e -> {
             sAddress = new Address(0, sStreet.getText(), Converter.StringToInt(sHouseNumber.getText()), Converter.StringToInt(sApartmentNumber.getText()), sCity.getText(), sPostalCode.getText(), Converter.StringToInt(sCountryID.getText()));
             rAddress = new Address(0, rStreet.getText(), Converter.StringToInt(rHouseNumber.getText()), Converter.StringToInt(rApartmentNumber.getText()), rCity.getText(), rPostalCode.getText(), Converter.StringToInt(rCountryID.getText()));
             sClient = new Client(0, sName.getText(), sSurname.getText(), sEmail.getText(), sPhone.getText(), sAddress);
             rClient = new Client(0, rName.getText(), rSurname.getText(), rEmail.getText(), rPhone.getText(), rAddress);
-            parcel = new Parcel(1, status.getText(), Converter.StringToDouble(cost.getText()), sClient, rClient ,Converter.StringToDouble(weight.getText()), Converter.StringToDouble(length.getText()), Converter.StringToDouble(width.getText()), Converter.StringToDouble(height.getText()), Converter.StringToInt(code.getText()), Converter.StringToInt(carID.getText()),Converter.StringToInt(collectionPointID.getText()), Converter.StringToInt(departmentID.getText()));
+            parcel = new Parcel(1, status.getText(), Converter.StringToDouble(cost.getText()), sClient, rClient ,Converter.StringToDouble(weight.getText()), Converter.StringToDouble(length.getText()), Converter.StringToDouble(swidth.getText()), Converter.StringToDouble(sheight.getText()), Converter.StringToInt(code.getText()), Converter.StringToInt(carID.getText()),Converter.StringToInt(collectionPointID.getText()), Converter.StringToInt(departmentID.getText()));
             window.close(); 
         });
 
@@ -111,41 +144,42 @@ public class AddBox {
         //Layouts
         HBox senderLay1 = new HBox();
         senderLay1.getChildren().addAll(sName, sSurname, sCountryID, sPostalCode,sCity);
-        senderLay1.setSpacing(5);
+        senderLay1.setSpacing(spacing);
         
         HBox senderLay2 = new HBox();
         senderLay2.getChildren().addAll(sStreet, sHouseNumber, sApartmentNumber, sPhone, sEmail);
-        senderLay2.setSpacing(5);
+        senderLay2.setSpacing(spacing);
         
         HBox spacing1 = new HBox();
         spacing1.setMinHeight(10);
 
         HBox receiverLay1 = new HBox();
         receiverLay1.getChildren().addAll(rName, rSurname, rCountryID, rPostalCode,rCity);
-        receiverLay1.setSpacing(5);
+        receiverLay1.setSpacing(spacing);
 
         
         HBox receiverLay2 = new HBox();
         receiverLay2.getChildren().addAll(rStreet, rHouseNumber, rApartmentNumber, rPhone, rEmail);
-        receiverLay2.setSpacing(5);
+        receiverLay2.setSpacing(spacing);
 
         HBox spacing2 = new HBox();
-        spacing2.setMinHeight(10);
+        spacing2.setMinHeight(padding);
 
         HBox othersLay1 = new HBox();
         othersLay1.getChildren().addAll(code, collectionPointID, departmentID, status, cost);
-        othersLay1.setSpacing(5);
+        othersLay1.setSpacing(spacing);
 
         HBox othersLay2 = new HBox();
-        othersLay2.getChildren().addAll(carID, length, width, height, weight);
-        othersLay2.setSpacing(5);
+        othersLay2.getChildren().addAll(carID, length, swidth, sheight, weight);
+        othersLay2.setSpacing(spacing);
 
         VBox finalLay = new VBox();
         finalLay.getChildren().addAll(senderLay1, senderLay2, spacing1, receiverLay1, receiverLay2, spacing2, othersLay1, othersLay2 ,btnOK);
-        finalLay.setSpacing(10);
-        finalLay.setPadding(new Insets(10, 10, 10, 10));
+        finalLay.setSpacing(padding);
+        finalLay.setPadding(new Insets(padding, padding, padding, padding));
 
         scene = new Scene(finalLay);
+        scene.getStylesheets().add(cssPath);
 
         window.setScene(scene);
         window.showAndWait();

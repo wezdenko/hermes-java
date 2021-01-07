@@ -29,25 +29,69 @@ import database.Database;
 import database.classes.Converter;
 import database.classes.Employee;
 
+import gui.layouts.LoginLayout;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 public class EmployeeLayout {
 
     static TableView<Employee> employeeTable;
+    static JSONParser jsonParser;
+    static JSONObject jsonObj;
 
-    public static VBox setEmployeeLayout(Double sceneWidth) {
+    public static VBox setEmployeeLayout(int width, Stage primaryStage) {
+      int spacingDivider=0, spacingButtonDivider=0, padding=0, buttonMinWidth=0;
+      int mediumTabWidth=0, lowTabWidth=0, spacingSize=0;
+      String search="", deleteLabel="",  addLabel ="", commitLabel ="", logOutLabel ="";
+
+
+      jsonParser = new JSONParser();
+      try{
+        jsonObj = (JSONObject) jsonParser.parse(new FileReader("src/configurations/sharedConfiguration.json"));
+        
+        spacingDivider = (int) (long) jsonObj.get("SPACING_WIDTH_DIVIDER");
+        spacingButtonDivider = (int) (long) jsonObj.get("SPACING_BUTTON_DIVIDER");
+        padding = (int) (long) jsonObj.get("PADDING");
+        spacingSize = (int) (long) jsonObj.get("SPACING");
+        buttonMinWidth = (int) (long) jsonObj.get("BUTTON_MIN_WIDTH");
+        mediumTabWidth = (int) (long) jsonObj.get("TAB_MIN_WIDTH_MEDIUM");
+        lowTabWidth = (int) (long) jsonObj.get("TAB_MIN_WIDTH_LOW");
+
+        search = (String) jsonObj.get("SEARCH");
+        deleteLabel = (String) jsonObj.get("DELETE_BUTTON");
+        addLabel = (String) jsonObj.get("ADD_BUTTON");
+        commitLabel = (String) jsonObj.get("COMMIT_BUTTON");
+        logOutLabel = (String) jsonObj.get("LOGOUT_BUTTON");
+
+
+      }catch (FileNotFoundException fe) {
+        fe.printStackTrace();
+      } catch (IOException io) {
+        io.printStackTrace();
+      } catch (ParseException pe) {
+        pe.printStackTrace();
+      }
+
         // Search Field
         TextField searchField = new TextField();
-        searchField.setPromptText("Search...");
+        searchField.setPromptText(search);
 
         // Setting ParcelTable
 
         // ID Column
         TableColumn<Employee, String> idColumn = new TableColumn<>("Employee ID");
-        idColumn.setMinWidth(100);
+        idColumn.setMinWidth(mediumTabWidth);
         idColumn.setCellValueFactory(new PropertyValueFactory<>("employeeID_S"));
 
         // Name Column
         TableColumn<Employee, String> nameColumn = new TableColumn<>("Name");
-        nameColumn.setMinWidth(100);
+        nameColumn.setMinWidth(mediumTabWidth);
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         nameColumn.setOnEditCommit(new EventHandler<CellEditEvent<Employee, String>>() {
@@ -61,7 +105,7 @@ public class EmployeeLayout {
 
         // Surname Column
         TableColumn<Employee, String> surNameColumn = new TableColumn<>("Surname");
-        surNameColumn.setMinWidth(100);
+        surNameColumn.setMinWidth(mediumTabWidth);
         surNameColumn.setCellValueFactory(new PropertyValueFactory<>("surname"));
         surNameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         surNameColumn.setOnEditCommit(new EventHandler<CellEditEvent<Employee, String>>() {
@@ -75,7 +119,7 @@ public class EmployeeLayout {
 
         // Pesel Column
         TableColumn<Employee, String> peselColumn = new TableColumn<>("Pesel");
-        peselColumn.setMinWidth(100);
+        peselColumn.setMinWidth(mediumTabWidth);
         peselColumn.setCellValueFactory(new PropertyValueFactory<>("pesel_S"));
         peselColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         peselColumn.setOnEditCommit(new EventHandler<CellEditEvent<Employee, String>>() {
@@ -91,7 +135,7 @@ public class EmployeeLayout {
 
         // Salary Column
         TableColumn<Employee, String> salaryColumn = new TableColumn<>("Salary");
-        salaryColumn.setMinWidth(100);
+        salaryColumn.setMinWidth(mediumTabWidth);
         salaryColumn.setCellValueFactory(new PropertyValueFactory<>("salary_S"));
         salaryColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         salaryColumn.setOnEditCommit(new EventHandler<CellEditEvent<Employee, String>>() {
@@ -107,7 +151,7 @@ public class EmployeeLayout {
 
         // EmploymentDate Column
         TableColumn<Employee, String> employmentDateColumn = new TableColumn<>("Employment Date");
-        employmentDateColumn.setMinWidth(50);
+        employmentDateColumn.setMinWidth(lowTabWidth);
         employmentDateColumn.setCellValueFactory(new PropertyValueFactory<>("employmentDate_S"));
         employmentDateColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         employmentDateColumn.setOnEditCommit(new EventHandler<CellEditEvent<Employee, String>>() {
@@ -124,7 +168,7 @@ public class EmployeeLayout {
 
         // Login Column
         TableColumn<Employee, String> loginColumn = new TableColumn<>("Login");
-        loginColumn.setMinWidth(100);
+        loginColumn.setMinWidth(mediumTabWidth);
         loginColumn.setCellValueFactory(new PropertyValueFactory<>("login"));
         loginColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         loginColumn.setOnEditCommit(new EventHandler<CellEditEvent<Employee, String>>() {
@@ -138,7 +182,7 @@ public class EmployeeLayout {
 
         // Password Column
         TableColumn<Employee, String> passwordColumn = new TableColumn<>("Password");
-        passwordColumn.setMinWidth(100);
+        passwordColumn.setMinWidth(mediumTabWidth);
         passwordColumn.setCellValueFactory(new PropertyValueFactory<>("password"));
         passwordColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         passwordColumn.setOnEditCommit(new EventHandler<CellEditEvent<Employee, String>>() {
@@ -152,7 +196,7 @@ public class EmployeeLayout {
 
         // CarID Column
         TableColumn<Employee, String> carIDColumn = new TableColumn<>("Car ID");
-        carIDColumn.setMinWidth(100);
+        carIDColumn.setMinWidth(mediumTabWidth);
         carIDColumn.setCellValueFactory(new PropertyValueFactory<>("carID_S"));
         carIDColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         carIDColumn.setOnEditCommit(new EventHandler<CellEditEvent<Employee, String>>() {
@@ -168,7 +212,7 @@ public class EmployeeLayout {
 
         // PositionID Column
         TableColumn<Employee, String> positionIDColumn = new TableColumn<>("Position ID");
-        positionIDColumn.setMinWidth(100);
+        positionIDColumn.setMinWidth(mediumTabWidth);
         positionIDColumn.setCellValueFactory(new PropertyValueFactory<>("positionID_S"));
         positionIDColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         positionIDColumn.setOnEditCommit(new EventHandler<CellEditEvent<Employee, String>>() {
@@ -184,7 +228,7 @@ public class EmployeeLayout {
 
         // ManagerID Column
         TableColumn<Employee, String> managerIDColumn = new TableColumn<>("Manager ID");
-        managerIDColumn.setMinWidth(100);
+        managerIDColumn.setMinWidth(mediumTabWidth);
         managerIDColumn.setCellValueFactory(new PropertyValueFactory<>("managerID_S"));
         managerIDColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         managerIDColumn.setOnEditCommit(new EventHandler<CellEditEvent<Employee, String>>() {
@@ -200,7 +244,7 @@ public class EmployeeLayout {
 
         // DepartmentID Column
         TableColumn<Employee, String> departmentIDColumn = new TableColumn<>("Department ID");
-        departmentIDColumn.setMinWidth(100);
+        departmentIDColumn.setMinWidth(mediumTabWidth);
         departmentIDColumn.setCellValueFactory(new PropertyValueFactory<>("departmentID_S"));
         departmentIDColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         departmentIDColumn.setOnEditCommit(new EventHandler<CellEditEvent<Employee, String>>() {
@@ -227,38 +271,49 @@ public class EmployeeLayout {
         VBox layout2 = new VBox();
 
         // Buttons under table
-        Double width = sceneWidth / 6;
+        int spacingWidth = width / spacingDivider;
 
         HBox buttonLayout = new HBox();
-        buttonLayout.setPadding(new Insets(10, 0, 10, 0));
-        buttonLayout.setSpacing(width / 3);
+        buttonLayout.setPadding(new Insets(padding, 0, padding, 0));
+        buttonLayout.setSpacing(spacingWidth / spacingButtonDivider);
 
         // Delete
-        Button deletButton = new Button("Delete");
+        Button deletButton = new Button(deleteLabel);
         HBox.setHgrow(deletButton, Priority.ALWAYS);
-        deletButton.setMinWidth(width);
+        deletButton.setMinWidth(buttonMinWidth);
         deletButton.setMaxWidth(Double.MAX_VALUE);
         deletButton.setOnAction(e -> deleteButtonClicked());
 
         // Add
-        Button addButton = new Button("Add");
+        Button addButton = new Button(addLabel);
         HBox.setHgrow(addButton, Priority.ALWAYS);
-        addButton.setMinWidth(width);
+        addButton.setMinWidth(buttonMinWidth);
         addButton.setMaxWidth(Double.MAX_VALUE);
         addButton.setOnAction(e -> addButtonClicked());
 
         // Commit
-        Button btn6 = new Button("Commit");
+        Button btn6 = new Button(commitLabel);
         HBox.setHgrow(btn6, Priority.ALWAYS);
-        btn6.setMinWidth(width);
+        btn6.setMinWidth(buttonMinWidth);
         btn6.setMaxWidth(Double.MAX_VALUE);
 
-        buttonLayout.getChildren().addAll(deletButton, addButton, btn6);
+        // Log Out
+        Button logOutBtn = new Button(logOutLabel);
+        HBox.setHgrow(logOutBtn, Priority.ALWAYS);
+        logOutBtn.setMinWidth(buttonMinWidth);
+        logOutBtn.setMaxWidth(Double.MAX_VALUE);
+        logOutBtn.setOnAction(e -> {
+          Scene loginScene;
+          loginScene = LoginLayout.setLoginScene(primaryStage);
+          primaryStage.setScene(loginScene);
+        });
+
+        buttonLayout.getChildren().addAll(deletButton, addButton, btn6, logOutBtn);
 
         // Scene/layout
         VBox.setVgrow(employeeTable, Priority.ALWAYS);
-        layout2.setSpacing(5);
-        layout2.setPadding(new Insets(10, 10, 10, 10));
+        layout2.setSpacing(spacingSize);
+        layout2.setPadding(new Insets(padding, padding, padding, padding));
         layout2.getChildren().addAll(searchField, employeeTable, buttonLayout);
 
         // Final Commands
