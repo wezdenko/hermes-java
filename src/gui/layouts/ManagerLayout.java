@@ -8,6 +8,13 @@ import javafx.scene.layout.VBox;
 import gui.layouts.ManagerSubLayouts.*;
 import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 public class ManagerLayout {
 
     static Scene menagerScene;
@@ -17,10 +24,40 @@ public class ManagerLayout {
     static VBox collectionPointLayout;
     static VBox positionLayout;
     static VBox employeeLayout;
+    static JSONParser jsonParser;
+    static JSONObject jsonObj;
     
     public static Scene setManagerScene(Stage primaryStage) {
-        double width = 900;
-        double height = 600;
+      int width=0, height=0;
+      String carLabel="", parcelLabel="", departmentsLabel="", collectionLabel="";
+      String positionLabel="", employeesLabel ="";
+
+
+      jsonParser = new JSONParser();
+      try{
+        jsonObj = (JSONObject) jsonParser.parse(new FileReader("src/configurations/sharedConfiguration.json"));
+        
+        width = (int) (long) jsonObj.get("WIDTH");
+        height = (int) (long) jsonObj.get("HEIGHT");
+
+        jsonObj = (JSONObject) jsonParser.parse(new FileReader("src/configurations/managerLayout.json"));
+
+        carLabel = (String) jsonObj.get("CAR_LABEL");
+        parcelLabel = (String) jsonObj.get("PARCEL_LABEL");
+        departmentsLabel = (String) jsonObj.get("DEPARTMENTS_LABEL");
+        collectionLabel = (String) jsonObj.get("COLLECTION_POINTS_LABEL");
+        positionLabel = (String) jsonObj.get("POSITIONS_LABEL");
+        employeesLabel = (String) jsonObj.get("EMPLOYEES_LABEL");
+        
+
+      }catch (FileNotFoundException fe) {
+        fe.printStackTrace();
+      } catch (IOException io) {
+        io.printStackTrace();
+      } catch (ParseException pe) {
+        pe.printStackTrace();
+      }
+
         parcelLayout = ParcelLayout.setParcelLayout(width, primaryStage);
         departmentLayout = DepartmentLayout.setDepartmentLayout(width, primaryStage);
         carLayout = CarLayout.setCarLayout(width, primaryStage);
@@ -46,12 +83,12 @@ public class ManagerLayout {
         employeeTab.setClosable(false);
 
         //Setting the names of tabs
-        carTab.setText("Cars");
-        parcelTab.setText("Parcels");
-        departmentTab.setText("Departments");
-        collectionPointTab.setText("Collection Points");
-        positionTab.setText("Positions");
-        employeeTab.setText("Employees");
+        carTab.setText(carLabel);
+        parcelTab.setText(parcelLabel);
+        departmentTab.setText(departmentsLabel);
+        collectionPointTab.setText(collectionLabel);
+        positionTab.setText(positionLabel);
+        employeeTab.setText(employeesLabel);
 
         //Setting the content
         carTab.setContent(carLayout);
@@ -72,7 +109,7 @@ public class ManagerLayout {
         AnchorPane.setLeftAnchor(tabPane, 15.0);
         pane.getChildren().addAll(tabPane);
         //Setting the stage
-        Scene menagerScene = new Scene(pane, 950, 500);
+        Scene menagerScene = new Scene(pane, width, height);
         return menagerScene;
     }
 }

@@ -1,6 +1,5 @@
 {
-  "PRIMARY_WIDTH": 700,
+  "PRIMARY_WIDTH": 600,
   "PRIMARY_HEIGHT": 300,
-  "LOGIN_WIDTH": 400,
-  "LOGIN_HEIGHT": 250
+  "TITLE": "Hermes - delivery company"
 }

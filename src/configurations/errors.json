@@ -1,0 +1,11 @@
+{
+  "ERROR_MSG": "EROR",
+  "LOGIN_ERROR":"Wrong login!",
+  "PASSWORD_ERROR": "Wrong password!",
+  "CONNECTION_ERROR": "Connection error!",
+  "UNKNOWN_ERROR": "Unknown error!",
+  "CORRUPTION_ERROR": "Cannot download data, it might be corrupted!",
+  "DB_CONNECTION_ERROR": "Cannot connect to database!",
+  "NO_POSITION_ERROR": "This employee has no assigned position!",
+  "WRONG_TYPE": "Wrong data type"
+}

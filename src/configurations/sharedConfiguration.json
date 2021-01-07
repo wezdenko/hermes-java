@@ -1,0 +1,23 @@
+{
+  "WIDTH": 900,
+  "HEIGHT": 600,
+  "SPACING_WIDTH_DIVIDER": 6,
+  "SPACING_BUTTON_DIVIDER": 4,
+  "PADDING": 10,
+  "SPACING": 5,
+  "BUTTON_MIN_WIDTH": 100,
+  "TAB_MIN_WIDTH_LOW": 50,
+  "TAB_MIN_WIDTH_MEDIUM": 100,
+  "TAB_MIN_WIDTH_HIGH": 200,
+  "CSS_PATH": "./resources/styles/styles.css",
+  "LOGOUT_LABEL": "Log out",
+  "SEARCH": "Search...",
+
+  "DELETE_BUTTON": "Delete",
+  "GIVEDOUT_BUTTON": "Gived out",
+  "ADD_BUTTON": "Add",
+  "COMMIT_BUTTON": "Commit",
+  "LOGOUT_BUTTON": "Log out",
+  "CHANGESTATUS_BUTTON": "Change Status"
+  
+}

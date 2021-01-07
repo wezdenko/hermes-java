@@ -40,39 +40,51 @@ public class LoginLayout {
     static String action;
     static Employee employee;
     static JSONParser jsonParser;
-    static JSONObject jsonObject;
+    static JSONObject jsonObj;
 
     public static Scene setLoginScene(Stage primaryStage) {
-      // long width=0, height=0;
-      // String welcomeLabel="", loginLabel="", passwordLabel="",;
+      long width=0, height=0, padding=0;
+      String welcomeLabel="", loginLabel="", passwordLabel="", loginText="", cssPath="";
 
-      // jsonParser = new JSONParser();
-      // try{
-      //   jsonObject = (JSONObject) jsonParser.parse(new FileReader("src/configurations/mainApp.json"));
-      //   width = (Long) jsonObject.get("PRIMARY_WIDTH");
-      //   height = (Long) jsonObject.get("PRIMARY_HEIGHT");
-      //   title = (String) jsonObject.get("TITLE");
-      // }catch (FileNotFoundException fe) {
-      //   fe.printStackTrace();
-      // } catch (IOException io) {
-      //   io.printStackTrace();
-      // } catch (ParseException pe) {
-      //   pe.printStackTrace();
-      // }
+      jsonParser = new JSONParser();
+      try{
+        jsonObj = (JSONObject) jsonParser.parse(new FileReader("src/configurations/loginLayout.json"));
+        
+        width = (Long) jsonObj.get("LOGIN_WIDTH");
+        height = (Long) jsonObj.get("LOGIN_HEIGHT");
+
+        welcomeLabel = (String) jsonObj.get("WELCOME_LABEL");
+        loginLabel = (String) jsonObj.get("LOGIN_LABEL");
+        passwordLabel = (String) jsonObj.get("PASSWORD_LABEL");
+        loginText = (String) jsonObj.get("LOGIN_TEXT");
+
+        
+        jsonObj = (JSONObject) jsonParser.parse(new FileReader("src/configurations/sharedConfiguration.json"));
+        
+        padding = (Long) jsonObj.get("PADDING");
+        cssPath = (String) jsonObj.get("CSS_PATH");
+
+      }catch (FileNotFoundException fe) {
+        fe.printStackTrace();
+      } catch (IOException io) {
+        io.printStackTrace();
+      } catch (ParseException pe) {
+        pe.printStackTrace();
+      }
         // Welcome Message - Label
-        Label welcomeMsg = new Label("You have to enter your login and password");
+        Label welcomeMsg = new Label(welcomeLabel);
 
         // Login - Label&TextField
-        Label loginMsg = new Label("Login:");
+        Label loginMsg = new Label(loginLabel);
         TextField loginField = new TextField();
 
         // Password - Label&TextField
-        Label passwordMsg = new Label("Password:");
+        Label passwordMsg = new Label(passwordLabel);
         PasswordField passwordField = new PasswordField();
 
         // Login button
         Button loginBtn = new Button();
-        loginBtn.setText("Log In");
+        loginBtn.setText(loginText);
         loginBtn.setOnAction(e -> {
             login(primaryStage, loginField, passwordField);
         });   
@@ -80,9 +92,9 @@ public class LoginLayout {
         // Scene 1 - Logging layout
         // Grid
         GridPane loginLayout = new GridPane();
-        loginLayout.setPadding(new Insets(10, 10, 10, 10));
-        loginLayout.setVgap(8);
-        loginLayout.setHgap(10);
+        loginLayout.setPadding(new Insets(padding, padding, padding, padding));
+        loginLayout.setVgap(padding);
+        loginLayout.setHgap(padding);
         GridPane.setConstraints(welcomeMsg, 1, 1);
         GridPane.setConstraints(loginMsg, 0, 3);
         GridPane.setConstraints(loginField, 1, 3);
@@ -91,8 +103,8 @@ public class LoginLayout {
         GridPane.setConstraints(loginBtn, 1, 5);
         loginLayout.getChildren().addAll(welcomeMsg, loginMsg, loginField, passwordMsg, passwordField, loginBtn);
         loginLayout.setAlignment(Pos.BASELINE_CENTER);
-        loginScene = new Scene(loginLayout, 400, 250);
-        loginScene.getStylesheets().add("./resources/styles/styles.css");
+        loginScene = new Scene(loginLayout, width, height);
+        loginScene.getStylesheets().add(cssPath);
 
         // Login on enter key pressed
         loginScene.setOnKeyPressed(e -> {
@@ -104,6 +116,35 @@ public class LoginLayout {
         return loginScene;
 }
     private static void login(Stage primaryStage, TextField loginField, TextField passwordField) {
+      String errorMsg="", loginError="", passwordError="", connectionError="";
+      String unknownError="",corruptionError="", dbConnectionError="", noPositionError="", cssPath="";
+
+      jsonParser = new JSONParser();
+      try{
+        jsonObj = (JSONObject) jsonParser.parse(new FileReader("src/configurations/errors.json"));
+        
+        errorMsg = (String) jsonObj.get("ERROR_MSG");
+        loginError = (String) jsonObj.get("LOGIN_ERROR");
+        passwordError = (String) jsonObj.get("PASSWORD_ERROR");
+        connectionError = (String) jsonObj.get("CONNECTION_ERROR");
+        unknownError = (String) jsonObj.get("UNKNOWN_ERROR");
+        corruptionError = (String) jsonObj.get("CORRUPTION_ERROR");
+        dbConnectionError = (String) jsonObj.get("DB_CONNECTION_ERROR");
+        noPositionError = (String) jsonObj.get("NO_POSITION_ERROR");
+
+        
+        jsonObj = (JSONObject) jsonParser.parse(new FileReader("src/configurations/sharedConfiguration.json"));
+        
+        cssPath = (String) jsonObj.get("CSS_PATH");
+
+      }catch (FileNotFoundException fe) {
+        fe.printStackTrace();
+      } catch (IOException io) {
+        io.printStackTrace();
+      } catch (ParseException pe) {
+        pe.printStackTrace();
+      }
+
         int employeeID = -1;
         
         try {
@@ -114,16 +155,16 @@ public class LoginLayout {
                 employeeID = loginAccessor.login(loginField.getText(), passwordField.getText());
             } catch (SQLException exception) {
                 if (exception.getErrorCode() == LoginAccessor.LoginError) {
-                    AlertBox.display("ERROR", "Wrong login!");
+                    AlertBox.display(errorMsg, loginError);
                 } 
                 else if (exception.getErrorCode() == LoginAccessor.PasswordError) {
-                    AlertBox.display("ERROR", "Wrong password!");
+                    AlertBox.display(errorMsg, passwordError);
                 }
                 else {
-                    AlertBox.display("ERROR", "Connection error!");
+                    AlertBox.display(errorMsg, connectionError);
                 }
             } catch (Exception exception) {
-                AlertBox.display("ERROR", "Unknown error!");
+                AlertBox.display(errorMsg, unknownError);
             }
 
             try {
@@ -134,37 +175,37 @@ public class LoginLayout {
                 }
             } catch (Exception exception) {
                 employeeID = -1;
-                AlertBox.display("ERROR", "Cannot download data, it might be corrupted!");
+                AlertBox.display(errorMsg, corruptionError);
             }
 
             Database.closeConnection(con);
 
         } catch (SQLException exception) {
-            AlertBox.display("ERROR", "Cannot connect to database!");
+            AlertBox.display(errorMsg, dbConnectionError);
         } finally {
             if (employeeID >= 0) {
                 switch (employee.getPositionID()) {
                     case 0:
                         // Scene 4 - Menager Layout
                         managerScene = ManagerLayout.setManagerScene(primaryStage);
-                        managerScene.getStylesheets().add("./resources/styles/styles.css");
+                        managerScene.getStylesheets().add(cssPath);
                         primaryStage.setScene(managerScene);
                         break;
                     case 1:
                         // Scene 3 - Courier Layout
                         courierScene = CourierLayout.setCourierScene(primaryStage);
-                        courierScene.getStylesheets().add("./resources/styles/styles.css");
+                        courierScene.getStylesheets().add(cssPath);
                         primaryStage.setScene(courierScene);
                         break;
                     case 2:
                         // Scene 2 - StoreKeeper Layout
                         storeKeeperScene = StoreKeeperLayout.setStoreKeeperScene(primaryStage);
-                        storeKeeperScene.getStylesheets().add("./resources/styles/styles.css");
+                        storeKeeperScene.getStylesheets().add(cssPath);
 
                         primaryStage.setScene(storeKeeperScene);
                     break;
                     default:
-                        AlertBox.display("ERROR", "This employee has no assigned position!");
+                        AlertBox.display(errorMsg, noPositionError);
                         break;
                 }
             }

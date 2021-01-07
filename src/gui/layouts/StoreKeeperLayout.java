@@ -32,27 +32,70 @@ import database.Database;
 
 import database.classes.Converter;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 public class StoreKeeperLayout {
 
     static Scene storeKeeperScene;
     static TableView<Parcel> parcelTable;
     static String action;
+    static JSONParser jsonParser;
+    static JSONObject jsonObj;
 
     public static Scene setStoreKeeperScene(Stage primaryStage) {
+      int width=0, height=0, spacingDivider=0, spacingButtonDivider=0, padding=0, buttonMinWidth=0;
+      int mediumTabWidth=0, lowTabWidth=0, spacingSize=0;
+      String search="", deleteLabel="", givedOutLabel ="", addLabel ="", commitLabel ="", logOutLabel ="";
+
+
+      jsonParser = new JSONParser();
+      try{
+        jsonObj = (JSONObject) jsonParser.parse(new FileReader("src/configurations/sharedConfiguration.json"));
+        
+        width = (int) (long) jsonObj.get("WIDTH");
+        height = (int) (long) jsonObj.get("HEIGHT");
+        spacingDivider = (int) (long) jsonObj.get("SPACING_WIDTH_DIVIDER");
+        spacingButtonDivider = (int) (long) jsonObj.get("SPACING_BUTTON_DIVIDER");
+        padding = (int) (long) jsonObj.get("PADDING");
+        spacingSize = (int) (long) jsonObj.get("SPACING");
+        buttonMinWidth = (int) (long) jsonObj.get("BUTTON_MIN_WIDTH");
+        mediumTabWidth = (int) (long) jsonObj.get("TAB_MIN_WIDTH_MEDIUM");
+        lowTabWidth = (int) (long) jsonObj.get("TAB_MIN_WIDTH_LOW");
+
+        search = (String) jsonObj.get("SEARCH");
+        deleteLabel = (String) jsonObj.get("DELETE_BUTTON");
+        givedOutLabel = (String) jsonObj.get("GIVEDOUT_BUTTON");
+        addLabel = (String) jsonObj.get("ADD_BUTTON");
+        commitLabel = (String) jsonObj.get("COMMIT_BUTTON");
+        logOutLabel = (String) jsonObj.get("LOGOUT_BUTTON");
+
+
+      }catch (FileNotFoundException fe) {
+        fe.printStackTrace();
+      } catch (IOException io) {
+        io.printStackTrace();
+      } catch (ParseException pe) {
+        pe.printStackTrace();
+      }
         // Search Field
         TextField searchField = new TextField();
-        searchField.setPromptText("Search...");
+        searchField.setPromptText(search);
 
         // Setting ParcelTable
 
         // ID Column
         TableColumn<Parcel, String> idColumn = new TableColumn<>("Parcel ID");
-        idColumn.setMinWidth(100);
+        idColumn.setMinWidth(mediumTabWidth);
         idColumn.setCellValueFactory(new PropertyValueFactory<>("ID_S"));
 
         // sName Column
         TableColumn<Parcel, String> sNameColumn = new TableColumn<>("Sender Name");
-        sNameColumn.setMinWidth(100);
+        sNameColumn.setMinWidth(mediumTabWidth);
         sNameColumn.setCellValueFactory(new PropertyValueFactory<>("sName"));
         sNameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         sNameColumn.setOnEditCommit(new EventHandler<CellEditEvent<Parcel, String>>() {
@@ -66,7 +109,7 @@ public class StoreKeeperLayout {
 
         // sSurname Column
         TableColumn<Parcel, String> sSurnameColumn = new TableColumn<>("Sender Surname");
-        sSurnameColumn.setMinWidth(100);
+        sSurnameColumn.setMinWidth(mediumTabWidth);
         sSurnameColumn.setCellValueFactory(new PropertyValueFactory<>("sSurname"));
         sSurnameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         sSurnameColumn.setOnEditCommit(new EventHandler<CellEditEvent<Parcel, String>>() {
@@ -80,7 +123,7 @@ public class StoreKeeperLayout {
 
         // sAddress_street Column
         TableColumn<Parcel, String> sStreetColumn = new TableColumn<>("Sender Street");
-        sStreetColumn.setMinWidth(100);
+        sStreetColumn.setMinWidth(mediumTabWidth);
         sStreetColumn.setCellValueFactory(new PropertyValueFactory<>("sAddress_street"));
         sStreetColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         sStreetColumn.setOnEditCommit(new EventHandler<CellEditEvent<Parcel, String>>() {
@@ -94,7 +137,7 @@ public class StoreKeeperLayout {
 
         // sAddress_houseNumber Column
         TableColumn<Parcel, String> sHouseNumberColumn = new TableColumn<>("Sender HN");
-        sHouseNumberColumn.setMinWidth(100);
+        sHouseNumberColumn.setMinWidth(mediumTabWidth);
         sHouseNumberColumn.setCellValueFactory(new PropertyValueFactory<>("sAddress_houseNumber"));
         sHouseNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         sHouseNumberColumn.setOnEditCommit(new EventHandler<CellEditEvent<Parcel, String>>() {
@@ -110,7 +153,7 @@ public class StoreKeeperLayout {
         
         // sAddress_apartmentNumber Column
         TableColumn<Parcel, String> sApartmentNumberColumn = new TableColumn<>("Sender AN");
-        sApartmentNumberColumn.setMinWidth(100);
+        sApartmentNumberColumn.setMinWidth(mediumTabWidth);
         sApartmentNumberColumn.setCellValueFactory(new PropertyValueFactory<>("sAddress_apartmentNumber"));
         sApartmentNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         sApartmentNumberColumn.setOnEditCommit(new EventHandler<CellEditEvent<Parcel, String>>() {
@@ -126,7 +169,7 @@ public class StoreKeeperLayout {
         
         // sAddress_city Column
         TableColumn<Parcel, String> sCityColumn = new TableColumn<>("Sender City");
-        sCityColumn.setMinWidth(100);
+        sCityColumn.setMinWidth(mediumTabWidth);
         sCityColumn.setCellValueFactory(new PropertyValueFactory<>("sAddress_city"));
         sCityColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         sCityColumn.setOnEditCommit(new EventHandler<CellEditEvent<Parcel, String>>() {
@@ -140,7 +183,7 @@ public class StoreKeeperLayout {
 
         // sAddress_postalCode Column
         TableColumn<Parcel, String> sPostalCodeColumn = new TableColumn<>("Sender PC");
-        sPostalCodeColumn.setMinWidth(100);
+        sPostalCodeColumn.setMinWidth(mediumTabWidth);
         sPostalCodeColumn.setCellValueFactory(new PropertyValueFactory<>("sAddress_postalCode"));
         sPostalCodeColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         sPostalCodeColumn.setOnEditCommit(new EventHandler<CellEditEvent<Parcel, String>>() {
@@ -154,7 +197,7 @@ public class StoreKeeperLayout {
 
         // sAddress_countryID Column
         TableColumn<Parcel, String> sCountryIDColumn = new TableColumn<>("Sender Country ID");
-        sCountryIDColumn.setMinWidth(100);
+        sCountryIDColumn.setMinWidth(mediumTabWidth);
         sCountryIDColumn.setCellValueFactory(new PropertyValueFactory<>("sAddress_countryID"));
         sCountryIDColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         sCountryIDColumn.setOnEditCommit(new EventHandler<CellEditEvent<Parcel, String>>() {
@@ -170,7 +213,7 @@ public class StoreKeeperLayout {
 
         // sEmail Column
         TableColumn<Parcel, String> sEmailColumn = new TableColumn<>("Sender Email");
-        sEmailColumn.setMinWidth(100);
+        sEmailColumn.setMinWidth(mediumTabWidth);
         sEmailColumn.setCellValueFactory(new PropertyValueFactory<>("sEmail"));
         sEmailColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         sEmailColumn.setOnEditCommit(new EventHandler<CellEditEvent<Parcel, String>>() {
@@ -184,7 +227,7 @@ public class StoreKeeperLayout {
 
         // sPhoneNumber Column
         TableColumn<Parcel, String> sPhoneNumberColumn = new TableColumn<>("Sender PN");
-        sPhoneNumberColumn.setMinWidth(100);
+        sPhoneNumberColumn.setMinWidth(mediumTabWidth);
         sPhoneNumberColumn.setCellValueFactory(new PropertyValueFactory<>("sPhoneNumber"));
         sPhoneNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         sPhoneNumberColumn.setOnEditCommit(new EventHandler<CellEditEvent<Parcel, String>>() {
@@ -198,7 +241,7 @@ public class StoreKeeperLayout {
 
         // rName Column
         TableColumn<Parcel, String> rNameColumn = new TableColumn<>("Receiver Name");
-        rNameColumn.setMinWidth(100);
+        rNameColumn.setMinWidth(mediumTabWidth);
         rNameColumn.setCellValueFactory(new PropertyValueFactory<>("rName"));
         rNameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         rNameColumn.setOnEditCommit(new EventHandler<CellEditEvent<Parcel, String>>() {
@@ -212,7 +255,7 @@ public class StoreKeeperLayout {
 
         // rSurname Column
         TableColumn<Parcel, String> rSurnameColumn = new TableColumn<>("Receiver Surname");
-        rSurnameColumn.setMinWidth(100);
+        rSurnameColumn.setMinWidth(mediumTabWidth);
         rSurnameColumn.setCellValueFactory(new PropertyValueFactory<>("rSurname"));
         rSurnameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         rSurnameColumn.setOnEditCommit(new EventHandler<CellEditEvent<Parcel, String>>() {
@@ -226,7 +269,7 @@ public class StoreKeeperLayout {
 
         // rAddress_street Column
         TableColumn<Parcel, String> rStreetColumn = new TableColumn<>("Receiver Street");
-        rStreetColumn.setMinWidth(100);
+        rStreetColumn.setMinWidth(mediumTabWidth);
         rStreetColumn.setCellValueFactory(new PropertyValueFactory<>("rAddress_street"));
         rStreetColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         rStreetColumn.setOnEditCommit(new EventHandler<CellEditEvent<Parcel, String>>() {
@@ -240,7 +283,7 @@ public class StoreKeeperLayout {
 
         // rAddress_houseNumber Column
         TableColumn<Parcel, String> rHouseNumberColumn = new TableColumn<>("Receiver HN");
-        rHouseNumberColumn.setMinWidth(100);
+        rHouseNumberColumn.setMinWidth(mediumTabWidth);
         rHouseNumberColumn.setCellValueFactory(new PropertyValueFactory<>("rAddress_houseNumber"));
         rHouseNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         rHouseNumberColumn.setOnEditCommit(new EventHandler<CellEditEvent<Parcel, String>>() {
@@ -256,7 +299,7 @@ public class StoreKeeperLayout {
         
         // sAddress_apartmentNumber Column
         TableColumn<Parcel, String> rApartmentNumberColumn = new TableColumn<>("Receiver AN");
-        rApartmentNumberColumn.setMinWidth(100);
+        rApartmentNumberColumn.setMinWidth(mediumTabWidth);
         rApartmentNumberColumn.setCellValueFactory(new PropertyValueFactory<>("rAddress_apartmentNumber"));
         rApartmentNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         rApartmentNumberColumn.setOnEditCommit(new EventHandler<CellEditEvent<Parcel, String>>() {
@@ -272,7 +315,7 @@ public class StoreKeeperLayout {
         
         // sAddress_city Column
         TableColumn<Parcel, String> rCityColumn = new TableColumn<>("Receiver City");
-        rCityColumn.setMinWidth(100);
+        rCityColumn.setMinWidth(mediumTabWidth);
         rCityColumn.setCellValueFactory(new PropertyValueFactory<>("rAddress_city"));
         rCityColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         rCityColumn.setOnEditCommit(new EventHandler<CellEditEvent<Parcel, String>>() {
@@ -286,7 +329,7 @@ public class StoreKeeperLayout {
 
         // rAddress_postalCode Column
         TableColumn<Parcel, String> rPostalCodeColumn = new TableColumn<>("Receiver PC");
-        rPostalCodeColumn.setMinWidth(100);
+        rPostalCodeColumn.setMinWidth(mediumTabWidth);
         rPostalCodeColumn.setCellValueFactory(new PropertyValueFactory<>("rAddress_postalCode"));
         rPostalCodeColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         rPostalCodeColumn.setOnEditCommit(new EventHandler<CellEditEvent<Parcel, String>>() {
@@ -300,7 +343,7 @@ public class StoreKeeperLayout {
 
         // rAddress_countryID Column
         TableColumn<Parcel, String> rCountryIDColumn = new TableColumn<>("Receiver Country ID");
-        rCountryIDColumn.setMinWidth(100);
+        rCountryIDColumn.setMinWidth(mediumTabWidth);
         rCountryIDColumn.setCellValueFactory(new PropertyValueFactory<>("rAddress_countryID"));
         rCountryIDColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         rCountryIDColumn.setOnEditCommit(new EventHandler<CellEditEvent<Parcel, String>>() {
@@ -316,7 +359,7 @@ public class StoreKeeperLayout {
 
         // rEmail Column
         TableColumn<Parcel, String> rEmailColumn = new TableColumn<>("Receiver Email");
-        rEmailColumn.setMinWidth(100);
+        rEmailColumn.setMinWidth(mediumTabWidth);
         rEmailColumn.setCellValueFactory(new PropertyValueFactory<>("rEmail"));
         rEmailColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         rEmailColumn.setOnEditCommit(new EventHandler<CellEditEvent<Parcel, String>>() {
@@ -330,7 +373,7 @@ public class StoreKeeperLayout {
 
         // rPhoneNumber Column
         TableColumn<Parcel, String> rPhoneNumberColumn = new TableColumn<>("Receiver PN");
-        rPhoneNumberColumn.setMinWidth(100);
+        rPhoneNumberColumn.setMinWidth(mediumTabWidth);
         rPhoneNumberColumn.setCellValueFactory(new PropertyValueFactory<>("rPhoneNumber"));
         rPhoneNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         rPhoneNumberColumn.setOnEditCommit(new EventHandler<CellEditEvent<Parcel, String>>() {
@@ -344,12 +387,12 @@ public class StoreKeeperLayout {
 
         // Status Column
         TableColumn<Parcel, String> statusColumn = new TableColumn<>("Status");
-        statusColumn.setMinWidth(100);
+        statusColumn.setMinWidth(mediumTabWidth);
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         // Cost Column
         TableColumn<Parcel, String> costColumn = new TableColumn<>("Cost");
-        costColumn.setMinWidth(100);
+        costColumn.setMinWidth(mediumTabWidth);
         costColumn.setCellValueFactory(new PropertyValueFactory<>("cost_S"));
         costColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         costColumn.setOnEditCommit(new EventHandler<CellEditEvent<Parcel, String>>() {
@@ -365,7 +408,7 @@ public class StoreKeeperLayout {
 
         // Weight Column
         TableColumn<Parcel, String> weightColumn = new TableColumn<>("Weight");
-        weightColumn.setMinWidth(50);
+        weightColumn.setMinWidth(lowTabWidth);
         weightColumn.setCellValueFactory(new PropertyValueFactory<>("weight_S"));
         weightColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         weightColumn.setOnEditCommit(new EventHandler<CellEditEvent<Parcel, String>>() {
@@ -381,7 +424,7 @@ public class StoreKeeperLayout {
 
         // Length Column
         TableColumn<Parcel, String> lengthColumn = new TableColumn<>("Length");
-        lengthColumn.setMinWidth(50);
+        lengthColumn.setMinWidth(lowTabWidth);
         lengthColumn.setCellValueFactory(new PropertyValueFactory<>("length_S"));
         lengthColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         lengthColumn.setOnEditCommit(new EventHandler<CellEditEvent<Parcel, String>>() {
@@ -397,7 +440,7 @@ public class StoreKeeperLayout {
         
         // Width Column
         TableColumn<Parcel, String> widthColumn = new TableColumn<>("Width");
-        widthColumn.setMinWidth(50);
+        widthColumn.setMinWidth(lowTabWidth);
         widthColumn.setCellValueFactory(new PropertyValueFactory<>("width_S"));
         widthColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         widthColumn.setOnEditCommit(new EventHandler<CellEditEvent<Parcel, String>>() {
@@ -413,7 +456,7 @@ public class StoreKeeperLayout {
 
         // Height Column
         TableColumn<Parcel, String> heightColumn = new TableColumn<>("Height");
-        heightColumn.setMinWidth(50);
+        heightColumn.setMinWidth(lowTabWidth);
         heightColumn.setCellValueFactory(new PropertyValueFactory<>("height_S"));
         heightColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         heightColumn.setOnEditCommit(new EventHandler<CellEditEvent<Parcel, String>>() {
@@ -429,7 +472,7 @@ public class StoreKeeperLayout {
 
         // Code Column
         TableColumn<Parcel, String> codeColumn = new TableColumn<>("Code");
-        codeColumn.setMinWidth(100);
+        codeColumn.setMinWidth(mediumTabWidth);
         codeColumn.setCellValueFactory(new PropertyValueFactory<>("code_S"));
         codeColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         codeColumn.setOnEditCommit(new EventHandler<CellEditEvent<Parcel, String>>() {
@@ -447,7 +490,7 @@ public class StoreKeeperLayout {
 
         // carID Column
         TableColumn<Parcel, String> carIdColumn = new TableColumn<>("Car ID");
-        carIdColumn.setMinWidth(50);
+        carIdColumn.setMinWidth(lowTabWidth);
         carIdColumn.setCellValueFactory(new PropertyValueFactory<>("carID_S"));
         carIdColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         carIdColumn.setOnEditCommit(new EventHandler<CellEditEvent<Parcel, String>>() {
@@ -463,7 +506,7 @@ public class StoreKeeperLayout {
 
         // CollectionPointID(CPI) Column
         TableColumn<Parcel, String> collectionPointIDColumn = new TableColumn<>("CPI");
-        collectionPointIDColumn.setMinWidth(50);
+        collectionPointIDColumn.setMinWidth(lowTabWidth);
         collectionPointIDColumn.setCellValueFactory(new PropertyValueFactory<>("collectionPointID_S"));
         collectionPointIDColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         collectionPointIDColumn.setOnEditCommit(new EventHandler<CellEditEvent<Parcel, String>>() {
@@ -479,7 +522,7 @@ public class StoreKeeperLayout {
 
         // DepartmentID Column
         TableColumn<Parcel, String> departmentIDColumn = new TableColumn<>("Dep ID");
-        departmentIDColumn.setMinWidth(50);
+        departmentIDColumn.setMinWidth(lowTabWidth);
         departmentIDColumn.setCellValueFactory(new PropertyValueFactory<>("departmentID_S"));
         departmentIDColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         departmentIDColumn.setOnEditCommit(new EventHandler<CellEditEvent<Parcel, String>>() {
@@ -502,24 +545,21 @@ public class StoreKeeperLayout {
         parcelTable.setMaxHeight(Double.MAX_VALUE);
         parcelTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        // int width = 900;
-        // int height = 600;
-
         // Init scene and layout
         VBox layout2 = new VBox();
-        storeKeeperScene = new Scene(layout2, 900, 600);
+        storeKeeperScene = new Scene(layout2, width, height);
 
         // Buttons under table
-        Double width = storeKeeperScene.getWidth() / 6;
+        int spacingWidth = width / spacingDivider;
 
         HBox buttonLayout = new HBox();
-        buttonLayout.setPadding(new Insets(10, 0, 10, 0));
-        buttonLayout.setSpacing(width / 4);
+        buttonLayout.setPadding(new Insets(padding, 0, padding, 0));
+        buttonLayout.setSpacing(spacingWidth / spacingButtonDivider);
 
         // Gived Out
-        Button giveOutButton = new Button("Gived Out");
+        Button giveOutButton = new Button(givedOutLabel);
         HBox.setHgrow(giveOutButton, Priority.ALWAYS);
-        giveOutButton.setMinWidth(width);
+        giveOutButton.setMinWidth(buttonMinWidth);
         giveOutButton.setMaxWidth(Double.MAX_VALUE);
         giveOutButton.setOnAction(e -> {
             Integer carID = GivedOutBox.display();
@@ -527,28 +567,28 @@ public class StoreKeeperLayout {
         });
 
         // Delete
-        Button deletButton = new Button("Delete");
+        Button deletButton = new Button(deleteLabel);
         HBox.setHgrow(deletButton, Priority.ALWAYS);
-        deletButton.setMinWidth(width);
+        deletButton.setMinWidth(buttonMinWidth);
         deletButton.setMaxWidth(Double.MAX_VALUE);
         deletButton.setOnAction(e -> deleteButtonClicked());
 
         // Add
-        Button addButton = new Button("Add");
+        Button addButton = new Button(addLabel);
         HBox.setHgrow(addButton, Priority.ALWAYS);
-        addButton.setMinWidth(width);
+        addButton.setMinWidth(buttonMinWidth);
         addButton.setMaxWidth(Double.MAX_VALUE);
         addButton.setOnAction(e -> addButtonClicked());
 
         // Commit
-        Button btn6 = new Button("Commit");
+        Button btn6 = new Button(commitLabel);
         HBox.setHgrow(btn6, Priority.ALWAYS);
-        btn6.setMinWidth(width);
+        btn6.setMinWidth(buttonMinWidth);
         btn6.setMaxWidth(Double.MAX_VALUE);
 
-        Button logOutBtn = new Button("Log out");
+        Button logOutBtn = new Button(logOutLabel);
         HBox.setHgrow(logOutBtn, Priority.ALWAYS);
-        logOutBtn.setMinWidth(100);
+        logOutBtn.setMinWidth(buttonMinWidth);
         logOutBtn.setMaxWidth(Double.MAX_VALUE);
         logOutBtn.setOnAction(e -> {
           Scene loginScene;
@@ -560,8 +600,8 @@ public class StoreKeeperLayout {
 
         // Scene/layout
         VBox.setVgrow(parcelTable, Priority.ALWAYS);
-        layout2.setSpacing(5);
-        layout2.setPadding(new Insets(10, 10, 10, 10));
+        layout2.setSpacing(spacingSize);
+        layout2.setPadding(new Insets(padding, padding, padding, padding));
         layout2.getChildren().addAll(searchField, parcelTable, buttonLayout);
 
         // Final Commands
