@@ -23,7 +23,6 @@ import java.sql.Connection;
 
 import database.classes.Parcel;
 import gui.boxes.ChoiceWindow;
-import gui.layouts.SubLayouts.MenuBar_own;
 import database.accessors.ParcelDataAccessor;
 import database.Database;
 
@@ -43,11 +42,10 @@ public class CourierLayout {
     
 
     public static Scene setCourierScene(Stage primaryStage) {
-      MenuBar menuBar = MenuBar_own.setMenuBar();
 
       int width=0, height=0, spacingDivider=0, spacingButtonDivider=0, padding=0, buttonMinWidth=0;
       int highTabWidth=0, mediumTabWidth=0, lowTabWidth=0, spacingSize=0;
-      String search="", logOutLabel="", changeStatusLabel="", commitLabel="";
+      String search="", logOutLabel="", changeStatusLabel="";
 
 
       jsonParser = new JSONParser();
@@ -69,7 +67,6 @@ public class CourierLayout {
         search = (String) jsonObj.get("SEARCH");
         logOutLabel = (String) jsonObj.get("LOGOUT_BUTTON");
         changeStatusLabel = (String) jsonObj.get("CHANGESTATUS_BUTTON");
-        commitLabel = (String) jsonObj.get("COMMIT_BUTTON");
 
 
       }catch (FileNotFoundException fe) {
@@ -142,10 +139,6 @@ public class CourierLayout {
         changeBtn.setMaxWidth(Double.MAX_VALUE);
         changeBtn.setOnAction(e -> changeStatus());
 
-        Button btn6 = new Button(commitLabel);
-        HBox.setHgrow(btn6, Priority.ALWAYS);
-        btn6.setMinWidth(buttonMinWidth);
-        btn6.setMaxWidth(Double.MAX_VALUE);
 
         Button logOutBtn = new Button(logOutLabel);
         HBox.setHgrow(logOutBtn, Priority.ALWAYS);
@@ -157,7 +150,7 @@ public class CourierLayout {
           primaryStage.setScene(loginScene);
         });
 
-        buttonLayout.getChildren().addAll(changeBtn, btn6, logOutBtn);
+        buttonLayout.getChildren().addAll(changeBtn, logOutBtn);
 
 
         VBox.setVgrow(parcelsTable, Priority.ALWAYS);

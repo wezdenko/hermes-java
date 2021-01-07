@@ -26,7 +26,6 @@ import java.sql.Connection;
 
 import database.classes.Parcel;
 import gui.boxes.GivedOutBox;
-import gui.layouts.SubLayouts.MenuBar_own;
 import gui.boxes.AddBox;
 
 import database.accessors.ParcelDataAccessor;
@@ -87,8 +86,6 @@ public class StoreKeeperLayout {
         // Search Field
         TextField searchField = new TextField();
         searchField.setPromptText(search);
-
-        MenuBar menuBar = MenuBar_own.setMenuBar();
 
         // Setting ParcelTable
 

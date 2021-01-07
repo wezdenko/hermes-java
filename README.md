@@ -55,6 +55,32 @@ Postawione cele i ich realizacja:
     * łączenie się z bazą za pomocą sterownika OJDBC
     * wysyłanie zapytań do bazy danych za pomocą “prepared statements”
 
+# Etap 3
+Postawione cele i ich realizacja
+* ukończenie aplikacji desktopowej
+  * Dodanie widoku managera
+    * Panel managera(np. login: manager, hasło: manager(wczytywane z bazy danych))
+      * Wyświetlanie listy paczek, pojazdów, departamentów, stanowisk, pracowników z możliwością modyfikacji każdej komórki
+      * Dodawanie nowych rekordów do wymienionych tabel
+      * Usuwanie rekordów
+      * Przycisk commit, który połączy się z bazą danych i aktualizuje wartości zmienione
+      * Przycisk logout
+  * Ulepszenie aplikacji pod względem graficznym poprzez dodanie arkusza stylów css
+* Ukończenie bazy danych i dodanie funkcjonalności do aplikacji
+  * Dodanie funkcji do bazy(np. login - generowanie loginu pracowników)
+  * Implementacji przycisku commit oraz logout
+* Wyodrębnienie logiki aplikacji od interfejsu i zahardcodowanych rzeczy
+  * Logowanie do aplikacji realizowane jest poprzez sprawdzenie automatycznie uprawnień użytkownika i przełączenie go na odpowiedni layout
+  * Konfiguracja różnych stałych elementów aplikacji typu szerokość, wysokość okna, teksty dialogowe umieszczone w plikach .json
+  * Oddzielenie layoutu logowania do odrębnego pliku, nie znajduje się on już w głównym pliku
+* Komentarze
+  * Dodanie komentarzy w kluczowych miejscach opisujących najważniejsze działania aplikacji
+* Testy
+  * Zostały napisane testy jednostkowe do sprawdzania dostępu do bazy danych, funkcjonalności Data Accessorów i edycji zawartości bazy
+
+
+
+
 ---
 
 ## **Cele na kolejne etapy**
