@@ -71,4 +71,18 @@ public class PositionDataAccessor {
         prepStatement.execute();
         prepStatement.close();
     }
+
+    public void updatePosition(Position position) throws SQLException {
+        String insertSQL = "UPDATE position SET name = ?, max_salary = ?, min_salary = ? " +
+        "WHERE position_id = ?";
+        PreparedStatement prepStatement = connection.prepareStatement(insertSQL);
+
+        prepStatement.setString(1, position.getName());
+        prepStatement.setFloat(2, position.getMinSalary());
+        prepStatement.setFloat(3, position.getMaxSalary());
+        prepStatement.setInt(4, position.getId());
+
+        prepStatement.execute();
+        prepStatement.close();
+    }
 }
