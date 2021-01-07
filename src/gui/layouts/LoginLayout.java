@@ -26,15 +26,39 @@ import database.accessors.LoginAccessor;
 import database.accessors.EmployeeDataAccessor;
 import database.classes.Employee;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 public class LoginLayout {
 
     static Scene loginScene, storeKeeperScene, courierScene, managerScene;
     static TableView<Parcel> parcelTable;
     static String action;
     static Employee employee;
-    
+    static JSONParser jsonParser;
+    static JSONObject jsonObject;
 
     public static Scene setLoginScene(Stage primaryStage) {
+      // long width=0, height=0;
+      // String welcomeLabel="", loginLabel="", passwordLabel="",;
+
+      // jsonParser = new JSONParser();
+      // try{
+      //   jsonObject = (JSONObject) jsonParser.parse(new FileReader("src/configurations/mainApp.json"));
+      //   width = (Long) jsonObject.get("PRIMARY_WIDTH");
+      //   height = (Long) jsonObject.get("PRIMARY_HEIGHT");
+      //   title = (String) jsonObject.get("TITLE");
+      // }catch (FileNotFoundException fe) {
+      //   fe.printStackTrace();
+      // } catch (IOException io) {
+      //   io.printStackTrace();
+      // } catch (ParseException pe) {
+      //   pe.printStackTrace();
+      // }
         // Welcome Message - Label
         Label welcomeMsg = new Label("You have to enter your login and password");
 
@@ -68,6 +92,7 @@ public class LoginLayout {
         loginLayout.getChildren().addAll(welcomeMsg, loginMsg, loginField, passwordMsg, passwordField, loginBtn);
         loginLayout.setAlignment(Pos.BASELINE_CENTER);
         loginScene = new Scene(loginLayout, 400, 250);
+        loginScene.getStylesheets().add("./resources/styles/styles.css");
 
         // Login on enter key pressed
         loginScene.setOnKeyPressed(e -> {
@@ -78,7 +103,7 @@ public class LoginLayout {
 
         return loginScene;
 }
-    private static void login(Stage window, TextField loginField, TextField passwordField) {
+    private static void login(Stage primaryStage, TextField loginField, TextField passwordField) {
         int employeeID = -1;
         
         try {
@@ -121,18 +146,22 @@ public class LoginLayout {
                 switch (employee.getPositionID()) {
                     case 0:
                         // Scene 4 - Menager Layout
-                        managerScene = ManagerLayout.setManagerScene();
-                        window.setScene(managerScene);
+                        managerScene = ManagerLayout.setManagerScene(primaryStage);
+                        managerScene.getStylesheets().add("./resources/styles/styles.css");
+                        primaryStage.setScene(managerScene);
                         break;
                     case 1:
                         // Scene 3 - Courier Layout
-                        courierScene = CourierLayout.setCourierScene();
-                        window.setScene(courierScene);
+                        courierScene = CourierLayout.setCourierScene(primaryStage);
+                        courierScene.getStylesheets().add("./resources/styles/styles.css");
+                        primaryStage.setScene(courierScene);
                         break;
                     case 2:
                         // Scene 2 - StoreKeeper Layout
-                        storeKeeperScene = StoreKeeperLayout.setStoreKeeperScene();
-                        window.setScene(storeKeeperScene);
+                        storeKeeperScene = StoreKeeperLayout.setStoreKeeperScene(primaryStage);
+                        storeKeeperScene.getStylesheets().add("./resources/styles/styles.css");
+
+                        primaryStage.setScene(storeKeeperScene);
                     break;
                     default:
                         AlertBox.display("ERROR", "This employee has no assigned position!");

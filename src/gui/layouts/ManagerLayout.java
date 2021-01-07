@@ -6,6 +6,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import gui.layouts.ManagerSubLayouts.*;
+import javafx.stage.Stage;
 
 public class ManagerLayout {
 
@@ -17,15 +18,15 @@ public class ManagerLayout {
     static VBox positionLayout;
     static VBox employeeLayout;
     
-    public static Scene setManagerScene() {
-        double width = 700;
-        double height = 500;
-        parcelLayout = ParcelLayout.setParcelLayout(width);
-        departmentLayout = DepartmentLayout.setDepartmentLayout(width);
-        carLayout = CarLayout.setCarLayout(width);
-        collectionPointLayout = CollectionPointLayout.setCollectionPointLayout(width);
-        positionLayout = PositionLayout.setPositionLayout(width);
-        employeeLayout = EmployeeLayout.setEmployeeLayout(width);
+    public static Scene setManagerScene(Stage primaryStage) {
+        double width = 900;
+        double height = 600;
+        parcelLayout = ParcelLayout.setParcelLayout(width, primaryStage);
+        departmentLayout = DepartmentLayout.setDepartmentLayout(width, primaryStage);
+        carLayout = CarLayout.setCarLayout(width, primaryStage);
+        collectionPointLayout = CollectionPointLayout.setCollectionPointLayout(width, primaryStage);
+        positionLayout = PositionLayout.setPositionLayout(width, primaryStage);
+        employeeLayout = EmployeeLayout.setEmployeeLayout(width, primaryStage);
         menagerScene = new Scene(employeeLayout, width, height);
         //Creating a TabPane
         TabPane tabPane = new TabPane();

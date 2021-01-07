@@ -26,6 +26,9 @@ import gui.boxes.AddBox_CPoint;
 import database.accessors.CollectionPointDataAccessor;
 import database.Database;
 
+import gui.layouts.LoginLayout;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
 
 import database.classes.CollectionPoint;
 
@@ -33,7 +36,7 @@ public class CollectionPointLayout {
 
     static TableView<CollectionPoint> collectionPointTable;
 
-    public static VBox setCollectionPointLayout(Double sceneWidth) {
+    public static VBox setCollectionPointLayout(Double sceneWidth, Stage primaryStage) {
         // Search Field
         TextField searchField = new TextField();
         searchField.setPromptText("Search...");
@@ -82,7 +85,7 @@ public class CollectionPointLayout {
 
         HBox buttonLayout = new HBox();
         buttonLayout.setPadding(new Insets(10, 0, 10, 0));
-        buttonLayout.setSpacing(width / 3);
+        buttonLayout.setSpacing(width / 4);
 
         // Delete
         Button deletButton = new Button("Delete");
@@ -104,7 +107,19 @@ public class CollectionPointLayout {
         btn6.setMinWidth(width);
         btn6.setMaxWidth(Double.MAX_VALUE);
 
-        buttonLayout.getChildren().addAll(deletButton, addButton, btn6);
+        // Log Out
+        Button logOutBtn = new Button("Log out");
+        HBox.setHgrow(logOutBtn, Priority.ALWAYS);
+        logOutBtn.setMinWidth(100);
+        logOutBtn.setMaxWidth(Double.MAX_VALUE);
+        logOutBtn.setOnAction(e -> {
+          Scene loginScene;
+          loginScene = LoginLayout.setLoginScene(primaryStage);
+          primaryStage.setScene(loginScene);
+        });
+        
+
+        buttonLayout.getChildren().addAll(deletButton, addButton, btn6, logOutBtn);
 
         // Scene/layout
         VBox.setVgrow(collectionPointTable, Priority.ALWAYS);

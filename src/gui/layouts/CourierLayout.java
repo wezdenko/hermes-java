@@ -15,7 +15,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.control.SelectionMode;
-import java.lang.ClassLoader;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
 import java.sql.Connection;
 
@@ -29,7 +30,7 @@ public class CourierLayout {
     static Scene courierScene;
     static TableView<Parcel> parcelsTable;
 
-    public static Scene setCourierScene() {
+    public static Scene setCourierScene(Stage primaryStage) {
         // Search Field
         TextField searchField = new TextField();
         searchField.setPromptText("Search...");
@@ -78,18 +79,41 @@ public class CourierLayout {
         parcelsTable.autosize();
         parcelsTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
+        int width = 900;
+        int height = 600;
+
         VBox courierV = new VBox();
-        courierScene = new Scene(courierV, 900, 500);
+        courierScene = new Scene(courierV, width, height);
+
+        int spacingWidth = width / 6;
+
+        HBox buttonLayout = new HBox();
+        buttonLayout.setPadding(new Insets(10, 0, 10, 0));
+        buttonLayout.setSpacing(spacingWidth / 4);
 
         Button changeBtn = new Button("Change Status");
+        HBox.setHgrow(changeBtn, Priority.ALWAYS);
         changeBtn.setMinWidth(100);
         changeBtn.setMaxWidth(Double.MAX_VALUE);
         changeBtn.setOnAction(e -> changeStatus());
 
+        Button logOutBtn = new Button("Log out");
+        HBox.setHgrow(logOutBtn, Priority.ALWAYS);
+        logOutBtn.setMinWidth(100);
+        logOutBtn.setMaxWidth(Double.MAX_VALUE);
+        logOutBtn.setOnAction(e -> {
+          Scene loginScene;
+          loginScene = LoginLayout.setLoginScene(primaryStage);
+          primaryStage.setScene(loginScene);
+        });
+
+        buttonLayout.getChildren().addAll(changeBtn, logOutBtn);
+
+
         VBox.setVgrow(parcelsTable, Priority.ALWAYS);
         courierV.setSpacing(5);
         courierV.setPadding(new Insets(10, 10, 10, 10));
-        courierV.getChildren().addAll(searchField, parcelsTable, changeBtn);
+        courierV.getChildren().addAll(searchField, parcelsTable, buttonLayout);
 
         return courierScene;
     }

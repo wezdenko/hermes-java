@@ -19,6 +19,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.stage.Stage;
 
 import java.sql.Connection;
 
@@ -37,7 +38,7 @@ public class StoreKeeperLayout {
     static TableView<Parcel> parcelTable;
     static String action;
 
-    public static Scene setStoreKeeperScene() {
+    public static Scene setStoreKeeperScene(Stage primaryStage) {
         // Search Field
         TextField searchField = new TextField();
         searchField.setPromptText("Search...");
@@ -501,9 +502,12 @@ public class StoreKeeperLayout {
         parcelTable.setMaxHeight(Double.MAX_VALUE);
         parcelTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
+        // int width = 900;
+        // int height = 600;
+
         // Init scene and layout
         VBox layout2 = new VBox();
-        storeKeeperScene = new Scene(layout2, 900, 500);
+        storeKeeperScene = new Scene(layout2, 900, 600);
 
         // Buttons under table
         Double width = storeKeeperScene.getWidth() / 6;
@@ -542,7 +546,17 @@ public class StoreKeeperLayout {
         btn6.setMinWidth(width);
         btn6.setMaxWidth(Double.MAX_VALUE);
 
-        buttonLayout.getChildren().addAll(giveOutButton, deletButton, addButton, btn6);
+        Button logOutBtn = new Button("Log out");
+        HBox.setHgrow(logOutBtn, Priority.ALWAYS);
+        logOutBtn.setMinWidth(100);
+        logOutBtn.setMaxWidth(Double.MAX_VALUE);
+        logOutBtn.setOnAction(e -> {
+          Scene loginScene;
+          loginScene = LoginLayout.setLoginScene(primaryStage);
+          primaryStage.setScene(loginScene);
+        });
+
+        buttonLayout.getChildren().addAll(giveOutButton, deletButton, addButton, btn6, logOutBtn);
 
         // Scene/layout
         VBox.setVgrow(parcelTable, Priority.ALWAYS);

@@ -23,13 +23,15 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        long width=0, height=0;
+        String title="";
 
         jsonParser = new JSONParser();
         try{
           jsonObject = (JSONObject) jsonParser.parse(new FileReader("src/configurations/mainApp.json"));
-          Long width = (Long) jsonObject.get("PRIMARY_WIDTH");
-          System.out.println(width);
-        
+          width = (Long) jsonObject.get("PRIMARY_WIDTH");
+          height = (Long) jsonObject.get("PRIMARY_HEIGHT");
+          title = (String) jsonObject.get("TITLE");
         }catch (FileNotFoundException fe) {
           fe.printStackTrace();
         } catch (IOException io) {
@@ -42,9 +44,9 @@ public class App extends Application {
 
         // Window Setting
         loginScene = LoginLayout.setLoginScene(primaryStage);
-        primaryStage.setTitle("Hermes - delivery company");
-        primaryStage.setMinHeight(300);
-        primaryStage.setMinWidth(700);
+        primaryStage.setTitle(title);
+        primaryStage.setMinHeight(height);
+        primaryStage.setMinWidth(width);
         primaryStage.setScene(loginScene);
         primaryStage.setOnCloseRequest(e -> {
             e.consume();
