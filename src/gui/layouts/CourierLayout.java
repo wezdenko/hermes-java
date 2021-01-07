@@ -18,22 +18,26 @@ import javafx.scene.layout.Priority;
 import javafx.scene.control.SelectionMode;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 import database.classes.Parcel;
 import gui.boxes.ChoiceWindow;
 import gui.layouts.SubLayouts.MenuBar_own;
 import database.accessors.ParcelDataAccessor;
 import database.Database;
+import database.classes.AlertBox;
 import database.classes.Employee;
 
 public class CourierLayout {
 
     static Scene courierScene;
     static TableView<Parcel> parcelsTable;
+    static Employee employee;
 
-    public static Scene setCourierScene(Employee employee) {
+    public static Scene setCourierScene(Employee emp) {
 
         MenuBar menuBar = MenuBar_own.setMenuBar();
+        employee = emp;
 
         // Search Field
         TextField searchField = new TextField();
@@ -131,6 +135,50 @@ public class CourierLayout {
             parcel.setStatus(action);
             allParcels.add(parcel);
             parcelsTable.refresh();
+
+            switch (action) {
+                case "DELIVERED":
+                    parcel.setCarID(0);
+                    parcel.setCollectionPointID(0);
+                    parcel.setDepartmentID(0);
+                    break;
+                case "ON_ROAD":
+                    parcel.setCarID(employee.getCarID());
+                    parcel.setCollectionPointID(0);
+                    parcel.setDepartmentID(0);
+                    break;
+                case "IN_C_POINT":
+                    parcel.setCarID(0);
+                    parcel.setCollectionPointID(1);
+                    parcel.setDepartmentID(0);
+                    break;
+                case "IN_WAREHOUSE":
+                    parcel.setCarID(0);
+                    parcel.setCollectionPointID(0);
+                    parcel.setDepartmentID(employee.getDepartmentID());
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        commit(parcelsArray);
+    }
+
+    private static void commit(ArrayList<Parcel> modifiedParcelsList) {
+        try {
+            Connection con = Database.getConnection();
+            ParcelDataAccessor parcelAccessor = new ParcelDataAccessor(con);
+
+            for (Parcel parcel : modifiedParcelsList) {
+                parcelAccessor.updateParcel(parcel);
+            }
+
+            modifiedParcelsList.clear();
+
+            Database.closeConnection(con);
+        } catch (SQLException e) {
+            AlertBox.display("Error", "Cannot connect to database!");
         }
     }
 }
