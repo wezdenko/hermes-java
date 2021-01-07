@@ -20,16 +20,19 @@ import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.TextFieldTableCell;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 import gui.boxes.AddBox_Pos;
 import database.accessors.PositionDataAccessor;
 import database.Database;
 import database.classes.Position;
+import database.classes.AlertBox;
 import database.classes.Converter;
 
 public class PositionLayout {
 
     static TableView<Position> positionTable;
+    static List<Position> modifiedPositions;
 
     public static VBox setPositionLayout(Double sceneWidth) {
         // Search Field
@@ -54,6 +57,7 @@ public class PositionLayout {
                 ((Position)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setName(t.getNewValue());
                 positionTable.refresh();
+                modifiedPositions.add(((Position)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -70,6 +74,7 @@ public class PositionLayout {
                             .setMaxSalary(Converter.StringToInt(t.getNewValue()));
                 }
                 positionTable.refresh();
+                modifiedPositions.add(((Position)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -86,8 +91,12 @@ public class PositionLayout {
                             .setMinSalary(Converter.StringToInt(t.getNewValue()));
                 }
                 positionTable.refresh();
+                modifiedPositions.add(((Position)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
+
+        // List of modified positions
+        modifiedPositions = new ArrayList<>();
 
         // Final Table
         positionTable = new TableView<>();
@@ -127,6 +136,7 @@ public class PositionLayout {
         HBox.setHgrow(btn6, Priority.ALWAYS);
         btn6.setMinWidth(width);
         btn6.setMaxWidth(Double.MAX_VALUE);
+        btn6.setOnAction(e -> commit());
 
         buttonLayout.getChildren().addAll(deletButton, addButton, btn6);
 
@@ -170,5 +180,23 @@ public class PositionLayout {
     public static void addButtonClicked(){
         Position position = AddBox_Pos.display();
         positionTable.getItems().add(position);
+    }
+
+    // Commit button clicked
+    public static void commit() {
+        try {
+            Connection con = Database.getConnection();
+            PositionDataAccessor positionAccessor = new PositionDataAccessor(con);
+
+            for (Position position : modifiedPositions) {
+                positionAccessor.updatePosition(position);
+            }
+
+            modifiedPositions.clear();
+
+            Database.closeConnection(con);
+        } catch (SQLException e) {
+            AlertBox.display("Error", "Cannot connect to database!");
+        }
     }
 }
