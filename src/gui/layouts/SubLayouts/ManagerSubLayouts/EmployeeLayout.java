@@ -21,17 +21,19 @@ import javafx.scene.control.cell.TextFieldTableCell;
 
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.SQLException;
 
 import gui.boxes.AddBox_Emp;
 import database.accessors.EmployeeDataAccessor;
 import database.Database;
-
+import database.classes.AlertBox;
 import database.classes.Converter;
 import database.classes.Employee;
 
 public class EmployeeLayout {
 
     static TableView<Employee> employeeTable;
+    static List<Employee> modifiedEmployees;
 
     public static VBox setEmployeeLayout(Double sceneWidth) {
         // Search Field
@@ -56,6 +58,7 @@ public class EmployeeLayout {
                 ((Employee)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setName(t.getNewValue());
                 employeeTable.refresh();
+                modifiedEmployees.add(((Employee)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -70,6 +73,7 @@ public class EmployeeLayout {
                 ((Employee)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setSurname(t.getNewValue());
                 employeeTable.refresh();
+                modifiedEmployees.add(((Employee)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -86,6 +90,7 @@ public class EmployeeLayout {
                             .setPesel(Converter.StringToLong(t.getNewValue()));
                 }
                 employeeTable.refresh();
+                modifiedEmployees.add(((Employee)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -102,6 +107,7 @@ public class EmployeeLayout {
                             .setSalary(Converter.StringToInt(t.getNewValue()));
                 }
                 employeeTable.refresh();
+                modifiedEmployees.add(((Employee)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -133,6 +139,7 @@ public class EmployeeLayout {
                 ((Employee)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setLogin(t.getNewValue());
                 employeeTable.refresh();
+                modifiedEmployees.add(((Employee)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -147,6 +154,7 @@ public class EmployeeLayout {
                 ((Employee)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setPassword(t.getNewValue());
                 employeeTable.refresh();
+                modifiedEmployees.add(((Employee)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -163,6 +171,7 @@ public class EmployeeLayout {
                             .setCarID(Converter.StringToInt(t.getNewValue()));
                 }
                 employeeTable.refresh();
+                modifiedEmployees.add(((Employee)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -179,6 +188,7 @@ public class EmployeeLayout {
                             .setPositionID(Converter.StringToInt(t.getNewValue()));
                 }
                 employeeTable.refresh();
+                modifiedEmployees.add(((Employee)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -195,6 +205,7 @@ public class EmployeeLayout {
                             .setManagerID(Converter.StringToInt(t.getNewValue()));
                 }
                 employeeTable.refresh();
+                modifiedEmployees.add(((Employee)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -211,8 +222,12 @@ public class EmployeeLayout {
                             .setDepartmentID(Converter.StringToInt(t.getNewValue()));
                 }
                 employeeTable.refresh();
+                modifiedEmployees.add(((Employee)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
+
+        // List of modified employees
+        modifiedEmployees = new ArrayList<>();
 
         // Final Table
         employeeTable = new TableView<>();
@@ -252,6 +267,7 @@ public class EmployeeLayout {
         HBox.setHgrow(btn6, Priority.ALWAYS);
         btn6.setMinWidth(width);
         btn6.setMaxWidth(Double.MAX_VALUE);
+        btn6.setOnAction(e -> commit());
 
         buttonLayout.getChildren().addAll(deletButton, addButton, btn6);
 
@@ -296,5 +312,23 @@ public class EmployeeLayout {
     public static void addButtonClicked(){
         Employee employee = AddBox_Emp.display();
         employeeTable.getItems().add(employee);
+    }
+
+    // Commit button clicked
+    public static void commit() {
+        try {
+            Connection con = Database.getConnection();
+            EmployeeDataAccessor employeeAccessor = new EmployeeDataAccessor(con);
+
+            for (Employee employee : modifiedEmployees) {
+                employeeAccessor.updateEmployee(employee);
+            }
+
+            modifiedEmployees.clear();
+
+            Database.closeConnection(con);
+        } catch (SQLException e) {
+            AlertBox.display("Error", "Cannot connect to database!");
+        }
     }
 }
