@@ -34,6 +34,7 @@ public class EmployeeLayout {
 
     static TableView<Employee> employeeTable;
     static List<Employee> modifiedEmployees;
+    static List<Employee> deletedEmployees;
 
     public static VBox setEmployeeLayout(Double sceneWidth) {
         // Search Field
@@ -228,6 +229,7 @@ public class EmployeeLayout {
 
         // List of modified employees
         modifiedEmployees = new ArrayList<>();
+        deletedEmployees = new ArrayList<>();
 
         // Final Table
         employeeTable = new TableView<>();
@@ -306,6 +308,7 @@ public class EmployeeLayout {
         selected = employeeTable.getSelectionModel().getSelectedItems();
         ArrayList<Employee> rows = new ArrayList<>(selected);
         rows.forEach(row -> employeeTable.getItems().remove(row));
+        deletedEmployees.addAll(rows);
     }
 
     //Add button clicked
@@ -324,7 +327,12 @@ public class EmployeeLayout {
                 employeeAccessor.updateEmployee(employee);
             }
 
+            for (Employee employee : deletedEmployees) {
+                employeeAccessor.deleteEmployee(employee);
+            }
+
             modifiedEmployees.clear();
+            deletedEmployees.clear();
 
             Database.closeConnection(con);
         } catch (SQLException e) {

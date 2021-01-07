@@ -33,6 +33,7 @@ public class PositionLayout {
 
     static TableView<Position> positionTable;
     static List<Position> modifiedPositions;
+    static List<Position> deletedPositions;
 
     public static VBox setPositionLayout(Double sceneWidth) {
         // Search Field
@@ -97,6 +98,7 @@ public class PositionLayout {
 
         // List of modified positions
         modifiedPositions = new ArrayList<>();
+        deletedPositions = new ArrayList<>();
 
         // Final Table
         positionTable = new TableView<>();
@@ -174,6 +176,7 @@ public class PositionLayout {
         selected = positionTable.getSelectionModel().getSelectedItems();
         ArrayList<Position> rows = new ArrayList<>(selected);
         rows.forEach(row -> positionTable.getItems().remove(row));
+        deletedPositions.addAll(rows);
     }
 
     //Add button clicked
@@ -192,7 +195,12 @@ public class PositionLayout {
                 positionAccessor.updatePosition(position);
             }
 
+            for (Position position : deletedPositions) {
+                positionAccessor.deletePosition(position);
+            }
+
             modifiedPositions.clear();
+            deletedPositions.clear();
 
             Database.closeConnection(con);
         } catch (SQLException e) {

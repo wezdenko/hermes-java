@@ -33,6 +33,7 @@ public class CarLayout {
 
     static TableView<Car> carTable;
     static List<Car> modifiedCars;
+    static List<Car> deletedCars;
 
     public static VBox setCarLayout(Double sceneWidth) {
         // Search Field
@@ -111,6 +112,7 @@ public class CarLayout {
 
         // List of modified cars
         modifiedCars = new ArrayList<>();
+        deletedCars = new ArrayList<>();
 
         // Final Table
         carTable = new TableView<>();
@@ -189,6 +191,7 @@ public class CarLayout {
         selected = carTable.getSelectionModel().getSelectedItems();
         ArrayList<Car> rows = new ArrayList<>(selected);
         rows.forEach(row -> carTable.getItems().remove(row));
+        deletedCars.addAll(rows);
     }
 
     //Add button clicked
@@ -207,7 +210,12 @@ public class CarLayout {
                 carAccessor.updateCar(car);
             }
 
+            for (Car car : deletedCars) {
+                carAccessor.deleteCar(car);
+            }
+
             modifiedCars.clear();
+            deletedCars.clear();
 
             Database.closeConnection(con);
         } catch (SQLException e) {

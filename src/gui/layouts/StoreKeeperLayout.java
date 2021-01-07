@@ -41,6 +41,7 @@ public class StoreKeeperLayout {
     static TableView<Parcel> parcelTable;
     static List<Parcel> modifiedParcelsList;
     static List<Parcel> addedParcelsList;
+    static List<Parcel> deletedParcelsList;
     static String action;
 
     public static Scene setStoreKeeperScene(Employee employee) {
@@ -531,6 +532,8 @@ public class StoreKeeperLayout {
 
         // List of modified parcels
         modifiedParcelsList = new ArrayList<>();
+        addedParcelsList = new ArrayList<>();
+        deletedParcelsList = new ArrayList<>();
 
         // Final Table
         parcelTable = new TableView<>();
@@ -620,6 +623,7 @@ public class StoreKeeperLayout {
         pracelsSelected = parcelTable.getSelectionModel().getSelectedItems();
         ArrayList<Parcel> rows = new ArrayList<>(pracelsSelected);
         rows.forEach(row -> parcelTable.getItems().remove(row));
+        deletedParcelsList.addAll(rows);
     }
 
     //Add button clicked
@@ -660,8 +664,13 @@ public class StoreKeeperLayout {
                 parcelAccessor.setParcel(parcel);
             }
 
+            for (Parcel parcel : deletedParcelsList) {
+                parcelAccessor.deleteParcel(parcel);
+            }
+
             modifiedParcelsList.clear();
             addedParcelsList.clear();
+            deletedParcelsList.clear();
 
             Database.closeConnection(con);
         } catch (SQLException e) {

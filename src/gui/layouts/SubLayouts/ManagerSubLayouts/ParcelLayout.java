@@ -34,6 +34,7 @@ public class ParcelLayout {
 
     static TableView<Parcel> parcelTable;
     static List<Parcel> modifiedParcelsList;
+    static List<Parcel> deletedParcelsList;
 
     public static VBox setParcelLayout(Double sceneWidth) {
         // Search Field
@@ -521,6 +522,7 @@ public class ParcelLayout {
 
         // List of modified parcels
         modifiedParcelsList = new ArrayList<>();
+        deletedParcelsList = new ArrayList<>();
 
         // Final Table
         parcelTable = new TableView<>();
@@ -599,6 +601,7 @@ public class ParcelLayout {
         pracelsSelected = parcelTable.getSelectionModel().getSelectedItems();
         ArrayList<Parcel> rows = new ArrayList<>(pracelsSelected);
         rows.forEach(row -> parcelTable.getItems().remove(row));
+        deletedParcelsList.addAll(rows);
     }
 
     //Add button clicked
@@ -617,7 +620,12 @@ public class ParcelLayout {
                 parcelAccessor.updateParcel(parcel);
             }
 
+            for (Parcel parcel : deletedParcelsList) {
+                parcelAccessor.deleteParcel(parcel);
+            }
+
             modifiedParcelsList.clear();
+            deletedParcelsList.clear();
 
             Database.closeConnection(con);
         } catch (SQLException e) {

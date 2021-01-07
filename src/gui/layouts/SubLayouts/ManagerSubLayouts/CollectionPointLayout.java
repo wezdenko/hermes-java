@@ -33,6 +33,7 @@ public class CollectionPointLayout {
 
     static TableView<CollectionPoint> collectionPointTable;
     static List<CollectionPoint> modifiedPoints;
+    static List<CollectionPoint> deletedPoints;
 
     public static VBox setCollectionPointLayout(Double sceneWidth) {
         // Search Field
@@ -68,6 +69,7 @@ public class CollectionPointLayout {
 
         // List of modified collection points
         modifiedPoints = new ArrayList<>();
+        deletedPoints = new ArrayList<>();
 
         // Final Table
         collectionPointTable = new TableView<>();
@@ -146,6 +148,7 @@ public class CollectionPointLayout {
         selected = collectionPointTable.getSelectionModel().getSelectedItems();
         ArrayList<CollectionPoint> rows = new ArrayList<>(selected);
         rows.forEach(row -> collectionPointTable.getItems().remove(row));
+        deletedPoints.addAll(rows);
     }
 
     //Add button clicked
@@ -164,7 +167,12 @@ public class CollectionPointLayout {
                 pointAccessor.updateCollectionPoint(point);
             }
 
+            for (CollectionPoint point : deletedPoints) {
+                pointAccessor.deleteCollectionPoint(point);
+            }
+
             modifiedPoints.clear();
+            deletedPoints.clear();
 
             Database.closeConnection(con);
         } catch (SQLException e) {

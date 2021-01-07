@@ -34,6 +34,7 @@ public class DepartmentLayout {
 
     static TableView<Department> departmentTable;
     static List<Department> modifiedDepartments;
+    static List<Department> deletedDepartments;
 
     public static VBox setDepartmentLayout(Double sceneWidth) {
         // Search Field
@@ -178,6 +179,7 @@ public class DepartmentLayout {
 
         // List of modified departments
         modifiedDepartments = new ArrayList<>();
+        deletedDepartments = new ArrayList<>();
 
         // Final Table
         departmentTable = new TableView<>();
@@ -256,6 +258,7 @@ public class DepartmentLayout {
         selected = departmentTable.getSelectionModel().getSelectedItems();
         ArrayList<Department> rows = new ArrayList<>(selected);
         rows.forEach(row -> departmentTable.getItems().remove(row));
+        deletedDepartments.addAll(rows);
     }
 
     //Add button clicked
@@ -274,7 +277,12 @@ public class DepartmentLayout {
                 departmentsAccessor.updateDepartment(department);
             }
 
+            for (Department department : deletedDepartments) {
+                departmentsAccessor.deleteDepartment(department);
+            }
+
             modifiedDepartments.clear();
+            deletedDepartments.clear();
 
             Database.closeConnection(con);
         } catch (SQLException e) {
