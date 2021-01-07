@@ -21,11 +21,12 @@ import javafx.scene.control.cell.TextFieldTableCell;
 
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.SQLException;
 
 import gui.boxes.AddBox_Dep;
 import database.accessors.DepartmentsDataAccessor;
 import database.Database;
-
+import database.classes.AlertBox;
 import database.classes.Converter;
 import database.classes.Department;
 
@@ -45,6 +46,8 @@ public class DepartmentLayout {
     static TableView<Department> departmentTable;
     static JSONParser jsonParser;
     static JSONObject jsonObj;
+    static List<Department> modifiedDepartments;
+    static List<Department> deletedDepartments;
 
     public static VBox setDepartmentLayout(int width, Stage primaryStage) {
       int spacingDivider=0, spacingButtonDivider=0, padding=0, buttonMinWidth=0;
@@ -101,6 +104,7 @@ public class DepartmentLayout {
                 ((Department)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setName(t.getNewValue());
                 departmentTable.refresh();
+                modifiedDepartments.add(((Department)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -115,6 +119,7 @@ public class DepartmentLayout {
                 ((Department)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setAddress_street(t.getNewValue());
                 departmentTable.refresh();
+                modifiedDepartments.add(((Department)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -131,6 +136,7 @@ public class DepartmentLayout {
                             .setAddress_houseNumber(Converter.StringToInt(t.getNewValue()));
                 }
                 departmentTable.refresh();
+                modifiedDepartments.add(((Department)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
         
@@ -147,6 +153,7 @@ public class DepartmentLayout {
                             .setAddress_apartmentNumber(Converter.StringToInt(t.getNewValue()));
                 }
                 departmentTable.refresh();
+                modifiedDepartments.add(((Department)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
         
@@ -161,6 +168,7 @@ public class DepartmentLayout {
                 ((Department)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setAddress_city(t.getNewValue());
                 departmentTable.refresh();
+                modifiedDepartments.add(((Department)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -175,6 +183,7 @@ public class DepartmentLayout {
                 ((Department)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setAddress_postalCode(t.getNewValue());
                 departmentTable.refresh();
+                modifiedDepartments.add(((Department)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -191,6 +200,7 @@ public class DepartmentLayout {
                             .setAddress_countryID(Converter.StringToInt(t.getNewValue()));
                 }
                 departmentTable.refresh();
+                modifiedDepartments.add(((Department)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });        
 
@@ -208,8 +218,13 @@ public class DepartmentLayout {
                             .setCreationDate(Converter.StringToDate(t.getNewValue()));
                 }
                 departmentTable.refresh();
+                modifiedDepartments.add(((Department)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
+
+        // List of modified departments
+        modifiedDepartments = new ArrayList<>();
+        deletedDepartments = new ArrayList<>();
 
         // Final Table
         departmentTable = new TableView<>();
@@ -249,6 +264,7 @@ public class DepartmentLayout {
         HBox.setHgrow(btn6, Priority.ALWAYS);
         btn6.setMinWidth(buttonMinWidth);
         btn6.setMaxWidth(Double.MAX_VALUE);
+        btn6.setOnAction(e -> commit());
 
         
         // Log Out
@@ -299,11 +315,35 @@ public class DepartmentLayout {
         selected = departmentTable.getSelectionModel().getSelectedItems();
         ArrayList<Department> rows = new ArrayList<>(selected);
         rows.forEach(row -> departmentTable.getItems().remove(row));
+        deletedDepartments.addAll(rows);
     }
 
     //Add button clicked
     public static void addButtonClicked(){
         Department department = AddBox_Dep.display();
         departmentTable.getItems().add(department);
+    }
+
+    // Commit button clicked
+    public static void commit() {
+        try {
+            Connection con = Database.getConnection();
+            DepartmentsDataAccessor departmentsAccessor = new DepartmentsDataAccessor(con);
+
+            for (Department department : modifiedDepartments) {
+                departmentsAccessor.updateDepartment(department);
+            }
+
+            for (Department department : deletedDepartments) {
+                departmentsAccessor.deleteDepartment(department);
+            }
+
+            modifiedDepartments.clear();
+            deletedDepartments.clear();
+
+            Database.closeConnection(con);
+        } catch (SQLException e) {
+            AlertBox.display("Error", "Cannot connect to database!");
+        }
     }
 }

@@ -47,7 +47,7 @@ public class CarDataAccessor {
         return carList;
     }
 
-    public void setDepartment(Car car) throws SQLException {
+    public void setCar(Car car) throws SQLException {
         String query = "INSERT INTO positions VALUES(?, ?, ?, ?, ?)";
         PreparedStatement prepStatement = connection.prepareStatement(query);
 
@@ -56,6 +56,31 @@ public class CarDataAccessor {
         prepStatement.setString(3, car.getModel());
         prepStatement.setInt(4, car.getDepartmentID());
         prepStatement.setInt(5, car.getEmployeeID());
+
+        prepStatement.execute();
+        prepStatement.close();
+    }
+
+    public void updateCar(Car car) throws SQLException {
+        String query = "UPDATE cars SET plates = ?, model = ?, department_id = ?, employee_id = ? " + 
+        "WHERE cars_id = ?";
+        PreparedStatement prepStatement = connection.prepareStatement(query);
+
+        prepStatement.setString(1, car.getPlates());
+        prepStatement.setString(2, car.getModel());
+        prepStatement.setInt(3, car.getDepartmentID());
+        prepStatement.setInt(4, car.getEmployeeID());
+        prepStatement.setInt(5, car.getCarsID());
+
+        prepStatement.execute();
+        prepStatement.close();
+    }
+
+    public void deleteCar(Car car) throws SQLException {
+        String query = "DELETE FROM cars WHERE cars_id = ?";
+        PreparedStatement prepStatement = connection.prepareStatement(query);
+
+        prepStatement.setString(1, car.getCarsID_S());
 
         prepStatement.execute();
         prepStatement.close();

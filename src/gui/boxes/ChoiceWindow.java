@@ -59,7 +59,7 @@ public class ChoiceWindow {
         ChoiceBox<String> choiceBox = new ChoiceBox<>();
 
         // getItems
-        choiceBox.getItems().addAll("Delivered", "Road", "Car", "Collection Point", "Warehouse");
+        choiceBox.getItems().addAll("Delivered", "On Road", "Collection Point", "Warehouse");
 
         // Set a default value
         choiceBox.setValue("Delivered");
@@ -97,6 +97,18 @@ public class ChoiceWindow {
 
     private static String getChoice(ChoiceBox<String> choiceBox) {
         String action = choiceBox.getValue();
-        return action;
+
+        switch (action) {
+            case "Delivered":
+                return "DELIVERED";
+            case "On Road":
+                return "ON_ROAD";
+            case "Collection Point":
+                return "IN_C_POINT";
+            case "Warehouse":
+                return "IN_WAREHOUSE";
+            default:
+                return "ON_ROAD";
+        }
     }
 }

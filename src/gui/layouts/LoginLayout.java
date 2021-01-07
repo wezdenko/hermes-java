@@ -1,4 +1,5 @@
 package gui.layouts;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -43,34 +44,33 @@ public class LoginLayout {
     static JSONObject jsonObj;
 
     public static Scene setLoginScene(Stage primaryStage) {
-      long width=0, height=0, padding=0;
-      String welcomeLabel="", loginLabel="", passwordLabel="", loginText="", cssPath="";
+        long width = 0, height = 0, padding = 0;
+        String welcomeLabel = "", loginLabel = "", passwordLabel = "", loginText = "", cssPath = "";
 
-      jsonParser = new JSONParser();
-      try{
-        jsonObj = (JSONObject) jsonParser.parse(new FileReader("src/configurations/loginLayout.json"));
-        
-        width = (Long) jsonObj.get("LOGIN_WIDTH");
-        height = (Long) jsonObj.get("LOGIN_HEIGHT");
+        jsonParser = new JSONParser();
+        try {
+            jsonObj = (JSONObject) jsonParser.parse(new FileReader("src/configurations/loginLayout.json"));
 
-        welcomeLabel = (String) jsonObj.get("WELCOME_LABEL");
-        loginLabel = (String) jsonObj.get("LOGIN_LABEL");
-        passwordLabel = (String) jsonObj.get("PASSWORD_LABEL");
-        loginText = (String) jsonObj.get("LOGIN_TEXT");
+            width = (Long) jsonObj.get("LOGIN_WIDTH");
+            height = (Long) jsonObj.get("LOGIN_HEIGHT");
 
-        
-        jsonObj = (JSONObject) jsonParser.parse(new FileReader("src/configurations/sharedConfiguration.json"));
-        
-        padding = (Long) jsonObj.get("PADDING");
-        cssPath = (String) jsonObj.get("CSS_PATH");
+            welcomeLabel = (String) jsonObj.get("WELCOME_LABEL");
+            loginLabel = (String) jsonObj.get("LOGIN_LABEL");
+            passwordLabel = (String) jsonObj.get("PASSWORD_LABEL");
+            loginText = (String) jsonObj.get("LOGIN_TEXT");
 
-      }catch (FileNotFoundException fe) {
-        fe.printStackTrace();
-      } catch (IOException io) {
-        io.printStackTrace();
-      } catch (ParseException pe) {
-        pe.printStackTrace();
-      }
+            jsonObj = (JSONObject) jsonParser.parse(new FileReader("src/configurations/sharedConfiguration.json"));
+
+            padding = (Long) jsonObj.get("PADDING");
+            cssPath = (String) jsonObj.get("CSS_PATH");
+
+        } catch (FileNotFoundException fe) {
+            fe.printStackTrace();
+        } catch (IOException io) {
+            io.printStackTrace();
+        } catch (ParseException pe) {
+            pe.printStackTrace();
+        }
         // Welcome Message - Label
         Label welcomeMsg = new Label(welcomeLabel);
 
@@ -87,7 +87,7 @@ public class LoginLayout {
         loginBtn.setText(loginText);
         loginBtn.setOnAction(e -> {
             login(primaryStage, loginField, passwordField);
-        });   
+        });
 
         // Scene 1 - Logging layout
         // Grid
@@ -114,39 +114,39 @@ public class LoginLayout {
         });
 
         return loginScene;
-}
+    }
+
     private static void login(Stage primaryStage, TextField loginField, TextField passwordField) {
-      String errorMsg="", loginError="", passwordError="", connectionError="";
-      String unknownError="",corruptionError="", dbConnectionError="", noPositionError="", cssPath="";
+        String errorMsg = "", loginError = "", passwordError = "", connectionError = "";
+        String unknownError = "", corruptionError = "", dbConnectionError = "", noPositionError = "", cssPath = "";
 
-      jsonParser = new JSONParser();
-      try{
-        jsonObj = (JSONObject) jsonParser.parse(new FileReader("src/configurations/errors.json"));
-        
-        errorMsg = (String) jsonObj.get("ERROR_MSG");
-        loginError = (String) jsonObj.get("LOGIN_ERROR");
-        passwordError = (String) jsonObj.get("PASSWORD_ERROR");
-        connectionError = (String) jsonObj.get("CONNECTION_ERROR");
-        unknownError = (String) jsonObj.get("UNKNOWN_ERROR");
-        corruptionError = (String) jsonObj.get("CORRUPTION_ERROR");
-        dbConnectionError = (String) jsonObj.get("DB_CONNECTION_ERROR");
-        noPositionError = (String) jsonObj.get("NO_POSITION_ERROR");
+        jsonParser = new JSONParser();
+        try {
+            jsonObj = (JSONObject) jsonParser.parse(new FileReader("src/configurations/errors.json"));
 
-        
-        jsonObj = (JSONObject) jsonParser.parse(new FileReader("src/configurations/sharedConfiguration.json"));
-        
-        cssPath = (String) jsonObj.get("CSS_PATH");
+            errorMsg = (String) jsonObj.get("ERROR_MSG");
+            loginError = (String) jsonObj.get("LOGIN_ERROR");
+            passwordError = (String) jsonObj.get("PASSWORD_ERROR");
+            connectionError = (String) jsonObj.get("CONNECTION_ERROR");
+            unknownError = (String) jsonObj.get("UNKNOWN_ERROR");
+            corruptionError = (String) jsonObj.get("CORRUPTION_ERROR");
+            dbConnectionError = (String) jsonObj.get("DB_CONNECTION_ERROR");
+            noPositionError = (String) jsonObj.get("NO_POSITION_ERROR");
 
-      }catch (FileNotFoundException fe) {
-        fe.printStackTrace();
-      } catch (IOException io) {
-        io.printStackTrace();
-      } catch (ParseException pe) {
-        pe.printStackTrace();
-      }
+            jsonObj = (JSONObject) jsonParser.parse(new FileReader("src/configurations/sharedConfiguration.json"));
+
+            cssPath = (String) jsonObj.get("CSS_PATH");
+
+        } catch (FileNotFoundException fe) {
+            fe.printStackTrace();
+        } catch (IOException io) {
+            io.printStackTrace();
+        } catch (ParseException pe) {
+            pe.printStackTrace();
+        }
 
         int employeeID = -1;
-        
+
         try {
             Connection con = Database.getConnection();
             LoginAccessor loginAccessor = new LoginAccessor(con);
@@ -156,11 +156,9 @@ public class LoginLayout {
             } catch (SQLException exception) {
                 if (exception.getErrorCode() == LoginAccessor.LoginError) {
                     AlertBox.display(errorMsg, loginError);
-                } 
-                else if (exception.getErrorCode() == LoginAccessor.PasswordError) {
+                } else if (exception.getErrorCode() == LoginAccessor.PasswordError) {
                     AlertBox.display(errorMsg, passwordError);
-                }
-                else {
+                } else {
                     AlertBox.display(errorMsg, connectionError);
                 }
             } catch (Exception exception) {
@@ -170,8 +168,8 @@ public class LoginLayout {
             try {
                 if (employeeID >= 0) {
                     EmployeeDataAccessor employeeAccessor = new EmployeeDataAccessor(con);
-                    employee = employeeAccessor.getEmployee(
-                        String.format("select * from employees where employees_id = %d", employeeID));
+                    employee = employeeAccessor
+                            .getEmployee(String.format("select * from employees where employees_id = %d", employeeID));
                 }
             } catch (Exception exception) {
                 employeeID = -1;
@@ -193,17 +191,17 @@ public class LoginLayout {
                         break;
                     case 1:
                         // Scene 3 - Courier Layout
-                        courierScene = CourierLayout.setCourierScene(primaryStage);
+                        courierScene = CourierLayout.setCourierScene(primaryStage, employee);
                         courierScene.getStylesheets().add(cssPath);
                         primaryStage.setScene(courierScene);
                         break;
                     case 2:
                         // Scene 2 - StoreKeeper Layout
-                        storeKeeperScene = StoreKeeperLayout.setStoreKeeperScene(primaryStage);
+                        storeKeeperScene = StoreKeeperLayout.setStoreKeeperScene(primaryStage, employee);
                         storeKeeperScene.getStylesheets().add(cssPath);
 
                         primaryStage.setScene(storeKeeperScene);
-                    break;
+                        break;
                     default:
                         AlertBox.display(errorMsg, noPositionError);
                         break;
@@ -211,8 +209,6 @@ public class LoginLayout {
             }
         }
     }
-
-
 
     // Function Closing Window
     public static void closeProgram(Stage window) {

@@ -20,6 +20,7 @@ import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.TextFieldTableCell;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 import database.classes.Parcel;
 import gui.boxes.AddBox;
@@ -31,6 +32,7 @@ import gui.layouts.LoginLayout;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 
+import database.classes.AlertBox;
 import database.classes.Converter;
 
 import java.io.FileNotFoundException;
@@ -45,12 +47,13 @@ public class ParcelLayout {
     static TableView<Parcel> parcelTable;
     static JSONParser jsonParser;
     static JSONObject jsonObj;
+    static List<Parcel> modifiedParcelsList;
+    static List<Parcel> deletedParcelsList;
 
     public static VBox setParcelLayout(int width, Stage primaryStage) {
       int spacingDivider=0, spacingButtonDivider=0, padding=0, buttonMinWidth=0;
       int lowTabWidth=0, mediumTabWidth=0, spacingSize=0;
       String search="", deleteLabel="",  addLabel ="", commitLabel ="", logOutLabel ="";
-
 
       jsonParser = new JSONParser();
       try{
@@ -101,6 +104,7 @@ public class ParcelLayout {
                 ((Parcel)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setSName(t.getNewValue());
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -115,6 +119,7 @@ public class ParcelLayout {
                 ((Parcel)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setSSurname(t.getNewValue());
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -129,6 +134,7 @@ public class ParcelLayout {
                 ((Parcel)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setSAddress_street(t.getNewValue());
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -145,6 +151,7 @@ public class ParcelLayout {
                             .setSAddress_houseNumber(Converter.StringToInt(t.getNewValue()));
                 }
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
         
@@ -161,6 +168,7 @@ public class ParcelLayout {
                             .setSAddress_apartmentNumber(Converter.StringToInt(t.getNewValue()));
                 }
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
         
@@ -175,6 +183,7 @@ public class ParcelLayout {
                 ((Parcel)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setSAddress_city(t.getNewValue());
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -189,6 +198,7 @@ public class ParcelLayout {
                 ((Parcel)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setSAddress_postalCode(t.getNewValue());
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -205,6 +215,7 @@ public class ParcelLayout {
                             .setSAddress_countryID(Converter.StringToInt(t.getNewValue()));
                 }
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });        
 
@@ -219,6 +230,7 @@ public class ParcelLayout {
                 ((Parcel)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setSEmail(t.getNewValue());
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -233,6 +245,7 @@ public class ParcelLayout {
                 ((Parcel)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setSPhoneNumber(t.getNewValue());
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -247,6 +260,7 @@ public class ParcelLayout {
                 ((Parcel)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setRName(t.getNewValue());
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -261,6 +275,7 @@ public class ParcelLayout {
                 ((Parcel)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setRSurname(t.getNewValue());
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -275,6 +290,7 @@ public class ParcelLayout {
                 ((Parcel)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setRAddress_street(t.getNewValue());
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -291,6 +307,7 @@ public class ParcelLayout {
                             .setRAddress_houseNumber(Converter.StringToInt(t.getNewValue()));
                 }
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
         
@@ -307,6 +324,7 @@ public class ParcelLayout {
                             .setRAddress_apartmentNumber(Converter.StringToInt(t.getNewValue()));
                 }
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
         
@@ -321,6 +339,7 @@ public class ParcelLayout {
                 ((Parcel)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setRAddress_city(t.getNewValue());
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -335,6 +354,7 @@ public class ParcelLayout {
                 ((Parcel)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setRAddress_postalCode(t.getNewValue());
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -351,6 +371,7 @@ public class ParcelLayout {
                             .setRAddress_countryID(Converter.StringToInt(t.getNewValue()));
                 }
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -365,6 +386,7 @@ public class ParcelLayout {
                 ((Parcel)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setREmail(t.getNewValue());
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -379,6 +401,7 @@ public class ParcelLayout {
                 ((Parcel)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setRPhoneNumber(t.getNewValue());
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -400,6 +423,7 @@ public class ParcelLayout {
                             .setCost(Converter.StringToDouble(t.getNewValue()));
                 }
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -416,6 +440,7 @@ public class ParcelLayout {
                             .setWeight(Converter.StringToDouble(t.getNewValue()));
                 }
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -432,6 +457,7 @@ public class ParcelLayout {
                             .setLength(Converter.StringToDouble(t.getNewValue()));
                 }
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
         
@@ -448,6 +474,7 @@ public class ParcelLayout {
                             .setWidth(Converter.StringToDouble(t.getNewValue()));
                 }
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -464,6 +491,7 @@ public class ParcelLayout {
                             .setHeight(Converter.StringToDouble(t.getNewValue()));
                 }
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -480,6 +508,7 @@ public class ParcelLayout {
                             .setCode(Converter.StringToInt(t.getNewValue()));
                 }
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -498,6 +527,7 @@ public class ParcelLayout {
                             .setCarID(Converter.StringToInt(t.getNewValue()));
                 }
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -514,6 +544,7 @@ public class ParcelLayout {
                             .setCollectionPointID(Converter.StringToInt(t.getNewValue()));
                 }
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -530,8 +561,13 @@ public class ParcelLayout {
                             .setDepartmentID(Converter.StringToInt(t.getNewValue()));
                 }
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
+
+        // List of modified parcels
+        modifiedParcelsList = new ArrayList<>();
+        deletedParcelsList = new ArrayList<>();
 
         // Final Table
         parcelTable = new TableView<>();
@@ -571,6 +607,7 @@ public class ParcelLayout {
         HBox.setHgrow(btn6, Priority.ALWAYS);
         btn6.setMinWidth(buttonMinWidth);
         btn6.setMaxWidth(Double.MAX_VALUE);
+        btn6.setOnAction(e -> commit());
 
         // Log Out
         Button logOutBtn = new Button(logOutLabel);
@@ -620,12 +657,36 @@ public class ParcelLayout {
         pracelsSelected = parcelTable.getSelectionModel().getSelectedItems();
         ArrayList<Parcel> rows = new ArrayList<>(pracelsSelected);
         rows.forEach(row -> parcelTable.getItems().remove(row));
+        deletedParcelsList.addAll(rows);
     }
 
     //Add button clicked
     public static void addButtonClicked(){
         Parcel parcel = AddBox.display();
         parcelTable.getItems().add(parcel);
+    }
+
+    // Commit button clicked
+    public static void commit() {
+        try {
+            Connection con = Database.getConnection();
+            ParcelDataAccessor parcelAccessor = new ParcelDataAccessor(con);
+
+            for (Parcel parcel : modifiedParcelsList) {
+                parcelAccessor.updateParcel(parcel);
+            }
+
+            for (Parcel parcel : deletedParcelsList) {
+                parcelAccessor.deleteParcel(parcel);
+            }
+
+            modifiedParcelsList.clear();
+            deletedParcelsList.clear();
+
+            Database.closeConnection(con);
+        } catch (SQLException e) {
+            AlertBox.display("Error", "Cannot connect to database!");
+        }
     }
 
 }

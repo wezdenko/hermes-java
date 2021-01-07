@@ -62,4 +62,30 @@ public class CollectionPointDataAccessor {
         prepStatement.execute();
         prepStatement.close();
     }
+
+    public void updateCollectionPoint(CollectionPoint collectionPoint) throws SQLException {
+        String query = "UDPATE colletion_points SET name = ?, address_id = ? " +
+        "WHERE collection_points_id = ?";
+        PreparedStatement prepStatement = connection.prepareStatement(query);
+
+        prepStatement.setString(1, collectionPoint.getName());
+        prepStatement.setInt(2, collectionPoint.getAddress().getAddressID());
+        prepStatement.setInt(3, collectionPoint.getCollectionPointID());
+
+        CompanyAddressDataAccessor addressAccessor = new CompanyAddressDataAccessor(connection);
+        addressAccessor.updateAddress(collectionPoint.getAddress());
+
+        prepStatement.execute();
+        prepStatement.close();
+    }
+
+    public void deleteCollectionPoint(CollectionPoint collectionPoint) throws SQLException {
+        String query = "DELETE FROM collection_points WHERE collection_points_id = ?";
+        PreparedStatement prepStatement = connection.prepareStatement(query);
+
+        prepStatement.setInt(1, collectionPoint.getCollectionPointID());
+
+        prepStatement.execute();
+        prepStatement.close();
+    }
 }

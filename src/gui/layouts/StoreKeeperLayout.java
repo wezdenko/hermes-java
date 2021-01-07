@@ -23,6 +23,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Stage;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 import database.classes.Parcel;
 import gui.boxes.GivedOutBox;
@@ -30,8 +31,9 @@ import gui.boxes.AddBox;
 
 import database.accessors.ParcelDataAccessor;
 import database.Database;
-
+import database.classes.AlertBox;
 import database.classes.Converter;
+import database.classes.Employee;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -44,11 +46,14 @@ public class StoreKeeperLayout {
 
     static Scene storeKeeperScene;
     static TableView<Parcel> parcelTable;
+    static List<Parcel> modifiedParcelsList;
+    static List<Parcel> addedParcelsList;
+    static List<Parcel> deletedParcelsList;
     static String action;
     static JSONParser jsonParser;
     static JSONObject jsonObj;
 
-    public static Scene setStoreKeeperScene(Stage primaryStage) {
+    public static Scene setStoreKeeperScene(Stage primaryStage, Employee employee) {
       int width=0, height=0, spacingDivider=0, spacingButtonDivider=0, padding=0, buttonMinWidth=0;
       int mediumTabWidth=0, lowTabWidth=0, spacingSize=0;
       String search="", deleteLabel="", givedOutLabel ="", addLabel ="", commitLabel ="", logOutLabel ="";
@@ -105,6 +110,7 @@ public class StoreKeeperLayout {
                 ((Parcel)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setSName(t.getNewValue());
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -119,6 +125,7 @@ public class StoreKeeperLayout {
                 ((Parcel)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setSSurname(t.getNewValue());
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -133,6 +140,7 @@ public class StoreKeeperLayout {
                 ((Parcel)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setSAddress_street(t.getNewValue());
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -149,6 +157,7 @@ public class StoreKeeperLayout {
                             .setSAddress_houseNumber(Converter.StringToInt(t.getNewValue()));
                 }
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
         
@@ -165,6 +174,7 @@ public class StoreKeeperLayout {
                             .setSAddress_apartmentNumber(Converter.StringToInt(t.getNewValue()));
                 }
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
         
@@ -179,6 +189,7 @@ public class StoreKeeperLayout {
                 ((Parcel)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setSAddress_city(t.getNewValue());
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -193,6 +204,7 @@ public class StoreKeeperLayout {
                 ((Parcel)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setSAddress_postalCode(t.getNewValue());
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -209,6 +221,7 @@ public class StoreKeeperLayout {
                             .setSAddress_countryID(Converter.StringToInt(t.getNewValue()));
                 }
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });        
 
@@ -223,6 +236,7 @@ public class StoreKeeperLayout {
                 ((Parcel)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setSEmail(t.getNewValue());
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -237,6 +251,7 @@ public class StoreKeeperLayout {
                 ((Parcel)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setSPhoneNumber(t.getNewValue());
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -251,6 +266,7 @@ public class StoreKeeperLayout {
                 ((Parcel)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setRName(t.getNewValue());
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -265,6 +281,7 @@ public class StoreKeeperLayout {
                 ((Parcel)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setRSurname(t.getNewValue());
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -279,6 +296,7 @@ public class StoreKeeperLayout {
                 ((Parcel)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setRAddress_street(t.getNewValue());
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -295,6 +313,7 @@ public class StoreKeeperLayout {
                             .setRAddress_houseNumber(Converter.StringToInt(t.getNewValue()));
                 }
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
         
@@ -311,6 +330,7 @@ public class StoreKeeperLayout {
                             .setRAddress_apartmentNumber(Converter.StringToInt(t.getNewValue()));
                 }
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
         
@@ -325,6 +345,7 @@ public class StoreKeeperLayout {
                 ((Parcel)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setRAddress_city(t.getNewValue());
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -339,6 +360,7 @@ public class StoreKeeperLayout {
                 ((Parcel)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setRAddress_postalCode(t.getNewValue());
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -355,6 +377,7 @@ public class StoreKeeperLayout {
                             .setRAddress_countryID(Converter.StringToInt(t.getNewValue()));
                 }
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -369,6 +392,7 @@ public class StoreKeeperLayout {
                 ((Parcel)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setREmail(t.getNewValue());
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -383,6 +407,7 @@ public class StoreKeeperLayout {
                 ((Parcel)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setRPhoneNumber(t.getNewValue());
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -404,6 +429,7 @@ public class StoreKeeperLayout {
                             .setCost(Converter.StringToDouble(t.getNewValue()));
                 }
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -420,6 +446,7 @@ public class StoreKeeperLayout {
                             .setWeight(Converter.StringToDouble(t.getNewValue()));
                 }
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -436,6 +463,7 @@ public class StoreKeeperLayout {
                             .setLength(Converter.StringToDouble(t.getNewValue()));
                 }
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
         
@@ -452,6 +480,7 @@ public class StoreKeeperLayout {
                             .setWidth(Converter.StringToDouble(t.getNewValue()));
                 }
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -468,6 +497,7 @@ public class StoreKeeperLayout {
                             .setHeight(Converter.StringToDouble(t.getNewValue()));
                 }
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -484,6 +514,7 @@ public class StoreKeeperLayout {
                             .setCode(Converter.StringToInt(t.getNewValue()));
                 }
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -502,6 +533,7 @@ public class StoreKeeperLayout {
                             .setCarID(Converter.StringToInt(t.getNewValue()));
                 }
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -518,6 +550,7 @@ public class StoreKeeperLayout {
                             .setCollectionPointID(Converter.StringToInt(t.getNewValue()));
                 }
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -534,12 +567,18 @@ public class StoreKeeperLayout {
                             .setDepartmentID(Converter.StringToInt(t.getNewValue()));
                 }
                 parcelTable.refresh();
+                modifiedParcelsList.add(((Parcel)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
+        // List of modified parcels
+        modifiedParcelsList = new ArrayList<>();
+        addedParcelsList = new ArrayList<>();
+        deletedParcelsList = new ArrayList<>();
+
         // Final Table
         parcelTable = new TableView<>();
-        parcelTable.setItems(getParcel());
+        parcelTable.setItems(getParcel(employee.getDepartmentID()));
         parcelTable.getColumns().addAll(idColumn, sNameColumn, sSurnameColumn, sStreetColumn, sHouseNumberColumn, sApartmentNumberColumn, sCityColumn, sPostalCodeColumn, sCountryIDColumn, sEmailColumn, sPhoneNumberColumn, rNameColumn, rSurnameColumn, rStreetColumn, rHouseNumberColumn, rApartmentNumberColumn, rCityColumn, rPostalCodeColumn, rCountryIDColumn, rEmailColumn, rPhoneNumberColumn, carIdColumn, statusColumn, costColumn, weightColumn, lengthColumn, widthColumn, heightColumn, codeColumn, collectionPointIDColumn, departmentIDColumn);
         parcelTable.setEditable(true);
         parcelTable.autosize();
@@ -586,6 +625,7 @@ public class StoreKeeperLayout {
         HBox.setHgrow(btn6, Priority.ALWAYS);
         btn6.setMinWidth(buttonMinWidth);
         btn6.setMaxWidth(Double.MAX_VALUE);
+        btn6.setOnAction(e -> commit());
 
         Button logOutBtn = new Button(logOutLabel);
         HBox.setHgrow(logOutBtn, Priority.ALWAYS);
@@ -610,13 +650,13 @@ public class StoreKeeperLayout {
     }
 
     // Get all of the
-    public static ObservableList<Parcel> getParcel() {
+    public static ObservableList<Parcel> getParcel(int departmentID) {
         List<Parcel> parcelList = new ArrayList<>();
         try {
             Connection connection = Database.getConnection();
             ParcelDataAccessor parcelAccessor = new ParcelDataAccessor(connection);
             parcelList = parcelAccessor.getParcelsList(
-                    "select * from parcels where car_id = (select car_id from employees where employees_id = 5)"); //zmienic
+                    String.format("select * from parcels where department_id = %d", departmentID));
             Database.closeConnection(connection);
 
         } catch (Exception e) {
@@ -634,12 +674,14 @@ public class StoreKeeperLayout {
         pracelsSelected = parcelTable.getSelectionModel().getSelectedItems();
         ArrayList<Parcel> rows = new ArrayList<>(pracelsSelected);
         rows.forEach(row -> parcelTable.getItems().remove(row));
+        deletedParcelsList.addAll(rows);
     }
 
     //Add button clicked
     public static void addButtonClicked(){
         Parcel parcel = AddBox.display();
         parcelTable.getItems().add(parcel);
+        addedParcelsList.add(parcel);
     }
 
     // Gived Out button clicked
@@ -650,9 +692,40 @@ public class StoreKeeperLayout {
         ArrayList<Parcel> rows = new ArrayList<>(pracelsSelected);
         for (Parcel r : rows) {
             allParcels.remove(r);
+            r.setDepartmentID(0);
             r.setCarID(carID);
+            r.setStatus("ON_ROAD");
             allParcels.add(r);
+            modifiedParcelsList.add(r);
             parcelTable.refresh();
+        }
+    }
+
+    // Commit button clicked
+    public static void commit() {
+        try {
+            Connection con = Database.getConnection();
+            ParcelDataAccessor parcelAccessor = new ParcelDataAccessor(con);
+
+            for (Parcel parcel : modifiedParcelsList) {
+                parcelAccessor.updateParcel(parcel);
+            }
+
+            for (Parcel parcel : addedParcelsList) {
+                parcelAccessor.setParcel(parcel);
+            }
+
+            for (Parcel parcel : deletedParcelsList) {
+                parcelAccessor.deleteParcel(parcel);
+            }
+
+            modifiedParcelsList.clear();
+            addedParcelsList.clear();
+            deletedParcelsList.clear();
+
+            Database.closeConnection(con);
+        } catch (SQLException e) {
+            AlertBox.display("Error", "Cannot connect to database!");
         }
     }
 }

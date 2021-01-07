@@ -20,11 +20,14 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 import database.classes.Parcel;
 import gui.boxes.ChoiceWindow;
 import database.accessors.ParcelDataAccessor;
 import database.Database;
+import database.classes.AlertBox;
+import database.classes.Employee;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -39,43 +42,43 @@ public class CourierLayout {
     static TableView<Parcel> parcelsTable;
     static JSONParser jsonParser;
     static JSONObject jsonObj;
-    
+    static Employee employee;
 
-    public static Scene setCourierScene(Stage primaryStage) {
+    public static Scene setCourierScene(Stage primaryStage, Employee emp) {
 
-      int width=0, height=0, spacingDivider=0, spacingButtonDivider=0, padding=0, buttonMinWidth=0;
-      int highTabWidth=0, mediumTabWidth=0, lowTabWidth=0, spacingSize=0;
-      String search="", logOutLabel="", changeStatusLabel="";
+        employee = emp;
 
+        int width = 0, height = 0, spacingDivider = 0, spacingButtonDivider = 0, padding = 0, buttonMinWidth = 0;
+        int highTabWidth = 0, mediumTabWidth = 0, lowTabWidth = 0, spacingSize = 0;
+        String search = "", logOutLabel = "", changeStatusLabel = "";
 
-      jsonParser = new JSONParser();
-      try{
-        jsonObj = (JSONObject) jsonParser.parse(new FileReader("src/configurations/sharedConfiguration.json"));
-        
-        width = (int) (long) jsonObj.get("WIDTH");
-        height = (int) (long) jsonObj.get("HEIGHT");
-        spacingDivider = (int) (long) jsonObj.get("SPACING_WIDTH_DIVIDER");
-        spacingButtonDivider = (int) (long) jsonObj.get("SPACING_BUTTON_DIVIDER");
-        padding = (int) (long) jsonObj.get("PADDING");
-        spacingSize = (int) (long) jsonObj.get("SPACING");
+        jsonParser = new JSONParser();
+        try {
+            jsonObj = (JSONObject) jsonParser.parse(new FileReader("src/configurations/sharedConfiguration.json"));
 
-        buttonMinWidth = (int) (long) jsonObj.get("BUTTON_MIN_WIDTH");
-        highTabWidth = (int) (long) jsonObj.get("TAB_MIN_WIDTH_HIGH");
-        mediumTabWidth = (int) (long) jsonObj.get("TAB_MIN_WIDTH_MEDIUM");
-        lowTabWidth = (int) (long) jsonObj.get("TAB_MIN_WIDTH_LOW");
+            width = (int) (long) jsonObj.get("WIDTH");
+            height = (int) (long) jsonObj.get("HEIGHT");
+            spacingDivider = (int) (long) jsonObj.get("SPACING_WIDTH_DIVIDER");
+            spacingButtonDivider = (int) (long) jsonObj.get("SPACING_BUTTON_DIVIDER");
+            padding = (int) (long) jsonObj.get("PADDING");
+            spacingSize = (int) (long) jsonObj.get("SPACING");
 
-        search = (String) jsonObj.get("SEARCH");
-        logOutLabel = (String) jsonObj.get("LOGOUT_BUTTON");
-        changeStatusLabel = (String) jsonObj.get("CHANGESTATUS_BUTTON");
+            buttonMinWidth = (int) (long) jsonObj.get("BUTTON_MIN_WIDTH");
+            highTabWidth = (int) (long) jsonObj.get("TAB_MIN_WIDTH_HIGH");
+            mediumTabWidth = (int) (long) jsonObj.get("TAB_MIN_WIDTH_MEDIUM");
+            lowTabWidth = (int) (long) jsonObj.get("TAB_MIN_WIDTH_LOW");
 
+            search = (String) jsonObj.get("SEARCH");
+            logOutLabel = (String) jsonObj.get("LOGOUT_BUTTON");
+            changeStatusLabel = (String) jsonObj.get("CHANGESTATUS_BUTTON");
 
-      }catch (FileNotFoundException fe) {
-        fe.printStackTrace();
-      } catch (IOException io) {
-        io.printStackTrace();
-      } catch (ParseException pe) {
-        pe.printStackTrace();
-      }
+        } catch (FileNotFoundException fe) {
+            fe.printStackTrace();
+        } catch (IOException io) {
+            io.printStackTrace();
+        } catch (ParseException pe) {
+            pe.printStackTrace();
+        }
         // Search Field
         TextField searchField = new TextField();
         searchField.setPromptText(search);
@@ -116,7 +119,7 @@ public class CourierLayout {
         senderAddressColumn.setCellValueFactory(new PropertyValueFactory<>("senderAddress"));
 
         parcelsTable = new TableView<>();
-        parcelsTable.setItems(getParcelList());
+        parcelsTable.setItems(getParcelList(employee.getCarID()));
         // All columns
 
         parcelsTable.getColumns().addAll(idColumn, statusColumn, senderColumn, receiverColumn, costColumn,
@@ -139,19 +142,17 @@ public class CourierLayout {
         changeBtn.setMaxWidth(Double.MAX_VALUE);
         changeBtn.setOnAction(e -> changeStatus());
 
-
         Button logOutBtn = new Button(logOutLabel);
         HBox.setHgrow(logOutBtn, Priority.ALWAYS);
         logOutBtn.setMinWidth(buttonMinWidth);
         logOutBtn.setMaxWidth(Double.MAX_VALUE);
         logOutBtn.setOnAction(e -> {
-          Scene loginScene;
-          loginScene = LoginLayout.setLoginScene(primaryStage);
-          primaryStage.setScene(loginScene);
+            Scene loginScene;
+            loginScene = LoginLayout.setLoginScene(primaryStage);
+            primaryStage.setScene(loginScene);
         });
 
         buttonLayout.getChildren().addAll(changeBtn, logOutBtn);
-
 
         VBox.setVgrow(parcelsTable, Priority.ALWAYS);
         courierV.setSpacing(spacingSize);
@@ -161,13 +162,12 @@ public class CourierLayout {
         return courierScene;
     }
 
-    public static ObservableList<Parcel> getParcelList() {
+    public static ObservableList<Parcel> getParcelList(int carID) {
         List<Parcel> parcelList = new ArrayList<>();
         try {
             Connection connection = Database.getConnection();
             ParcelDataAccessor parcelAccessor = new ParcelDataAccessor(connection);
-            parcelList = parcelAccessor.getParcelsList(
-                    "select * from parcels where car_id = (select car_id from employees where employees_id = 5)");
+            parcelList = parcelAccessor.getParcelsList(String.format("select * from parcels where car_id = %d", carID));
             Database.closeConnection(connection);
 
         } catch (Exception e) {
@@ -187,14 +187,58 @@ public class CourierLayout {
         ArrayList<Parcel> parcelsArray = new ArrayList<>(parcelSelected);
 
         action = ChoiceWindow.display();
-        
+
         if (action != null && !action.isEmpty()) {
             for (Parcel parcel : parcelsArray) {
                 allParcels.remove(parcel);
                 parcel.setStatus(action);
                 allParcels.add(parcel);
                 parcelsTable.refresh();
+
+                switch (action) {
+                    case "DELIVERED":
+                        parcel.setCarID(0);
+                        parcel.setCollectionPointID(0);
+                        parcel.setDepartmentID(0);
+                        break;
+                    case "ON_ROAD":
+                        parcel.setCarID(employee.getCarID());
+                        parcel.setCollectionPointID(0);
+                        parcel.setDepartmentID(0);
+                        break;
+                    case "IN_C_POINT":
+                        parcel.setCarID(0);
+                        parcel.setCollectionPointID(1);
+                        parcel.setDepartmentID(0);
+                        break;
+                    case "IN_WAREHOUSE":
+                        parcel.setCarID(0);
+                        parcel.setCollectionPointID(0);
+                        parcel.setDepartmentID(employee.getDepartmentID());
+                        break;
+                    default:
+                        break;
+                }
             }
+
+            commit(parcelsArray);
+        }
+    }
+
+    private static void commit(ArrayList<Parcel> modifiedParcelsList) {
+        try {
+            Connection con = Database.getConnection();
+            ParcelDataAccessor parcelAccessor = new ParcelDataAccessor(con);
+
+            for (Parcel parcel : modifiedParcelsList) {
+                parcelAccessor.updateParcel(parcel);
+            }
+
+            modifiedParcelsList.clear();
+
+            Database.closeConnection(con);
+        } catch (SQLException e) {
+            AlertBox.display("Error", "Cannot connect to database!");
         }
     }
 }

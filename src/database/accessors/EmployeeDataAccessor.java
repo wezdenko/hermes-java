@@ -54,7 +54,7 @@ public class EmployeeDataAccessor {
         return employeeList;
     }
 
-    public void setDepartment(Employee employee) throws SQLException {
+    public void setEmployee(Employee employee) throws SQLException {
         String query = "INSERT INTO positions VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement prepStatement = connection.prepareStatement(query);
 
@@ -70,6 +70,38 @@ public class EmployeeDataAccessor {
         prepStatement.setInt(10, employee.getPositionID());
         prepStatement.setInt(11, employee.getManagerID());
         prepStatement.setInt(12, employee.getDepartmentID());
+
+        prepStatement.execute();
+        prepStatement.close();
+    }
+
+    public void updateEmployee(Employee employee) throws SQLException {
+        String query = "UPDATE employees SET name = ?, surname = ?, pesel = ?, salary = ?, " + 
+        "login = ?, password = ?, car_id = ?, position_id = ?, manager_id = ?, department_id = ? " +
+        "WHERE employees_id = ?";
+        PreparedStatement prepStatement = connection.prepareStatement(query);
+
+        prepStatement.setString(1, employee.getName());
+        prepStatement.setString(2, employee.getSurname());
+        prepStatement.setLong(3, employee.getPesel());
+        prepStatement.setInt(4, employee.getSalary());
+        prepStatement.setString(5, employee.getLogin());
+        prepStatement.setString(6, employee.getPassword());
+        prepStatement.setInt(7, employee.getCarID());
+        prepStatement.setInt(8, employee.getPositionID());
+        prepStatement.setInt(9, employee.getManagerID());
+        prepStatement.setInt(10, employee.getDepartmentID());
+        prepStatement.setInt(11, employee.getEmployeeID());
+
+        prepStatement.execute();
+        prepStatement.close();
+    }
+
+    public void deleteEmployee(Employee employee) throws SQLException {
+        String query = "DELETE FROM employees WHERE employees_id = ?";
+        PreparedStatement prepStatement = connection.prepareStatement(query);
+
+        prepStatement.setInt(1, employee.getEmployeeID());
 
         prepStatement.execute();
         prepStatement.close();

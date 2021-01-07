@@ -20,6 +20,7 @@ import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.TextFieldTableCell;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 import gui.boxes.AddBox_CPoint;
 
@@ -30,6 +31,7 @@ import gui.layouts.LoginLayout;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 
+import database.classes.AlertBox;
 import database.classes.CollectionPoint;
 
 import java.io.FileNotFoundException;
@@ -44,6 +46,8 @@ public class CollectionPointLayout {
     static TableView<CollectionPoint> collectionPointTable;
     static JSONParser jsonParser;
     static JSONObject jsonObj;
+    static List<CollectionPoint> modifiedPoints;
+    static List<CollectionPoint> deletedPoints;
 
     public static VBox setCollectionPointLayout(int width, Stage primaryStage) {
       int spacingDivider=0, spacingButtonDivider=0, padding=0, buttonMinWidth=0;
@@ -100,6 +104,7 @@ public class CollectionPointLayout {
                 ((CollectionPoint)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setName(t.getNewValue());
                 collectionPointTable.refresh();
+                modifiedPoints.add(((CollectionPoint)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -108,6 +113,9 @@ public class CollectionPointLayout {
         addressColumn.setMinWidth(highTabWidth);
         addressColumn.setCellValueFactory(new PropertyValueFactory<>("address_S"));
 
+        // List of modified collection points
+        modifiedPoints = new ArrayList<>();
+        deletedPoints = new ArrayList<>();
 
         // Final Table
         collectionPointTable = new TableView<>();
@@ -147,6 +155,7 @@ public class CollectionPointLayout {
         HBox.setHgrow(btn6, Priority.ALWAYS);
         btn6.setMinWidth(buttonMinWidth);
         btn6.setMaxWidth(Double.MAX_VALUE);
+        btn6.setOnAction(e -> commit());
 
         // Log Out
         Button logOutBtn = new Button(logOutLabel);
@@ -197,11 +206,35 @@ public class CollectionPointLayout {
         selected = collectionPointTable.getSelectionModel().getSelectedItems();
         ArrayList<CollectionPoint> rows = new ArrayList<>(selected);
         rows.forEach(row -> collectionPointTable.getItems().remove(row));
+        deletedPoints.addAll(rows);
     }
 
     //Add button clicked
     public static void addButtonClicked(){
         CollectionPoint collectionPoint = AddBox_CPoint.display();
         collectionPointTable.getItems().add(collectionPoint);
+    }
+
+    // Commit button clicked
+    public static void commit() {
+        try {
+            Connection con = Database.getConnection();
+            CollectionPointDataAccessor pointAccessor = new CollectionPointDataAccessor(con);
+
+            for (CollectionPoint point : modifiedPoints) {
+                pointAccessor.updateCollectionPoint(point);
+            }
+
+            for (CollectionPoint point : deletedPoints) {
+                pointAccessor.deleteCollectionPoint(point);
+            }
+
+            modifiedPoints.clear();
+            deletedPoints.clear();
+
+            Database.closeConnection(con);
+        } catch (SQLException e) {
+            AlertBox.display("Error", "Cannot connect to database!");
+        }
     }
 }

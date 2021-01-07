@@ -69,4 +69,34 @@ public class ClientDataAccessor {
         prepStatement.close();
     }
 
+    public void updateClient(Client client) throws SQLException {
+        String query = "UPDATE clients SET name = ?, surname = ?, " + 
+        "email = ?, phone_number = ?, address_id = ?" + 
+        "WHERE clients_id = ?";
+        PreparedStatement prepStatement = connection.prepareStatement(query);
+
+        prepStatement.setString(1, client.getName());
+        prepStatement.setString(2, client.getSurname());
+        prepStatement.setString(3, client.getEmail());
+        prepStatement.setString(4, client.getPhoneNumber());
+        prepStatement.setInt(5, client.getClientAddress().getAddressID());
+        prepStatement.setInt(6, client.getClientID());
+
+        ClientAddressDataAccessor clientAddrAccessor = new ClientAddressDataAccessor(connection);
+        clientAddrAccessor.updateAdrress(client.getClientAddress());
+
+        prepStatement.execute();
+        prepStatement.close();
+    }
+
+    public void deleteClient(Client client) throws SQLException {
+        String query = "DELETE FROM clients WHERE clients_id = ?";
+        PreparedStatement prepStatement = connection.prepareStatement(query);
+
+        prepStatement.setInt(1, client.getClientID());
+
+        prepStatement.execute();
+        prepStatement.close();
+    }
+
 }

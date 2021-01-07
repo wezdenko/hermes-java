@@ -20,11 +20,13 @@ import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.TextFieldTableCell;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 import gui.boxes.AddBox_Pos;
 import database.accessors.PositionDataAccessor;
 import database.Database;
 import database.classes.Position;
+import database.classes.AlertBox;
 import database.classes.Converter;
 
 import gui.layouts.LoginLayout;
@@ -43,6 +45,8 @@ public class PositionLayout {
     static TableView<Position> positionTable;
     static JSONParser jsonParser;
     static JSONObject jsonObj;
+    static List<Position> modifiedPositions;
+    static List<Position> deletedPositions;
 
     public static VBox setPositionLayout(int width, Stage primaryStage) {
       int spacingDivider=0, spacingButtonDivider=0, padding=0, buttonMinWidth=0;
@@ -98,6 +102,7 @@ public class PositionLayout {
                 ((Position)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setName(t.getNewValue());
                 positionTable.refresh();
+                modifiedPositions.add(((Position)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -114,6 +119,7 @@ public class PositionLayout {
                             .setMaxSalary(Converter.StringToInt(t.getNewValue()));
                 }
                 positionTable.refresh();
+                modifiedPositions.add(((Position)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -130,8 +136,13 @@ public class PositionLayout {
                             .setMinSalary(Converter.StringToInt(t.getNewValue()));
                 }
                 positionTable.refresh();
+                modifiedPositions.add(((Position)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
+
+        // List of modified positions
+        modifiedPositions = new ArrayList<>();
+        deletedPositions = new ArrayList<>();
 
         // Final Table
         positionTable = new TableView<>();
@@ -171,6 +182,7 @@ public class PositionLayout {
         HBox.setHgrow(btn6, Priority.ALWAYS);
         btn6.setMinWidth(buttonMinWidth);
         btn6.setMaxWidth(Double.MAX_VALUE);
+        btn6.setOnAction(e -> commit());
 
         // Log Out
         Button logOutBtn = new Button(logOutLabel);
@@ -219,11 +231,35 @@ public class PositionLayout {
         selected = positionTable.getSelectionModel().getSelectedItems();
         ArrayList<Position> rows = new ArrayList<>(selected);
         rows.forEach(row -> positionTable.getItems().remove(row));
+        deletedPositions.addAll(rows);
     }
 
     //Add button clicked
     public static void addButtonClicked(){
         Position position = AddBox_Pos.display();
         positionTable.getItems().add(position);
+    }
+
+    // Commit button clicked
+    public static void commit() {
+        try {
+            Connection con = Database.getConnection();
+            PositionDataAccessor positionAccessor = new PositionDataAccessor(con);
+
+            for (Position position : modifiedPositions) {
+                positionAccessor.updatePosition(position);
+            }
+
+            for (Position position : deletedPositions) {
+                positionAccessor.deletePosition(position);
+            }
+
+            modifiedPositions.clear();
+            deletedPositions.clear();
+
+            Database.closeConnection(con);
+        } catch (SQLException e) {
+            AlertBox.display("Error", "Cannot connect to database!");
+        }
     }
 }

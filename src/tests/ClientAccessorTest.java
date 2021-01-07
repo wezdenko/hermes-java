@@ -10,6 +10,7 @@ import database.classes.Address;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Random;
 
 public class ClientAccessorTest {
     
@@ -36,6 +37,41 @@ public class ClientAccessorTest {
         assertEquals(address.getCity(), "Lake Sadiechester");
         assertEquals(address.getPostalCode(), "98190");
         assertEquals(address.getCountryID(), 36);
+
+        Database.closeConnection(con);
+    }
+
+    @Test
+    public void updateClientTest() throws SQLException{
+    
+        Connection con = Database.getConnection();
+        ClientDataAccessor clientAccessor = new ClientDataAccessor(con);
+
+        Client client = clientAccessor.getClient("select * from clients where clients_id = 5");
+
+        // generating random data
+        String names[] = {"Julia", "Antonina", "Allen"};
+        String surnames[] = {"Fadel", "Nicolas", "Wolff"};
+        String emails[] = {"julia.fadel@email.com", "antonina.nicolas@email.com", "allen.wolff@email.com"};
+        String phoneNumbers[] = {"111222333", "444555666", "777888999"};
+
+        int rnd = new Random().nextInt(3);
+
+        // setting random data
+        client.setName(names[rnd]);
+        client.setSurname(surnames[rnd]);
+        client.setEmail(emails[rnd]);
+        client.setPhoneNumber(phoneNumbers[rnd]);
+
+        // tested function
+        clientAccessor.updateClient(client);
+
+        // tests
+        assertEquals(client.getClientID(), 5);
+        assertEquals(client.getName(), names[rnd]);
+        assertEquals(client.getSurname(), surnames[rnd]);
+        assertEquals(client.getEmail(), emails[rnd]);
+        assertEquals(client.getPhoneNumber(), phoneNumbers[rnd]);
 
         Database.closeConnection(con);
     }
