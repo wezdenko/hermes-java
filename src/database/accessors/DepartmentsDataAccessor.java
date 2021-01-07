@@ -64,4 +64,17 @@ public class DepartmentsDataAccessor {
         prepStatement.execute();
         prepStatement.close();
     }
+
+    public void updateDepartment(Department department) throws SQLException {
+        String query = "UPDATE departments SET name = ?, addresses_id = ? " +
+        "WHERE departments_id = ?";
+        PreparedStatement prepStatement = connection.prepareStatement(query);
+
+        prepStatement.setString(1, department.getName());
+        prepStatement.setInt(2, department.getAddress().getAddressID());
+        prepStatement.setInt(3, department.getDepartmentID());
+
+        prepStatement.execute();
+        prepStatement.close();
+    }
 }
