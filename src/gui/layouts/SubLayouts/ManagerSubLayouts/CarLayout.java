@@ -20,16 +20,19 @@ import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.TextFieldTableCell;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 import gui.boxes.AddBox_Car;
 import database.accessors.CarDataAccessor;
 import database.Database;
+import database.classes.AlertBox;
 import database.classes.Car;
 import database.classes.Converter;
 
 public class CarLayout {
 
     static TableView<Car> carTable;
+    static List<Car> modifiedCars;
 
     public static VBox setCarLayout(Double sceneWidth) {
         // Search Field
@@ -54,6 +57,7 @@ public class CarLayout {
                 ((Car)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setPlates(t.getNewValue());
                 carTable.refresh();
+                modifiedCars.add(((Car)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -68,6 +72,7 @@ public class CarLayout {
                 ((Car)
                 t.getTableView().getItems().get(t.getTablePosition().getRow())).setModel(t.getNewValue());
                 carTable.refresh();
+                modifiedCars.add(((Car)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -84,6 +89,7 @@ public class CarLayout {
                             .setDepartmentID(Converter.StringToInt(t.getNewValue()));
                 }
                 carTable.refresh();
+                modifiedCars.add(((Car)t.getTableView().getItems().get(t.getTablePosition().getRow())));
             }
         });
 
@@ -102,6 +108,9 @@ public class CarLayout {
                 carTable.refresh();
             }
         });
+
+        // List of modified cars
+        modifiedCars = new ArrayList<>();
 
         // Final Table
         carTable = new TableView<>();
@@ -141,6 +150,7 @@ public class CarLayout {
         HBox.setHgrow(btn6, Priority.ALWAYS);
         btn6.setMinWidth(width);
         btn6.setMaxWidth(Double.MAX_VALUE);
+        btn6.setOnAction(e -> commit());
 
         buttonLayout.getChildren().addAll(deletButton, addButton, btn6);
 
@@ -185,5 +195,23 @@ public class CarLayout {
     public static void addButtonClicked(){
         Car car = AddBox_Car.display();
         carTable.getItems().add(car);
+    }
+
+    // Commit button clicked
+    public static void commit() {
+        try {
+            Connection con = Database.getConnection();
+            CarDataAccessor carAccessor = new CarDataAccessor(con);
+
+            for (Car car : modifiedCars) {
+                carAccessor.updateCar(car);
+            }
+
+            modifiedCars.clear();
+
+            Database.closeConnection(con);
+        } catch (SQLException e) {
+            AlertBox.display("Error", "Cannot connect to database!");
+        }
     }
 }
