@@ -63,7 +63,7 @@ public class CompanyAddressDataAccessor {
         prepStatement.close();
     }
 
-    public void updateAdrress(Address addr) throws SQLException {
+    public void updateAddress(Address addr) throws SQLException {
         String query = "UPDATE company_addresses SET street = ?, house_number = ?, " +
         "apartment_number = ?, city = ?, postal_code = ?, countries_id = ?" +
         "WHERE comp_addr_id = ?";
@@ -76,6 +76,16 @@ public class CompanyAddressDataAccessor {
         prepStatement.setString(5, addr.getPostalCode());
         prepStatement.setInt(6, addr.getCountryID());
         prepStatement.setInt(7, addr.getAddressID());
+
+        prepStatement.execute();
+        prepStatement.close();
+    }
+
+    public void deleteAddress(Address addr) throws SQLException {
+        String query = "DELETE FROM client_addresses WHERE client_addresses_id = ?";
+        PreparedStatement prepStatement = connection.prepareStatement(query);
+
+        prepStatement.setInt(1, addr.getAddressID());
 
         prepStatement.execute();
         prepStatement.close();

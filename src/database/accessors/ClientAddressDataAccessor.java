@@ -80,4 +80,14 @@ public class ClientAddressDataAccessor {
         prepStatement.execute();
         prepStatement.close();
     }
+
+    public void deleteAddress(Address addr) throws SQLException {
+        String query = "DELETE FROM client_addresses WHERE client_addresses_id = ?";
+        PreparedStatement prepStatement = connection.prepareStatement(query);
+
+        prepStatement.setInt(1, addr.getAddressID());
+
+        prepStatement.execute();
+        prepStatement.close();
+    }
 }

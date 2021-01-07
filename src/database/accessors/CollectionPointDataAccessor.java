@@ -68,12 +68,22 @@ public class CollectionPointDataAccessor {
         "WHERE collection_points_id = ?";
         PreparedStatement prepStatement = connection.prepareStatement(query);
 
-        prepStatement.setString(2, collectionPoint.getName());
-        prepStatement.setInt(4, collectionPoint.getAddress().getAddressID());
-        prepStatement.setInt(1, collectionPoint.getCollectionPointID());
+        prepStatement.setString(1, collectionPoint.getName());
+        prepStatement.setInt(2, collectionPoint.getAddress().getAddressID());
+        prepStatement.setInt(3, collectionPoint.getCollectionPointID());
 
         CompanyAddressDataAccessor addressAccessor = new CompanyAddressDataAccessor(connection);
-        addressAccessor.updateAdrress(collectionPoint.getAddress());
+        addressAccessor.updateAddress(collectionPoint.getAddress());
+
+        prepStatement.execute();
+        prepStatement.close();
+    }
+
+    public void deleteCollectionPoint(CollectionPoint collectionPoint) throws SQLException {
+        String query = "DELETE FROM collection_points WHERE collection_points_id = ?";
+        PreparedStatement prepStatement = connection.prepareStatement(query);
+
+        prepStatement.setInt(1, collectionPoint.getCollectionPointID());
 
         prepStatement.execute();
         prepStatement.close();

@@ -77,4 +77,14 @@ public class DepartmentsDataAccessor {
         prepStatement.execute();
         prepStatement.close();
     }
+
+    public void deleteDepartment(Department department) throws SQLException {
+        String query = "DELETE FROM departments WHERE departments_id = ?";
+        PreparedStatement prepStatement = connection.prepareStatement(query);
+
+        prepStatement.setInt(1, department.getDepartmentID());
+
+        prepStatement.execute();
+        prepStatement.close();
+    }
 }

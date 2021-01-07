@@ -106,4 +106,14 @@ public class ParcelDataAccessor {
         prepStatement.execute();
         prepStatement.close();
     }
+
+    public void deleteParcel(Parcel parcel) throws SQLException {
+        String query = "DELETE FROM parcels WHERE parcels_id = ?";
+        PreparedStatement prepStatement = connection.prepareStatement(query);
+
+        prepStatement.setInt(1, parcel.getID());
+
+        prepStatement.execute();
+        prepStatement.close();
+    }
 }

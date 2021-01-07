@@ -89,4 +89,14 @@ public class ClientDataAccessor {
         prepStatement.close();
     }
 
+    public void deleteClient(Client client) throws SQLException {
+        String query = "DELETE FROM clients WHERE clients_id = ?";
+        PreparedStatement prepStatement = connection.prepareStatement(query);
+
+        prepStatement.setInt(1, client.getClientID());
+
+        prepStatement.execute();
+        prepStatement.close();
+    }
+
 }

@@ -96,4 +96,14 @@ public class EmployeeDataAccessor {
         prepStatement.execute();
         prepStatement.close();
     }
+
+    public void deleteEmployee(Employee employee) throws SQLException {
+        String query = "DELETE FROM employees WHERE employees_id = ?";
+        PreparedStatement prepStatement = connection.prepareStatement(query);
+
+        prepStatement.setInt(1, employee.getEmployeeID());
+
+        prepStatement.execute();
+        prepStatement.close();
+    }
 }

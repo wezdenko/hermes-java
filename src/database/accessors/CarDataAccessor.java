@@ -75,4 +75,14 @@ public class CarDataAccessor {
         prepStatement.execute();
         prepStatement.close();
     }
+
+    public void deleteCar(Car car) throws SQLException {
+        String query = "DELETE FROM cars WHERE cars_id = ?";
+        PreparedStatement prepStatement = connection.prepareStatement(query);
+
+        prepStatement.setString(1, car.getCarsID_S());
+
+        prepStatement.execute();
+        prepStatement.close();
+    }
 }

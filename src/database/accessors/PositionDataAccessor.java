@@ -85,4 +85,14 @@ public class PositionDataAccessor {
         prepStatement.execute();
         prepStatement.close();
     }
+
+    public void deletePosition(Position position) throws SQLException {
+        String insertSQL = "DELETE FROM positions WHERE position_id = ?";
+        PreparedStatement prepStatement = connection.prepareStatement(insertSQL);
+
+        prepStatement.setInt(1, position.getId());
+
+        prepStatement.execute();
+        prepStatement.close();
+    }
 }
